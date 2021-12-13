@@ -1,0 +1,3 @@
+mysqldump -u root -p alphapet > C:\AlphaPetDB.sql	// Make a backup
+				// path of the backup file
+mysql -u root -p alphapet < C:\AlphaPetDB.sql		// Restore the database
