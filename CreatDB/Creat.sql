@@ -109,7 +109,7 @@ CREATE TABLE Degree
 	DegreeName varchar(500),
 	VetEmail varchar(50) not null,
 	primary key(DegreeYear, College, DegreeName, VetEmail),
-	Foreign key (VetID) references Vet(vetEmail)
+	Foreign key (VetEmail) references Vet(Email)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE
 );
@@ -221,7 +221,116 @@ create table History_Table (
     foreign key (vetEmail) references Vet(Email)
 		on update cascade
         on delete cascade
-); 
+);
+
+create table VetPost_VetComment (
+	VetPost_ID int not null,
+    VetComment_ID int not null,
+    primary key(VetPost_ID, VetComment_ID),
+    foreign key (VetPost_ID) references Vet_Post(P_ID)
+		on delete cascade
+        on update cascade,
+	foreign key (VetComment_ID) references Vet_Comment(C_ID)
+		on delete cascade
+        on update cascade
+);
+
+create table VetPost_OwnerComment (
+	VetPost_ID int not null,
+    OwnerComment_ID int not null,
+    primary key(VetPost_ID, OwnerComment_ID),
+    foreign key (VetPost_ID) references Vet_Post(P_ID)
+		on delete cascade
+        on update cascade,
+	foreign key (OwnerComment_ID) references Owner_Comment(C_ID)
+		on delete cascade
+        on update cascade
+);
+
+create table VetPost_PharmacistComment (
+	VetPost_ID int not null,
+    PharmacistComment_ID int not null,
+    primary key(VetPost_ID, PharmacistComment_ID),
+    foreign key (VetPost_ID) references Vet_Post(P_ID)
+		on delete cascade
+        on update cascade,
+	foreign key (PharmacistComment_ID) references Pharmacist_Comment(C_ID)
+		on delete cascade
+        on update cascade
+);
+
+create table OwnerPost_VetComment (
+	OwnerPost_ID int not null,
+    VetComment_ID int not null,
+    primary key(OwnerPost_ID, VetComment_ID),
+    foreign key (OwnerPost_ID) references Owner_Post(P_ID)
+		on delete cascade
+        on update cascade,
+	foreign key (VetComment_ID) references Vet_Comment(C_ID)
+		on delete cascade
+        on update cascade
+);
+
+create table OwnerPost_OwnerComment (
+	OwnerPost_ID int not null,
+    OwnerComment_ID int not null,
+    primary key(OwnerPost_ID, OwnerComment_ID),
+    foreign key (OwnerPost_ID) references Owner_Post(P_ID)
+		on delete cascade
+        on update cascade,
+	foreign key (OwnerComment_ID) references Owner_Comment(C_ID)
+		on delete cascade
+        on update cascade
+);
+
+create table OwnerPost_PharmacistComment (
+	OwnerPost_ID int not null,
+    PharmacistComment_ID int not null,
+    primary key(OwnerPost_ID, PharmacistComment_ID),
+    foreign key (OwnerPost_ID) references Owner_Post(P_ID)
+		on delete cascade
+        on update cascade,
+	foreign key (PharmacistComment_ID) references Pharmacist_Comment(C_ID)
+		on delete cascade
+        on update cascade
+);
+
+create table PharmacistPost_VetComment (
+	PharmacistPost_ID int not null,
+    VetComment_ID int not null,
+    primary key(PharmacistPost_ID, VetComment_ID),
+    foreign key (PharmacistPost_ID) references Pharmacist_Post(P_ID)
+		on delete cascade
+        on update cascade,
+	foreign key (VetComment_ID) references Vet_Comment(C_ID)
+		on delete cascade
+        on update cascade
+);
+
+create table PharmacistPost_OwnerComment (
+	PharmacistPost_ID int not null,
+    OwnerComment_ID int not null,
+    primary key(PharmacistPost_ID, OwnerComment_ID),
+    foreign key (PharmacistPost_ID) references Pharmacist_Post(P_ID)
+		on delete cascade
+        on update cascade,
+	foreign key (OwnerComment_ID) references Owner_Comment(C_ID)
+		on delete cascade
+        on update cascade
+);
+
+create table PharmacistPost_PharmacistComment (
+	PharmacistPost_ID int not null,
+    PharmacistComment_ID int not null,
+    primary key(PharmacistPost_ID, PharmacistComment_ID),
+    foreign key (PharmacistPost_ID) references Pharmacist_Post(P_ID)
+		on delete cascade
+        on update cascade,
+	foreign key (PharmacistComment_ID) references Pharmacist_Comment(C_ID)
+		on delete cascade
+        on update cascade
+);
+
 
 
 
