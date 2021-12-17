@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const connection = require('../connection.js');
 
-const getAllOwners = (req, res) => {
-    const sqlStr = `SELECT EMAIL, FNAME, LNAME, PHONE, FAVOURITE_VET_EMAIL, CITY FROM OWNER_TABLE`;
+const getAllVets = (req, res) => {
+    const sqlStr = `SELECT EMAIL, FNAME, LNAME, CHARGE, STATE FROM VET`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -24,7 +24,7 @@ const signin =  (req, res) => {
 
     const { email, password } = req.body;
     const existingUser;
-    const sqlStr = `SELECT * FROM OWNER_TABLE WHERE EMAIL = ${email}`;
+    const sqlStr = `SELECT * FROM VET WHERE EMAIL = ${email}`;
 
     try {
         connection.query(sqlStr, (error, results, fields) => {
@@ -52,7 +52,7 @@ const signup = (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password, fName, lName, phone, balance, favouriteVetEmail, city } = req.body;
+    const { email, password, fName, lName, charge, state } = req.body;
     const sqlStr2;
     try {
         sqlStr2 = `SELECT * FROM OWNER_TABLE WHERE EMAIL = ${email}`;
@@ -78,7 +78,7 @@ const signup = (req, res) => {
 
         const token = jwt.sign({ email }, 'test', { expiresIn: '1h' });
         
-        const sqlStr = `INSERT INTO OWNER_TABLE VALUES(${email}, ${fName}, ${lName}, ${phone}, ${balance}, ${favouriteVetEmail}, ${city}, ${password})`;
+        const sqlStr = `INSERT INTO VET VALUES(${email}, ${fName}, ${lName}, ${charge}, ${state}, ${password})`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
@@ -89,17 +89,17 @@ const signup = (req, res) => {
     }
 }
 
-const updateOwner = (req, res) => {
+const updateVet = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         //  Request body is invalid
       return res.status(400).json({ errors: errors.array() });
     }
     
-    const { email, password, fName, lName, phone, balance, favouriteVetEmail, city } = req.body;
-    
+    const { email, password, fName, lName, charge, state } = req.body;
+
     try {
-        const sqlStr = `UPDATE OWNER_TABLE SET FNAME = ${fName}, LNAME = ${lName}, PHONE = ${phone}, BALANCE = ${balance}, FAVOURITE_VET_EMAIL = ${favouriteVetEmail}, CITY = ${city}, PASSWORD ${password} WHERE EMAIL = ${email}`;
+        const sqlStr = `UPDATE VET SET FNAME = ${fName}, LNAME = ${lName}, CHARGE = ${charge}, STATE = ${state}, PASSWORD ${password} WHERE EMAIL = ${email}`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
@@ -111,8 +111,8 @@ const updateOwner = (req, res) => {
 }
 
 module.exports = {
-    getAllOwners,
+    getAllVets,
     signin,
     signup,
-    updateOwner
+    updateVet
 };

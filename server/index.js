@@ -7,6 +7,7 @@ const clinicRoutes = require('./routers/clinic.js');
 const degreeRoutes = require('./routers/degree.js');
 const invoicesRoutes = require('./routers/invoices.js');
 const ownersRoutes = require('./routers/owners.js');
+const vetsRoutes = require('./routers/vets.js');
 
 const app = express();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -19,6 +20,7 @@ app.use('/clinics', clinicRoutes);
 app.use('/degrees', degreeRoutes);
 app.use('/invoices', invoicesRoutes);
 app.use('/owners', ownersRoutes);
+app.use('/vets', vetsRoutes);
 
 app.use('/', (req, res) => {
     res.send('Welcome to Alpha-Pet App');
