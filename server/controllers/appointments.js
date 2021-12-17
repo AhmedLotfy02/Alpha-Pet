@@ -1,10 +1,10 @@
 const { validationResult } = require('express-validator');
 const connection = require('../connection.js');
 
-const getAppointments = async (req, res) => {
+const getAppointments = (req, res) => {
     const sqlStr = `SELECT * FROM APPOINTMENT`;
     try {
-        await connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, (error, results, fields) => {
             // error will be an Error if one occurred during the query
             if(error){
                 console.log(error);
@@ -19,11 +19,11 @@ const getAppointments = async (req, res) => {
     }
 }
 
-const getAppointmentsWithStartDate = async (req, res) => {
+const getAppointmentsWithStartDate = (req, res) => {
     const { startDate } = req.params;
     const sqlStr = `SELECT * FROM APPOINTMENT WHERE STARTDATE = ${startDate}`;
     try {
-        await connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;
@@ -36,11 +36,11 @@ const getAppointmentsWithStartDate = async (req, res) => {
     }
 }
 
-const getAppointmentsWithEndDate = async (req, res) => {
+const getAppointmentsWithEndDate = (req, res) => {
     const { endDate } = req.params;
     const sqlStr = `SELECT * FROM APPOINTMENT WHERE ENDDATE = ${endDate}`;
     try {
-        await connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;
@@ -57,7 +57,7 @@ const getAppointmentsWithOwnerEmail = (req, res) => {
     const { ownerEmail } = req.params;
     const sqlStr = `SELECT * FROM APPOINTMENT WHERE OWNEREMAIL = ${ownerEmail}`;
     try {
-        await connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;
@@ -74,7 +74,7 @@ const getAppointmentsWithVetEmail = (req, res) => {
     const { vetEmail } = req.params;
     const sqlStr = `SELECT * FROM APPOINTMENT WHERE VETEMAIL = ${vetEmail}`;
     try {
-        await connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;
@@ -95,7 +95,12 @@ const createAppointment = (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { vetEmail, ownerEmail, startDate, endDate } = req.body;
+    const { vetEmail, ownerEmail, startDate, endDate, currentUserEmail } = req.body;
+
+    if(currentUserEmail != ownerEmail){
+        return res.status(400).json({ message: "Unauthorized User" });
+    }
+    
     const currentDate = Date.now();
     if(startDate < currentDate || endDate < currentDate || startDate > endDate){
         return res.status(400).json({ message: "Invalid Date" });
@@ -103,7 +108,7 @@ const createAppointment = (req, res) => {
 
     const sqlStr2 = `SELECT STARTDATE, ENDDATE FROM APPOINTMENT WHERE VETEMAIL = ${vetEmail}`;
     try {
-        await connection.query(sqlStr2, (error, results, fields) => {
+        connection.query(sqlStr2, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;
@@ -126,7 +131,7 @@ const createAppointment = (req, res) => {
 
     const sqlStr3 = `SELECT STARTDATE, ENDDATE FROM APPOINTMENT WHERE OWNEREMAIL = ${ownerEmail}`;
     try {
-        await connection.query(sqlStr3, (error, results, fields) => {
+        connection.query(sqlStr3, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;
@@ -150,7 +155,7 @@ const createAppointment = (req, res) => {
     //  Request body is valid and the appointment will be inserted
     const sqlStr = `INSERT INTO APPOINTMENT VALUES (${startDate}, ${endDate}, ${ownerEmail}, ${vetEmail})`;
     try {
-        await connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;
@@ -170,7 +175,12 @@ const updateAppointment = (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { vetEmail, ownerEmail, startDate, endDate, oldStartDate } = req.body;
+    const { vetEmail, ownerEmail, startDate, endDate, oldStartDate, currentUserEmail } = req.body;
+    
+    if(currentUserEmail != ownerEmail && currentUserEmail != vetEmail){
+        return res.status(400).json({ message: "Unauthorized User" });
+    }
+    
     const currentDate = Date.now();
     if(startDate < currentDate || endDate < currentDate || startDate > endDate){
         return res.status(400).json({ message: "Invalid Date" });
@@ -178,7 +188,7 @@ const updateAppointment = (req, res) => {
 
     const sqlStr2 = `SELECT STARTDATE, ENDDATE FROM APPOINTMENT WHERE VETEMAIL = ${vetEmail}`;
     try {
-        await connection.query(sqlStr2, (error, results, fields) => {
+        connection.query(sqlStr2, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;
@@ -205,7 +215,7 @@ const updateAppointment = (req, res) => {
 
     const sqlStr3 = `SELECT STARTDATE, ENDDATE FROM APPOINTMENT WHERE OWNEREMAIL = ${ownerEmail}`;
     try {
-        await connection.query(sqlStr3, (error, results, fields) => {
+        connection.query(sqlStr3, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;
@@ -233,7 +243,7 @@ const updateAppointment = (req, res) => {
     //  Request body is valid and the appointment will be inserted
     const sqlStr = `UPDATE APPOINTMENT SET STARTDATE = ${startDate}, ENDDATE = ${endDate} WHERE VETEMAIL = ${vetEmail} AND STARTDATE = ${oldStartDate}`;
     try {
-        await connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;
@@ -253,12 +263,16 @@ const deleteAppointment = (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { vetEmail, oldStartDate } = req.body;
+    const { ownerEmail, vetEmail, oldStartDate, currentUserEmail } = req.body;
+
+    if(currentUserEmail != ownerEmail && currentUserEmail != vetEmail){
+        return res.status(400).json({ message: "Unauthorized User" });
+    }
     
     //  Request body is valid and the appointment will be inserted
-    const sqlStr = `DELETE APPOINTMENT WHERE VETEMAIL = ${vetEmail} AND STARTDATE = ${oldStartDate}`;
+    const sqlStr = `DELETE FROM APPOINTMENT WHERE VETEMAIL = ${vetEmail} AND STARTDATE = ${oldStartDate}`;
     try {
-        await connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, (error, results, fields) => {
             if(error){
                 console.log(error);
                 return;

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const connection = require('./connection.js');
 const appointmentRoutes = require('./routers/appointments.js');
+const clinicRoutes = require('./routers/clinic.js');
 
 const app = express();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -11,6 +12,7 @@ app.use(cors());
 
 //  end-points
 app.use('/appointments', appointmentRoutes);
+app.use('/clinics', clinicRoutes);
 
 app.use('/', (req, res) => {
     res.send('Welcome to Alpha-Pet App');
