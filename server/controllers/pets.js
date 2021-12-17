@@ -1,0 +1,134 @@
+const { validationResult } = require('express-validator');
+const connection = require('../connection.js');
+
+const getAllPets = (req, res) => {
+    const sqlStr = `SELECT * FROM PET`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            res.status(200).json({ data: results, fields });
+        });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+const getPetOfOwner = (req, res) => {
+    const { ownerEmail } = req.params;
+    const sqlStr = `SELECT * FROM PET WHERE OWNEREMAIL = ${ownerEmail}`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            res.status(200).json({ data: results, fields });
+        });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+const getPetsWithColor = (req, res) => {
+    const { color } = req.params;
+    const sqlStr = `SELECT * FROM PET WHERE COLOR = ${color}`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            res.status(200).json({ data: results, fields });
+        });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+const getPetsWithAge = (req, res) => {
+    const { age } = req.params;
+    const sqlStr = `SELECT * FROM PET WHERE AGE = ${age}`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            res.status(200).json({ data: results, fields });
+        });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+const createPet = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        //  Request body is invalid
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { ownerEmail, petName, color, age } = req.body;
+    
+    const sqlStr = `INSERT INTO PET VALUES (${ownerEmail}, ${petName}, ${color}, ${age})`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+
+            res.status(200).json({ data: results, fields });            
+        });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+const updatePet = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        //  Request body is invalid
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { ownerEmail, petName, color, age, currentUserEmail } = req.body;
+
+    if(currentUserEmail != ownerEmail) return res.status(400).json({ message: "Unauthorized User" });
+    
+    const sqlStr = `UPDATE PET SET PETNAME = ${petName}, COLOR = ${color},  AGE = ${age} WHERE OWNEREMAIL = ${ownerEmail}`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+
+            res.status(200).json({ data: results, fields });            
+        });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+const deletePet = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        //  Request body is invalid
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { ownerEmail, currentUserEmail } = req.body;
+
+    if(currentUserEmail != ownerEmail) return res.status(400).json({ message: "Unauthorized User" });
+    
+    const sqlStr = `DELETE FROM PET WHERE OWNEREMAIL = ${ownerEmail}`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+
+            res.status(200).json({ data: results, fields });            
+        });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+module.exports = {
+    getAllPets,
+    getPetOfOwner,
+    getPetsWithColor,
+    getPetsWithAge,
+    createPet,
+    updatePet,
+    deletePet
+}
