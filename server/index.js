@@ -12,7 +12,7 @@ const pharmacistsRoutes = require('./routers/pharmacists.js');
 const petsRoutes = require('./routers/pets.js');
 const pharmacyRoutes = require('./routers/pharmacy.js');
 const reviewsRoutes = require('./routers/reviews.js');
-
+const vetPostsRouters = require('./routers/vet_posts');
 const app = express();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
