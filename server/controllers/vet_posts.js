@@ -16,7 +16,7 @@ const getAllPosts = (req, res) => {
 const getVetPosts = (req, res) => {
     
     const {vetEmail} = req.params;
-    const sqlStr = `SELECT Post_Content FROM Vet_Post WHERE ${vetEmail} = vetEmail`;
+    const sqlStr = `SELECT Post_Content FROM Vet_Post WHERE vetEmail = ${vetEmail} `;
 
     connection.query(sqlStr, (error, results, fields) => {
         if(error) res.status(500).json({ message: error.message });
