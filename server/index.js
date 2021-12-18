@@ -14,6 +14,7 @@ const pharmacyRoutes = require('./routers/pharmacy.js');
 const reviewsRoutes = require('./routers/reviews.js');
 const vetPostsRouters = require('./routers/vet_posts');
 const pharmacistpostsRouters = require('./routers/pharmacist_posts');
+const ownerpostsRouters = require('./routers/owner_posts');
 
 const app = express();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
