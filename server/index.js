@@ -32,6 +32,9 @@ app.use('/pharmacists', pharmacistsRoutes);
 app.use('/pets', petsRoutes);
 app.use('/pharmacy', pharmacyRoutes);
 app.use('/reviews', reviewsRoutes);
+app.use('/vetPosts', vetPostsRouters);
+app.use('/pharmacistPosts', pharmacistpostsRouters);
+app.use('/ownerPosts', ownerpostsRouters);
 
 app.use('/', (req, res) => {
     res.send('Welcome to Alpha-Pet App');
