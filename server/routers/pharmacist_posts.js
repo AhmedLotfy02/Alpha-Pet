@@ -9,6 +9,6 @@ const {
 const router = express.Router();
 
 router.get('/', getAllPosts);
-router.get('/pharmacist/:PharmacistEmail', getPharmacistPosts);
+router.get('/pharmacist/:pharmacistEmail', getPharmacistPosts);
 
 module.exports = router;
