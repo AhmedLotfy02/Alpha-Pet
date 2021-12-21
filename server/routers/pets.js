@@ -14,13 +14,13 @@ const {
 const router = express.Router();
 
 router.get('/', getAllPets);
-router.get('/:ownerEmail', getPetOfOwner);
+router.get('/owner/:ownerEmail', getPetOfOwner);
 router.get('/color/:color', getPetsWithColor);
 router.get('/age/:age', getPetsWithAge);
 router.post(
     '/',
     auth,
-    body('ownerEmail').isEmail().normalizeEmail(),
+    body('currentUserEmail').isEmail().normalizeEmail(),
     body('petName').notEmpty(),
     body('color').notEmpty(),
     body('age').notEmpty(),
@@ -29,7 +29,6 @@ router.post(
 router.patch(
     '/',
     auth,
-    body('ownerEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),
     body('petName').notEmpty(),
     body('color').notEmpty(),
@@ -39,7 +38,6 @@ router.patch(
 router.delete(
     '/',
     auth,
-    body('ownerEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),
     deletePet
 );

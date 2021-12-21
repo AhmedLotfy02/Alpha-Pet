@@ -28,7 +28,7 @@ router.post(
 router.patch(
     '/update',
     auth,
-    body('email').isEmail().normalizeEmail(),
+    body('currentUserEmail').isEmail().normalizeEmail(),
     body('password').notEmpty(),
     body('fName').notEmpty(),
     body('lName').notEmpty(),

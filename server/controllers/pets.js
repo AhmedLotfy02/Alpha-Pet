@@ -58,14 +58,11 @@ const getPetsWithAge = (req, res) => {
 
 const createPet = (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        //  Request body is invalid
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { ownerEmail, petName, color, age } = req.body;
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+      
+    const { currentUserEmail, petName, color, age } = req.body;
     
-    const sqlStr = `INSERT INTO PET VALUES (${ownerEmail}, ${petName}, ${color}, ${age})`;
+    const sqlStr = `INSERT INTO PET VALUES (${currentUserEmail}, ${petName}, ${color}, ${age})`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -79,16 +76,11 @@ const createPet = (req, res) => {
 
 const updatePet = (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        //  Request body is invalid
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { ownerEmail, petName, color, age, currentUserEmail } = req.body;
-
-    if(currentUserEmail != ownerEmail) return res.status(400).json({ message: "Unauthorized User" });
+    const { petName, color, age, currentUserEmail } = req.body;
     
-    const sqlStr = `UPDATE PET SET PETNAME = ${petName}, COLOR = ${color},  AGE = ${age} WHERE OWNEREMAIL = ${ownerEmail}`;
+    const sqlStr = `UPDATE PET SET PETNAME = ${petName}, COLOR = ${color},  AGE = ${age} WHERE OWNEREMAIL = ${currentUserEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -102,16 +94,11 @@ const updatePet = (req, res) => {
 
 const deletePet = (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        //  Request body is invalid
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { ownerEmail, currentUserEmail } = req.body;
-
-    if(currentUserEmail != ownerEmail) return res.status(400).json({ message: "Unauthorized User" });
+    const { currentUserEmail } = req.body;
     
-    const sqlStr = `DELETE FROM PET WHERE OWNEREMAIL = ${ownerEmail}`;
+    const sqlStr = `DELETE FROM PET WHERE OWNEREMAIL = ${currentUserEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });

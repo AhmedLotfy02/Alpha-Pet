@@ -21,7 +21,7 @@ router.post(
     '/',
     auth,
     body('vetEmail').isEmail().normalizeEmail(),
-    body('ownerEmail').isEmail().normalizeEmail(),
+    body('currentUserEmail').isEmail().normalizeEmail(),
     body('rating').isInt().notEmpty(),
     createReview
 );
@@ -29,7 +29,7 @@ router.patch(
     '/',
     auth,
     body('vetEmail').isEmail().normalizeEmail(),
-    body('ownerEmail').isEmail().normalizeEmail(),
+    body('currentUserEmail').isEmail().normalizeEmail(),
     body('rating').isInt().notEmpty(),
     updateReview
 );
@@ -37,7 +37,7 @@ router.delete(
     '/',
     auth,
     body('vetEmail').isEmail().normalizeEmail(),
-    body('ownerEmail').isEmail().normalizeEmail(),
+    body('currentUserEmail').isEmail().normalizeEmail(),
     deleteReview
 );
 

@@ -24,7 +24,6 @@ router.post(
     auth,
     body('startDate').isDate(),
     body('endDate').isDate(),
-    body('ownerEmail').isEmail().normalizeEmail(),
     body('vetEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),
     createAppointment
@@ -43,7 +42,7 @@ router.patch(
 router.delete(
     '/',
     auth,
-    body('oldStartDate').isDate(),
+    body('startDate').isDate(),
     body('ownerEmail').isEmail().normalizeEmail(),
     body('vetEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),

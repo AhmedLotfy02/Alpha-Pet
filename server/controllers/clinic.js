@@ -5,7 +5,7 @@ const getAllClinics = (req, res) => {
     const sqlStr = `SELECT * FROM CLINIC`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -19,7 +19,7 @@ const getClinicOfVet = (req, res) => {
     const sqlStr = `SELECT * FROM CLINIC WHERE VETEMAIL = ${vetEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -33,7 +33,7 @@ const getClinicsWithStartDay = (req, res) => {
     const sqlStr = `SELECT * FROM CLINIC WHERE STARTDAY = ${startDay}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -47,7 +47,7 @@ const getClinicsWithEndDay = (req, res) => {
     const sqlStr = `SELECT * FROM CLINIC WHERE ENDDAY = ${endDay}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -61,7 +61,7 @@ const getClinicsWithStartHour = (req, res) => {
     const sqlStr = `SELECT * FROM CLINIC WHERE STARTHOUR = ${startHour}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -75,7 +75,7 @@ const getClinicsWithEndHour = (req, res) => {
     const sqlStr = `SELECT * FROM CLINIC WHERE ENDHOUR = ${endHour}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -85,49 +85,15 @@ const getClinicsWithEndHour = (req, res) => {
 }
 
 const createClinic = (req, res) => {
-
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        //  Request body is invalid
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { vetEmail, address, phone, startDay, endDay, startHour, endHour, currentUserEmail } = req.body;
-
-    if(!vetEmail || !address || !phone){
-        return res.status(400).json({ message: "Invalid Data" });
-    }
-
-    if(vetEmail != currentUserEmail){
-        return res.status(400).json({ message: "Unauthorized User" });
-    }
-
-    const sqlStr2 = `SELECT VETEMAIL FROM CLINIC WHERE VETEMAIL = ${vetEmail}`;
-    try {
-        connection.query(sqlStr2, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
-            
-            if(results.length > 0) return res.status(400).json({ message: "This Vet Already Has A Clinic" });
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-
-    const sqlStr3 = `SELECT EMAIL FROM VET WHERE EMAIL = ${vetEmail}`;
-    try {
-        connection.query(sqlStr3, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
-            
-            if(results.length = 0) return res.status(400).json({ message: "This Vet Doesn't Exist" });
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
+    const { address, phone, startDay, endDay, startHour, endHour, currentUserEmail } = req.body;
     
-    const sqlStr = `INSERT INTO CLINIC VALUES (${vetEmail}, ${address}, ${phone}, ${startDay}, ${endDay}, ${startHour}, ${endHour})`;
+    const sqlStr = `INSERT INTO CLINIC VALUES (${currentUserEmail}, ${address}, ${phone}, ${startDay}, ${endDay}, ${startHour}, ${endHour})`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -137,37 +103,15 @@ const createClinic = (req, res) => {
 }
 
 const updateClinic = (req, res) => {
-
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { vetEmail, address, phone, startDay, endDay, startHour, endHour, currentUserEmail } = req.body;
+    const { address, phone, startDay, endDay, startHour, endHour, currentUserEmail } = req.body;
     
-    if(!vetEmail || !address || !phone){
-        return res.status(400).json({ message: "Invalid Data" });
-    }
-    
-    if(vetEmail != currentUserEmail){
-        return res.status(400).json({ message: "Unauthorized User" });
-    }
-
-    const sqlStr2 = `SELECT VETEMAIL FROM CLINIC WHERE VETEMAIL = ${vetEmail}`;
-    try {
-        connection.query(sqlStr2, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
-            
-            if(results.length == 0) return res.status(400).json({ message: "This Vet Doesn't Have A Clinic" });
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-    
-    const sqlStr = `UPDATE CLINIC SET VETEMAIL = ${vetEmail}, ADDRESS = ${address}, PHONE = ${phone}, STARTDAY = ${startDay}, ENDDAY = ${endDay}, STARTHOUR = ${startHour}, ENDHOUR = ${endHour} WHERE VETEMAIL = ${vetEmail}`;
+    const sqlStr = `UPDATE CLINIC SET ADDRESS = ${address}, PHONE = ${phone}, STARTDAY = ${startDay}, ENDDAY = ${endDay}, STARTHOUR = ${startHour}, ENDHOUR = ${endHour} WHERE VETEMAIL = ${currentUserEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -178,38 +122,14 @@ const updateClinic = (req, res) => {
 
 const deleteClinic = (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { vetEmail, currentUserEmail } = req.body;
-
-    if(!vetEmail){
-        return res.status(400).json({ message: "Invalid Data" });
-    }
+    const { currentUserEmail } = req.body;
     
-    if(vetEmail != currentUserEmail){
-        return res.status(400).json({ message: "Unauthorized User" });
-    }
-    
-    const sqlStr2 = `SELECT VETEMAIL FROM CLINIC WHERE VETEMAIL = ${vetEmail}`;
-    try {
-        connection.query(sqlStr2, (error, results, fields) => {
-            if(error) res.status(500).json({ message: "Server Error" });
-            
-            if(results.length == 0) return res.status(400).json({ message: "This Vet Doesn't Have A Clinic" });
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-    
-    const sqlStr = `DELETE FROM CLINIC WHERE VETEMAIL = ${vetEmail}`;
+    const sqlStr = `DELETE FROM CLINIC WHERE VETEMAIL = ${currentUserEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
+            if(error) return res.status(400).json({ message: error.message });
 
             res.status(200).json({ data: results, fields });            
         });

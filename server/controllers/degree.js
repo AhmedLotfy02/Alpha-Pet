@@ -5,10 +5,7 @@ const getAllDegrees = (req, res) => {
     const sqlStr = `SELECT * FROM DEGREE`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -22,10 +19,7 @@ const getDegreesOfYear = (req, res) => {
     const sqlStr = `SELECT * FROM DEGREE WHERE DEGREEYEAR = ${year}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -39,10 +33,7 @@ const getDegreesOfCollege = (req, res) => {
     const sqlStr = `SELECT * FROM DEGREE WHERE COLLEGE = ${college}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -56,10 +47,7 @@ const getDegreesWithName = (req, res) => {
     const sqlStr = `SELECT * FROM DEGREE WHERE DEGREENAME = ${degreeName}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -73,10 +61,7 @@ const getDegreesOfVet = (req, res) => {
     const sqlStr = `SELECT * FROM DEGREE WHERE VETEMAIL = ${vetEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -90,10 +75,7 @@ const getDegree = (req, res) => {
     const sqlStr = `SELECT * FROM DEGREE WHERE VETEMAIL = ${email} AND DEGREENAME = ${name} AND DEGREEYEAR = ${year} AND COLLEGE = ${college}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -104,40 +86,14 @@ const getDegree = (req, res) => {
 
 const createDegree = (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        //  Request body is invalid
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     
-    const { vetEmail, currentUserEmail, degreeYear, collegeName, degreeName } = req.body;
+    const { currentUserEmail, degreeYear, collegeName, degreeName } = req.body;
 
-    if(vetEmail != currentUserEmail){
-        return res.status(400).json({ message: "Unauthorized User" });
-    }
-
-    const sqlStr2 = `SELECT * FROM DEGREE WHERE DEGREEYEAR = ${degreeYear} AND COLLEGE = ${collegeName} AND DEGREENAME = ${degreeName} AND VETEMAIL = ${vetEmail}`;
-    try {
-        connection.query(sqlStr2, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
-
-            if(results.length > 0){
-                return res.status(400).json({ message: "This degree already exists" });
-            }            
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-
-    const sqlStr = `INSERT INTO DEGREE VALUES (${degreeYear}, ${collegeName}, ${degreeName}, ${vetEmail})`;
+    const sqlStr = `INSERT INTO DEGREE VALUES (${degreeYear}, ${collegeName}, ${degreeName}, ${currentUserEmail})`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
+            if(error) return res.status(400).json({ message: error.message });
 
             res.status(200).json({ data: results, fields });            
         });
@@ -148,40 +104,14 @@ const createDegree = (req, res) => {
 
 const updateDegree = (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        //  Request body is invalid
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     
-    const { vetEmail, currentUserEmail, degreeYear, collegeName, degreeName } = req.body;
+    const { currentUserEmail, degreeYear, collegeName, degreeName } = req.body;
 
-    if(vetEmail != currentUserEmail){
-        return res.status(400).json({ message: "Unauthorized User" });
-    }
-
-    const sqlStr2 = `SELECT * FROM DEGREE WHERE DEGREEYEAR = ${degreeYear} AND COLLEGE = ${collegeName} AND DEGREENAME = ${degreeName} AND VETEMAIL = ${vetEmail}`;
-    try {
-        connection.query(sqlStr2, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
-
-            if(results.length == 0){
-                return res.status(400).json({ message: "This degree doesn't exist" });
-            }           
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-
-    const sqlStr = `UPDATE DEGREE SET DEGREEYEAR = ${degreeYear}, COLLEGE = ${collegeName}, DEGREENAME = ${degreeName}, VETEMAIL = ${vetEmail} WHERE DEGREEYEAR = ${degreeYear} AND COLLEGE = ${collegeName} AND DEGREENAME = ${degreeName} AND VETEMAIL = ${vetEmail}`;
+    const sqlStr = `UPDATE DEGREE SET DEGREEYEAR = ${degreeYear}, COLLEGE = ${collegeName}, DEGREENAME = ${degreeName} WHERE DEGREEYEAR = ${degreeYear} AND COLLEGE = ${collegeName} AND DEGREENAME = ${degreeName} AND VETEMAIL = ${currentUserEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
+            if(error) return res.status(400).json({ message: error.message });
 
             res.status(200).json({ data: results, fields });            
         });
@@ -192,40 +122,14 @@ const updateDegree = (req, res) => {
 
 const deleteDegree = (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        //  Request body is invalid
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     
-    const { vetEmail, currentUserEmail, degreeYear, collegeName, degreeName } = req.body;
+    const { currentUserEmail, degreeYear, collegeName, degreeName } = req.body;
 
-    if(vetEmail != currentUserEmail){
-        return res.status(400).json({ message: "Unauthorized User" });
-    }
-
-    const sqlStr2 = `SELECT * FROM DEGREE WHERE DEGREEYEAR = ${degreeYear} AND COLLEGE = ${collegeName} AND DEGREENAME = ${degreeName} AND VETEMAIL = ${vetEmail}`;
-    try {
-        connection.query(sqlStr2, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
-
-            if(results.length == 0){
-                return res.status(400).json({ message: "This degree doesn't exist" });
-            }           
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-
-    const sqlStr = `DELETE FROM DEGREE WHERE DEGREEYEAR = ${degreeYear} AND COLLEGE = ${collegeName} AND DEGREENAME = ${degreeName} AND VETEMAIL = ${vetEmail}`;
+    const sqlStr = `DELETE FROM DEGREE WHERE DEGREEYEAR = ${degreeYear} AND COLLEGE = ${collegeName} AND DEGREENAME = ${degreeName} AND VETEMAIL = ${currentUserEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error){
-                console.log(error);
-                return;
-            }
+            if(error) return res.status(400).json({ message: error.message });
 
             res.status(200).json({ data: results, fields });            
         });

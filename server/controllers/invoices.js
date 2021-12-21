@@ -58,18 +58,11 @@ const getInvoicesOfVet = (req, res) => {
 
 const createInvoice = (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        //  Request body is invalid
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { invoiceId, pharmacyId, vetEmail, notes, requiredMedicines, currentUserEmail } = req.body;
-
-    if(currentUserEmail != vetEmail){
-        return res.status(400).json({ message: "Unauthorized User" });
-    }
+    const { invoiceId, pharmacyId, notes, requiredMedicines, currentUserEmail } = req.body;
     
-    const sqlStr = `INSERT INTO INVOICE VALUES (${invoiceId}, ${notes}, ${requiredMedicines}, ${pharmacyId}, ${vetEmail})`;
+    const sqlStr = `INSERT INTO INVOICE VALUES (${invoiceId}, ${notes}, ${requiredMedicines}, ${pharmacyId}, ${currentUserEmail})`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -83,18 +76,11 @@ const createInvoice = (req, res) => {
 
 const updateInvoice = (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        //  Request body is invalid
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { invoiceId, pharmacyId, vetEmail, notes, requiredMedicines, currentUserEmail } = req.body;
-
-    if(currentUserEmail != vetEmail){
-        return res.status(400).json({ message: "Unauthorized User" });
-    }
+    const { invoiceId, pharmacyId, notes, requiredMedicines, currentUserEmail } = req.body;
     
-    const sqlStr = `UPDATE INVOICE SET INVOICEID =  ${invoiceId}, NOTES = ${notes}, REQUIREDMEDICINES = ${requiredMedicines}, PHARMACYID = ${pharmacyId}, VETEMAIL = ${vetEmail} WHERE INVOICEID = ${invoiceId}`;
+    const sqlStr = `UPDATE INVOICE SET NOTES = ${notes}, REQUIREDMEDICINES = ${requiredMedicines}, PHARMACYID = ${pharmacyId} WHERE INVOICEID = ${invoiceId} AND VETEMAIL = ${currentUserEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -108,18 +94,11 @@ const updateInvoice = (req, res) => {
 
 const deleteInvoice = (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        //  Request body is invalid
-      return res.status(400).json({ errors: errors.array() });
-    }
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { invoiceId, vetEmail, currentUserEmail } = req.body;
+    const { invoiceId, currentUserEmail } = req.body;
 
-    if(currentUserEmail != vetEmail){
-        return res.status(400).json({ message: "Unauthorized User" });
-    }
-    
-    const sqlStr = `DELETE FROM INVOICE WHERE INVOICEID = ${invoiceId}`;
+    const sqlStr = `DELETE FROM INVOICE WHERE INVOICEID = ${invoiceId} AND VETEMAIL = ${currentUserEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });

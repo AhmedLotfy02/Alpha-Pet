@@ -19,36 +19,33 @@ router.get('/', getAllDegrees);
 router.get('/year/:year', getDegreesOfYear);
 router.get('/college/:college', getDegreesOfCollege);
 router.get('/degreename/:degreeName', getDegreesWithName);
-router.get('/vetemail/:vetEmail', getDegreesOfVet);
+router.get('/vet/:vetEmail', getDegreesOfVet);
 router.get('/degree/:year/:college/:name/:email', getDegree);
 router.post(
     '/',
     auth,
-    body('vetEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),
-    body('degreeYear').isInt(),
-    body('collegeName').not().isEmpty(),
-    body('degreeName').not().isEmpty(),
+    body('degreeYear').isInt().notEmpty(),
+    body('collegeName').notEmpty(),
+    body('degreeName').notEmpty(),
     createDegree
 );
 router.patch(
     '/', 
     auth,
-    body('vetEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),
-    body('degreeYear').isInt(),
-    body('collegeName').not().isEmpty(),
-    body('degreeName').not().isEmpty(),
+    body('degreeYear').isInt().notEmpty(),
+    body('collegeName').notEmpty(),
+    body('degreeName').notEmpty(),
     updateDegree
 );
 router.delete(
     '/', 
     auth, 
-    body('vetEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),
-    body('degreeYear').isInt(),
-    body('collegeName').not().isEmpty(),
-    body('degreeName').not().isEmpty(),
+    body('degreeYear').isInt().notEmpty(),
+    body('collegeName').notEmpty(),
+    body('degreeName').notEmpty(),
     deleteDegree
 );
 

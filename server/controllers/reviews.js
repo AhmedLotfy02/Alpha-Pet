@@ -5,7 +5,7 @@ const getAllReviews = (req, res) => {
     const sqlStr = `SELECT * FROM REVIEW`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) return res.status(500).json({ message: error.message });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -19,7 +19,7 @@ const getReviewsOfOwner = (req, res) => {
     const sqlStr = `SELECT * FROM REVIEW WHERE OWNEREMAIL = ${ownerEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) return res.status(500).json({ message: error.message });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -33,7 +33,7 @@ const getReviewsOfVet = (req, res) => {
     const sqlStr = `SELECT * FROM REVIEW WHERE VETEMAIL = ${vetEmail}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) return res.status(500).json({ message: error.message });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -47,7 +47,7 @@ const getReviewsWithRating = (req, res) => {
     const sqlStr = `SELECT * FROM REVIEW WHERE RATING = ${rating}`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) return res.status(500).json({ message: error.message });
+            if(error) return res.status(400).json({ message: error.message });
             
             res.status(200).json({ data: results, fields });
         });
@@ -60,11 +60,11 @@ const createReview = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { vetEmail, ownerEmail, rating } = req.body;
+    const { vetEmail, currentUserEmail, rating } = req.body;
     if(rating > 5) rating = 5;
     if(rating < 0) rating = 0;
     
-    const sqlStr = `INSERT INTO REVIEW VALUES(${ownerEmail}, ${vetEmail}, ${rating})`;
+    const sqlStr = `INSERT INTO REVIEW VALUES(${currentUserEmail}, ${vetEmail}, ${rating})`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -80,11 +80,11 @@ const updateReview = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { vetEmail, ownerEmail, rating } = req.body;
+    const { vetEmail, currentUserEmail, rating } = req.body;
     if(rating > 5) rating = 5;
     if(rating < 0) rating = 0;
 
-    const sqlStr = `UPDATE REVIEW SET RATING = ${rating} WHERE OWNEREMAIL = ${ownerEmail} AND VETEMAIL ${vetEmail},`;
+    const sqlStr = `UPDATE REVIEW SET RATING = ${rating} WHERE OWNEREMAIL = ${currentUserEmail} AND VETEMAIL ${vetEmail},`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -100,9 +100,9 @@ const deleteReview = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { vetEmail, ownerEmail } = req.body;
+    const { vetEmail, currentUserEmail } = req.body;
 
-    const sqlStr = `DELETE REVIEW WHERE OWNEREMAIL = ${ownerEmail} AND VETEMAIL ${vetEmail},`;
+    const sqlStr = `DELETE REVIEW WHERE OWNEREMAIL = ${currentUserEmail} AND VETEMAIL ${vetEmail},`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });

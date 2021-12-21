@@ -16,7 +16,7 @@ const {
 const router = express.Router();
 
 router.get('/', getAllClinics);
-router.get('/:vetEmail', getClinicOfVet);
+router.get('/vet/:vetEmail', getClinicOfVet);
 router.get('/startDay/:startDay', getClinicsWithStartDay);
 router.get('/endDay/:endDay', getClinicsWithEndDay);
 router.get('/starHour/:startHour', getClinicsWithStartHour);
@@ -24,21 +24,22 @@ router.get('/endHour/:endHour', getClinicsWithEndHour);
 router.post(
     '/', 
     auth,
-    body('vetEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),
+    body('address').notEmpty(),
+    body('phone').notEmpty(),
     createClinic
 );
 router.patch(
     '/',
     auth,
-    body('vetEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),
+    body('address').notEmpty(),
+    body('phone').notEmpty(),
     updateClinic
 );
 router.delete(
     '/',
     auth,
-    body('vetEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),
     deleteClinic
 );

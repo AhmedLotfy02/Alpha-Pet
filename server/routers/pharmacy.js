@@ -16,7 +16,7 @@ const {
 const router = express.Router();
 
 router.get('/', getAllPharmacies);
-router.get('/:pharmacistEmail', getPharmacyOfPharmacist);
+router.get('/pharmacist/:pharmacistEmail', getPharmacyOfPharmacist);
 router.get('/startDay/:startDay', getPharmaciesWithStartDay);
 router.get('/endDay/:endDay', getPharmaciesWithEndDay);
 router.get('/starHour/:startHour', getPharmaciesWithStartHour);
@@ -24,7 +24,7 @@ router.get('/endHour/:endHour', getPharmaciesWithEndHour);
 router.post(
     '/', 
     auth,
-    body('pharmacistEmail').isEmail().normalizeEmail(),
+    body('currentUserEmail').isEmail().normalizeEmail(),
     body('id').isInt().notEmpty(),
     body('address').notEmpty(),
     body('phone').isInt().notEmpty(),
@@ -33,7 +33,7 @@ router.post(
 router.patch(
     '/',
     auth,
-    body('pharmacistEmail').isEmail().normalizeEmail(),
+    body('currentUserEmail').isEmail().normalizeEmail(),
     body('id').isInt().notEmpty(),
     body('address').notEmpty(),
     body('phone').isInt().notEmpty(),
@@ -42,7 +42,7 @@ router.patch(
 router.delete(
     '/',
     auth,
-    body('pharmacistEmail').isEmail().normalizeEmail(),
+    body('currentUserEmail').isEmail().normalizeEmail(),
     body('id').isInt().notEmpty(),
     deletePharmacy
 );

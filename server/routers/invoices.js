@@ -14,13 +14,12 @@ const {
 const router = express.Router();
 
 router.get('/', getAllInvoices);
-router.get('/:invoiceId', getInvoiceById);
+router.get('/id/:invoiceId', getInvoiceById);
 router.get('/pharmacy/:pharmacyId', getInvoicesOfPharmacy);
 router.get('/vet/:vetEmail', getInvoicesOfVet);
 router.post(
     '/', 
     auth,
-    body('vetEmail').isEmail().normalizeEmail(), 
     body('currentUserEmail').isEmail().normalizeEmail(), 
     body('requiredMedicines').notEmpty(),
     body('invoiceId').isInt(),
@@ -30,7 +29,6 @@ router.post(
 router.patch(
     '/',
     auth,
-    body('vetEmail').isEmail().normalizeEmail(), 
     body('currentUserEmail').isEmail().normalizeEmail(), 
     body('requiredMedicines').notEmpty(),
     body('invoiceId').isInt(),
@@ -40,7 +38,6 @@ router.patch(
 router.delete(
     '/',
     auth,
-    body('vetEmail').isEmail().normalizeEmail(),
     body('currentUserEmail').isEmail().normalizeEmail(),
     body('invoiceId').isInt(),
     deleteInvoice
