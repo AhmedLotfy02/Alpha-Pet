@@ -13,9 +13,12 @@ const petsRoutes = require('./routers/pets.js');
 const pharmacyRoutes = require('./routers/pharmacy.js');
 const reviewsRoutes = require('./routers/reviews.js');
 const medicinesRoutes = require('./routers/medicines.js');
-const vetPostsRouters = require('./routers/vet_posts');
-const pharmacistpostsRouters = require('./routers/pharmacist_posts');
-const ownerpostsRouters = require('./routers/owner_posts');
+const vetPostsRouters = require('./routers/vet_posts.js');
+const pharmacistpostsRouters = require('./routers/pharmacist_posts.js');
+const ownerpostsRouters = require('./routers/owner_posts.js');
+const ownerCommentsRouters = require('./routers/owner_comments.js');
+const vetCommentsRouters = require('./routers/vet_comments.js');
+const pharmacistCommentsRouters = require('./routers/pharmacist_comments.js');
 
 const app = express();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
@@ -37,6 +40,9 @@ app.use('/medicines', medicinesRoutes);
 app.use('/vetPosts', vetPostsRouters);
 app.use('/pharmacistPosts', pharmacistpostsRouters);
 app.use('/ownerPosts', ownerpostsRouters);
+app.use('/ownerComments', ownerCommentsRouters);
+app.use('/vetComments', vetCommentsRouters);
+app.use('/pharmacistComments', pharmacistCommentsRouters);
 
 app.use('/', (req, res) => {
     res.send('Welcome to Alpha-Pet App');
