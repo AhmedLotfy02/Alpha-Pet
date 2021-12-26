@@ -6,7 +6,7 @@ const connection = require('../connection.js');
 dotenv.config();
 
 const getAllPharmacists = (req, res) => {
-    const sqlStr = `SELECT EMAIL, FNAME, LNAME, PHARMACY_ID FROM PHARMACIST`;
+    const sqlStr = `SELECT EMAIL, FNAME, LNAME, PHARMACY_ID FROM PHARMACIST;`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -24,7 +24,7 @@ const signin =  (req, res) => {
 
     const { email, password } = req.body;
     const existingUser;
-    const sqlStr = `SELECT * FROM PHARMACIST WHERE EMAIL = ${email}`;
+    const sqlStr = `SELECT * FROM PHARMACIST WHERE EMAIL = '${email}';`;
 
     try {
         connection.query(sqlStr, (error, results, fields) => {
@@ -51,7 +51,7 @@ const signup = (req, res) => {
 
     const { email, password, fName, lName, pharmacy_id } = req.body;
     try {
-        const sqlStr2 = `SELECT * FROM OWNER_TABLE WHERE EMAIL = ${email}`;
+        const sqlStr2 = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${email}';`;
         connection.query(sqlStr2, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
@@ -67,7 +67,7 @@ const signup = (req, res) => {
 
         const token = jwt.sign({ email }, process.env.JWTSECRETKEY, { expiresIn: '1h' });
         
-        const sqlStr = `INSERT INTO PHARMACIST VALUES(${email}, ${fName}, ${lName}, ${pharmacy_id}, ${password})`;
+        const sqlStr = `INSERT INTO PHARMACIST VALUES('${email}', '${fName}', '${lName}', ${pharmacy_id}, '${password}');`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
@@ -85,7 +85,7 @@ const updatePharmacist = (req, res) => {
     const { currentUserEmail, password, fName, lName, pharmacy_id } = req.body;
 
     try {
-        const sqlStr = `UPDATE PHARMACIST SET FNAME = ${fName}, LNAME = ${lName}, PHARMACY_ID = ${pharmacy_id}, PASSWORD ${password} WHERE EMAIL = ${currentUserEmail}`;
+        const sqlStr = `UPDATE PHARMACIST SET FNAME = '${fName}', LNAME = '${lName}', PHARMACY_ID = ${pharmacy_id}, PASSWOR'D ${password}' WHERE EMAIL = '${currentUserEmail}';`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             

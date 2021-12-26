@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const connection = require('../connection.js');
 
 const getAllPosts = (req, res) => {
-    const sqlStr = 'SELECT * FROM Pharmacist_Post';
+    const sqlStr = 'SELECT * FROM Pharmacist_Post;';
     connection.query(sqlStr, (error, results, fields) => {
         if(error) return res.status(400).json({ message: error.message });
         
@@ -54,7 +54,6 @@ const getCommentsOfPost = (req, res) => {
     });
 }
 
-
 const createPost = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
@@ -73,7 +72,7 @@ const updatePost = (req, res) => {
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { currentUserEmail, postId, content } = req.body;
-    const sqlStr = `UPDATE Pharmacist_Post SET Post_Content = '${content}' WHERE PharmacistEMAIL = '${currentUserEmail}' AND P_ID = ${postId});`
+    const sqlStr = `UPDATE Pharmacist_Post SET Post_Content = '${content}' WHERE PharmacistEMAIL = '${currentUserEmail}' AND P_ID = ${postId};`;
     connection.query(sqlStr, (error, results, fields) => {
         if(error) return res.status(400).json({ message: error.message });
         
@@ -86,7 +85,7 @@ const deletePost = (req, res) => {
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { currentUserEmail, postId } = req.body;
-    const sqlStr = `DELETE FROM Pharmacist_Post WHERE PharmacistEMAIL = '${currentUserEmail}' AND P_ID = ${postId});`
+    const sqlStr = `DELETE FROM Pharmacist_Post WHERE PharmacistEMAIL = '${currentUserEmail}' AND P_ID = ${postId};`;
     connection.query(sqlStr, (error, results, fields) => {
         if(error) return res.status(400).json({ message: error.message });
         

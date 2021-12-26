@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const connection = require('../connection.js');
 
 const getAllPharmacies = (req, res) => {
-    const sqlStr = `SELECT * FROM PHARMACY`;
+    const sqlStr = `SELECT * FROM PHARMACY;`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) res.status(400).json({ message: error.message });
@@ -16,7 +16,7 @@ const getAllPharmacies = (req, res) => {
 
 const getPharmacyOfPharmacist = (req, res) => {
     const { pharmacistEmail } = req.params;
-    const sqlStr = `SELECT ID, ADDRESS, PHONE, STARTDAY, ENDDAY, STARTHOUR, ENDHOUR FROM PHARMACY, PHARMACIST WHERE ID = PHARMACY_ID AND EMAIL = ${pharmacistEmail}`;
+    const sqlStr = `SELECT ID, ADDRESS, PHONE, STARTDAY, ENDDAY, STARTHOUR, ENDHOUR FROM PHARMACY, PHARMACIST WHERE ID = PHARMACY_ID AND EMAIL = '${pharmacistEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) res.status(400).json({ message: error.message });
@@ -30,7 +30,7 @@ const getPharmacyOfPharmacist = (req, res) => {
 
 const getPharmaciesWithStartDay = (req, res) => {
     const { startDay } = req.params;
-    const sqlStr = `SELECT * PHARMACY WHERE STARTDAY = ${startDay}`;
+    const sqlStr = `SELECT * PHARMACY WHERE STARTDAY = '${startDay}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) res.status(400).json({ message: error.message });
@@ -44,7 +44,7 @@ const getPharmaciesWithStartDay = (req, res) => {
 
 const getPharmaciesWithEndDay = (req, res) => {
     const { endDay } = req.params;
-    const sqlStr = `SELECT * FROM PHARMACY WHERE ENDDAY = ${endDay}`;
+    const sqlStr = `SELECT * FROM PHARMACY WHERE ENDDAY = '${endDay}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) res.status(400).json({ message: error.message });
@@ -58,7 +58,7 @@ const getPharmaciesWithEndDay = (req, res) => {
 
 const getPharmaciesWithStartHour = (req, res) => {
     const { startHour } = req.params;
-    const sqlStr = `SELECT * FROM PHARMACY WHERE STARTHOUR = ${startHour}`;
+    const sqlStr = `SELECT * FROM PHARMACY WHERE STARTHOUR = '${startHour}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) res.status(400).json({ message: error.message });
@@ -72,7 +72,7 @@ const getPharmaciesWithStartHour = (req, res) => {
 
 const getPharmaciesWithEndHour = (req, res) => {
     const { endHour } = req.params;
-    const sqlStr = `SELECT * FROM PHARMACY WHERE ENDHOUR = ${endHour}`;
+    const sqlStr = `SELECT * FROM PHARMACY WHERE ENDHOUR = '${endHour}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) res.status(400).json({ message: error.message });
@@ -90,7 +90,7 @@ const createPharmacy = (req, res) => {
 
     const { id, address, phone, startDay, endDay, startHour, endHour, currentUserEmail } = req.body;
 
-    const sqlStr2 = `SELECT EMAIL FROM PHARMACIST WHERE EMAIL = ${currentUserEmail}`;
+    const sqlStr2 = `SELECT EMAIL FROM PHARMACIST WHERE EMAIL = '${currentUserEmail}';`;
     try {
         connection.query(sqlStr2, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -101,7 +101,7 @@ const createPharmacy = (req, res) => {
         res.status(404).json({ message: error.message });
     }
     
-    const sqlStr = `INSERT INTO PHARMACY VALUES (${id}, ${address}, ${phone}, ${startDay}, ${endDay}, ${startHour}, ${endHour})`;
+    const sqlStr = `INSERT INTO PHARMACY VALUES (${id}, '${address}', ${phone}, '${startDay}', '${endDay}', '${startHour}', '${endHour}');`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -120,7 +120,7 @@ const updatePharmacy = (req, res) => {
 
     const { id, address, phone, startDay, endDay, startHour, endHour, currentUserEmail } = req.body;
 
-    const sqlStr2 = `SELECT EMAIL FROM PHARMACIST, PHARMACY WHERE ID = PHARMACY_ID AND EMAIL = ${currentUserEmail}`;
+    const sqlStr2 = `SELECT EMAIL FROM PHARMACIST, PHARMACY WHERE ID = PHARMACY_ID AND EMAIL = '${currentUserEmail}';`;
     try {
         connection.query(sqlStr2, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -131,7 +131,7 @@ const updatePharmacy = (req, res) => {
         res.status(404).json({ message: error.message });
     }
     
-    const sqlStr = `UPDATE PHARMACY SET  ADDRESS = ${address}, PHONE = ${phone}, STARTDAY = ${startDay}, ENDDAY = ${endDay}, STARTHOUR = ${startHour}, ENDHOUR = ${endHour} WHERE ID = ${id}`;
+    const sqlStr = `UPDATE PHARMACY SET  ADDRESS = '${address}', PHONE = ${phone}, STARTDAY = '${startDay}', ENDDAY = '${endDay}', STARTHOUR = '${startHour}', ENDHOUR = '${endHour}' WHERE ID = ${id};`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -149,7 +149,7 @@ const deletePharmacy = (req, res) => {
 
     const { id, currentUserEmail } = req.body;
     
-    const sqlStr2 = `SELECT EMAIL FROM PHARMACIST, PHARMACY WHERE ID = PHARMACY_ID AND EMAIL = ${currentUserEmail}`;
+    const sqlStr2 = `SELECT EMAIL FROM PHARMACIST, PHARMACY WHERE ID = PHARMACY_ID AND EMAIL = '${currentUserEmail}';`;
     try {
         connection.query(sqlStr2, (error, results, fields) => {
             if(error) res.status(500).json({ message: error.message });
@@ -160,7 +160,7 @@ const deletePharmacy = (req, res) => {
         res.status(404).json({ message: error.message });
     }
     
-    const sqlStr = `DELETE FROM PHARMACY WHERE ID = ${id}`;
+    const sqlStr = `DELETE FROM PHARMACY WHERE ID = ${id};`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });

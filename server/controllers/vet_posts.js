@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const connection = require('../connection.js');
 
 const getAllPosts = (req, res) => {
-    const sqlStr = 'SELECT * FROM Vet_Post';
+    const sqlStr = 'SELECT * FROM Vet_Post;';
     connection.query(sqlStr, (error, results, fields) => {
         if(error) return res.status(400).json({ message: error.message });
         
@@ -72,7 +72,7 @@ const updatePost = (req, res) => {
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { currentUserEmail, postId, content } = req.body;
-    const sqlStr = `UPDATE Vet_Post SET Post_Content = '${content}' WHERE VETEMAIL = '${currentUserEmail}' AND P_ID = ${postId});`
+    const sqlStr = `UPDATE Vet_Post SET Post_Content = '${content}' WHERE VETEMAIL = '${currentUserEmail}' AND P_ID = ${postId};`
     connection.query(sqlStr, (error, results, fields) => {
         if(error) return res.status(400).json({ message: error.message });
         
@@ -85,7 +85,7 @@ const deletePost = (req, res) => {
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { currentUserEmail, postId } = req.body;
-    const sqlStr = `DELETE FROM Vet_Post WHERE VETEMAIL = '${currentUserEmail}' AND P_ID = ${postId});`
+    const sqlStr = `DELETE FROM Vet_Post WHERE VETEMAIL = '${currentUserEmail}' AND P_ID = ${postId};`
     connection.query(sqlStr, (error, results, fields) => {
         if(error) return res.status(400).json({ message: error.message });
         

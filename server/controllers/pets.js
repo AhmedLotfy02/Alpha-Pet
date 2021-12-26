@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const connection = require('../connection.js');
 
 const getAllPets = (req, res) => {
-    const sqlStr = `SELECT * FROM PET`;
+    const sqlStr = `SELECT * FROM PET;`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -16,7 +16,7 @@ const getAllPets = (req, res) => {
 
 const getPetOfOwner = (req, res) => {
     const { ownerEmail } = req.params;
-    const sqlStr = `SELECT * FROM PET WHERE OWNEREMAIL = ${ownerEmail}`;
+    const sqlStr = `SELECT * FROM PET WHERE OWNEREMAIL = '${ownerEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -30,7 +30,7 @@ const getPetOfOwner = (req, res) => {
 
 const getPetsWithColor = (req, res) => {
     const { color } = req.params;
-    const sqlStr = `SELECT * FROM PET WHERE COLOR = ${color}`;
+    const sqlStr = `SELECT * FROM PET WHERE COLOR = '${color}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -44,7 +44,7 @@ const getPetsWithColor = (req, res) => {
 
 const getPetsWithAge = (req, res) => {
     const { age } = req.params;
-    const sqlStr = `SELECT * FROM PET WHERE AGE = ${age}`;
+    const sqlStr = `SELECT * FROM PET WHERE AGE = ${age};`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -62,7 +62,7 @@ const createPet = (req, res) => {
       
     const { currentUserEmail, petName, color, age } = req.body;
     
-    const sqlStr = `INSERT INTO PET VALUES (${currentUserEmail}, ${petName}, ${color}, ${age})`;
+    const sqlStr = `INSERT INTO PET VALUES ('${currentUserEmail}', '${petName}', '${color}', ${age});`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -80,7 +80,7 @@ const updatePet = (req, res) => {
 
     const { petName, color, age, currentUserEmail } = req.body;
     
-    const sqlStr = `UPDATE PET SET PETNAME = ${petName}, COLOR = ${color},  AGE = ${age} WHERE OWNEREMAIL = ${currentUserEmail}`;
+    const sqlStr = `UPDATE PET SET PETNAME = '${petName}', COLOR = '${color}',  AGE = ${age} WHERE OWNEREMAIL = '${currentUserEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -98,7 +98,7 @@ const deletePet = (req, res) => {
 
     const { currentUserEmail } = req.body;
     
-    const sqlStr = `DELETE FROM PET WHERE OWNEREMAIL = ${currentUserEmail}`;
+    const sqlStr = `DELETE FROM PET WHERE OWNEREMAIL = '${currentUserEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });

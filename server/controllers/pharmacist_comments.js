@@ -8,10 +8,10 @@ const getCommentsOfPharmacist = (req, res) => {
     const { email } = req.params;
     const { postType } = req.query;
     let sqlStr;
-    if(postType == 'owner') sqlStr = `SELECT * FROM OwnerPost_PharmacistComment, Pharmacist_Comment WHERE PharmacistComment_ID = C_Id AND PharmacistEMAIL = '${email}'`;
-    else if(postType == 'vet') sqlStr = `SELECT * FROM VetPost_PharmacistComment, Pharmacist_Comment WHERE PharmacistComment_ID = C_Id AND PharmacistEMAIL = '${email}'`;
-    else if(postType == 'pharmacist') sqlStr = `SELECT * FROM PharmacistPost_PharmacistComment, Pharmacist_Comment WHERE PharmacistComment_ID = C_Id AND PharmacistEMAIL = '${email}'`;
-    else sqlStr = `SELECT * FROM Pharmacist_Comment WHERE PharmacistEMAIL = '${email}'`;
+    if(postType == 'owner') sqlStr = `SELECT * FROM OwnerPost_PharmacistComment, Pharmacist_Comment WHERE PharmacistComment_ID = C_Id AND PharmacistEMAIL = '${email}';`;
+    else if(postType == 'vet') sqlStr = `SELECT * FROM VetPost_PharmacistComment, Pharmacist_Comment WHERE PharmacistComment_ID = C_Id AND PharmacistEMAIL = '${email}';`;
+    else if(postType == 'pharmacist') sqlStr = `SELECT * FROM PharmacistPost_PharmacistComment, Pharmacist_Comment WHERE PharmacistComment_ID = C_Id AND PharmacistEMAIL = '${email}';`;
+    else sqlStr = `SELECT * FROM Pharmacist_Comment WHERE PharmacistEMAIL = '${email}';`;
     
     try {
         connection.query(sqlStr, (error, results, fields) => {
@@ -29,7 +29,7 @@ const getCommentById = (req, res) => {
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { id } = req.params;
-    const sqlStr = `SELECT * FROM Pharmacist_Comment WHERE C_Id = ${id}`;
+    const sqlStr = `SELECT * FROM Pharmacist_Comment WHERE C_Id = ${id};`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -49,7 +49,7 @@ const createComment = (req, res) => {
     const { postType } = req.query;
     let commentId = 0;
     let comment;
-    const sqlStr = `INSERT INTO Pharmacist_COMMENT(COMMENT_CONTENT, PharmacistEMAIL) VALUES ('${content}', '${currentUserEmail}')`;
+    const sqlStr = `INSERT INTO Pharmacist_COMMENT(COMMENT_CONTENT, PharmacistEMAIL) VALUES ('${content}', '${currentUserEmail}');`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -61,9 +61,9 @@ const createComment = (req, res) => {
         res.status(404).json({ message: error.message });
     }
 
-    if(postType == 'owner') sqlStr = `INSERT INTO OwnerPost_PharmacistComment VALUES (${postId}, ${commentId})`;
-    else if(postType == 'vet') sqlStr = `INSERT INTO VetPost_PharmacistComment VALUES (${postId}, ${commentId})`;
-    else sqlStr = `INSERT INTO PharmacistPost_PharmacistComment VALUES (${postId}, ${commentId})`;
+    if(postType == 'owner') sqlStr = `INSERT INTO OwnerPost_PharmacistComment VALUES (${postId}, ${commentId});`;
+    else if(postType == 'vet') sqlStr = `INSERT INTO VetPost_PharmacistComment VALUES (${postId}, ${commentId});`;
+    else sqlStr = `INSERT INTO PharmacistPost_PharmacistComment VALUES (${postId}, ${commentId});`;
 
     try {
         connection.query(sqlStr, (error, results, fields) => {
@@ -82,7 +82,7 @@ const updateComment = (req, res) => {
 
     const { commentId, content, currentUserEmail } = req.body;
 
-    const sqlStr = `UPDATE Pharmacist_COMMENT SET CONTENT = ${content} WHERE C_ID = ${commentId} AND PharmacistEMAIL = '${currentUserEmail}'`;
+    const sqlStr = `UPDATE Pharmacist_COMMENT SET CONTENT = '${content}' WHERE C_ID = ${commentId} AND PharmacistEMAIL = '${currentUserEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -100,7 +100,7 @@ const deleteComment = (req, res) => {
 
     const { commentId, currentUserEmail } = req.body;
 
-    const sqlStr = `DELETE FROM Pharmacist_COMMENT WHERE C_ID = ${commentId} AND PharmacistEMAIL = '${currentUserEmail}'`;
+    const sqlStr = `DELETE FROM Pharmacist_COMMENT WHERE C_ID = ${commentId} AND PharmacistEMAIL = '${currentUserEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });

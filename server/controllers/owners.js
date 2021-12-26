@@ -6,7 +6,7 @@ const connection = require('../connection.js');
 dotenv.config();
 
 const getAllOwners = (req, res) => {
-    const sqlStr = `SELECT EMAIL, FNAME, LNAME, PHONE, FAVOURITE_VET_EMAIL, CITY FROM OWNER_TABLE`;
+    const sqlStr = `SELECT EMAIL, FNAME, LNAME, PHONE, FAVOURITE_VET_EMAIL, CITY FROM OWNER_TABLE;`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -24,7 +24,7 @@ const signin =  (req, res) => {
 
     const { email, password } = req.body;
     const existingUser;
-    const sqlStr = `SELECT * FROM OWNER_TABLE WHERE EMAIL = ${email}`;
+    const sqlStr = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${email}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -50,7 +50,7 @@ const signup = (req, res) => {
 
     const { email, password, fName, lName, phone, balance, favouriteVetEmail, city } = req.body;
     try {
-        const sqlStr2 = `SELECT * FROM VET WHERE EMAIL = ${email}`;
+        const sqlStr2 = `SELECT * FROM VET WHERE EMAIL = '${email}';`;
         connection.query(sqlStr2, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
@@ -66,7 +66,7 @@ const signup = (req, res) => {
 
         const token = jwt.sign({ email }, process.env.JWTSECRETKEY, { expiresIn: '1h' });
         
-        const sqlStr = `INSERT INTO OWNER_TABLE VALUES(${email}, ${fName}, ${lName}, ${phone}, ${balance}, ${favouriteVetEmail}, ${city}, ${password})`;
+        const sqlStr = `INSERT INTO OWNER_TABLE VALUES('${email}', '${fName}', '${lName}', ${phone}, ${balance}, '${favouriteVetEmail}', '${city}', '${password}');`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
@@ -84,7 +84,7 @@ const updateOwner = (req, res) => {
     const { currentUserEmail, password, fName, lName, phone, balance, favouriteVetEmail, city } = req.body;
     
     try {
-        const sqlStr = `UPDATE OWNER_TABLE SET FNAME = ${fName}, LNAME = ${lName}, PHONE = ${phone}, BALANCE = ${balance}, FAVOURITE_VET_EMAIL = ${favouriteVetEmail}, CITY = ${city}, PASSWORD ${password} WHERE EMAIL = ${currentUserEmail}`;
+        const sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${fName}', LNAME = '${lName}', PHONE = ${phone}, BALANCE = ${balance}, FAVOURITE_VET_EMAIL = '${favouriteVetEmail}', CITY = '${city}', PASSWORD '${password}' WHERE EMAIL = '${currentUserEmail}'`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
