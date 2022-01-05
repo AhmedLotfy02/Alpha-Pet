@@ -1,0 +1,98 @@
+
+<div class="container register">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+            <h3>Welcome</h3>
+            <p>We will help you to cure your pet</p>
+            <input type="submit" name="" value="Login"/><br/>
+        </div>
+        <div class="col-md-9 register-right">
+            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Vet</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Pharmacist</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h3 class="register-heading">Sign Up as a Vet</h3>
+                    <div class="row register-form">
+                        <form [formGroup]="form" (submit)="onSignup()">
+                            <div class="row">
+                        <div class="col-md-6">
+                            
+                            <div class="input mb-2">
+                                <mat-form-field>
+                                    <input matInput type="text" formControlName="FirstName"  required placeholder="First Name" />
+                                    <mat-error *ngIf="form.get('FirstName')!.invalid">Please enter your First Name</mat-error>
+                                </mat-form-field>					
+                            </div>
+                                <div class=" input mb-3">
+                                   
+                                    <mat-form-field>
+                                        <input matInput floatLabel='never'  type="email" formControlName="email"  required placeholder="Email" />
+                                        <mat-error *ngIf="form.get('email')!.invalid">Please enter a vaild email</mat-error>
+                                    </mat-form-field>
+                                    <!-- <input type="text" name="" class="form-control input_user" value="" placeholder="username"> -->
+                                </div>
+                                <div class="input mb-2">
+                                    <mat-form-field>
+                                        <input matInput type="password" formControlName="password"   required placeholder="Password" />
+                                        <mat-error *ngIf="form.get('password')!.invalid">Please enter password</mat-error>
+                                    </mat-form-field>					
+                                </div>
+                                  
+                                    
+                            
+                            
+                            
+                            </div>
+                        <div class="col-md-6">
+                            <div class="input mb-2">
+                                <mat-form-field>
+                                    <input matInput type="text" formControlName="LastName"  required placeholder="Last Name" />
+                                    <mat-error *ngIf="form.get('LastName')!.invalid">Please enter your Last Name</mat-error>
+                                </mat-form-field>					
+                            </div>
+                            <div class="input mb-2">
+                                <mat-form-field>
+                                    <input matInput type="text" formControlName="charge"  required placeholder="Charge" />
+                                    <mat-error *ngIf="form.get('charge')!.invalid">Please enter your charge</mat-error>
+                                </mat-form-field>					
+                            </div>
+                              
+                                  
+                              
+                           
+                        </div>
+                        <div class="col-md-6">
+                            <div class="image-preview2" *ngIf="!imagePreview">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" />
+                            </div>
+                            <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview">
+                                <img [src]="imagePreview" />
+                            </div>
+            
+                            <button class="b3" mat-mini-fab color="primary" type="button" (click)="filePicker.click()" aria-label="Example icon button with a menu icon">
+                      <mat-icon>camera_enhance</mat-icon>
+                    </button>
+                            <input type="file" #filePicker (change)="onImagePicked($event)" />
+            
+                            <div class="d-flex justify-content-center mt-3 login_container">
+                                <button class="btnRegister"  type="submit" mat-raised-button color="primary">SignUp</button>		
+                             </div>
+                            <!--image ends-->
+                        </div>
+                        </div>
+
+                    </form>
+                    </div>
+                </div>
+                </div>
+        </div>
+    </div>
+
+</div>

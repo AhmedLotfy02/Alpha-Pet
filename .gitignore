@@ -1,4 +1,5 @@
 /server/node_modules
+node_modules
 /server/.env
 node_modules/.bin/acorn
 node_modules/.bin/acorn.cmd

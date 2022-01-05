@@ -25,6 +25,10 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
+//Lotfy's Update
+app.use(express.static("public"));
+app.use("/images", express.static(path.join("backend/images")));
+
 //  end-points
 app.use('/appointments', appointmentRoutes);
 app.use('/clinics', clinicRoutes);

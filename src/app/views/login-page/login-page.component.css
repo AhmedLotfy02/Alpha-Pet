@@ -10,8 +10,8 @@
         background-size: cover;
     }
     .user_card {
-        height: 400px;
-        width: 350px;
+        height: 430px;
+        width: 400px;
         margin-top: auto;
         margin-bottom: auto;
         background: white;
@@ -37,7 +37,7 @@
         text-align: center;
     }
     .brand_logo {
-        height: 150px;
+        height: 130px;
         width: 150px;
         border-radius: 50%;
         border: 2px solid white;
@@ -53,6 +53,11 @@
     .login_btn:focus {
         box-shadow: none !important;
         outline: 0px !important;
+    }
+    .login_btn:hover{
+        width: 100%;
+        background: rgb(0, 0, 0) !important;
+        color: rgb(252, 249, 255) !important;
     }
     .login_container {
         padding: 0 2rem;
@@ -70,4 +75,9 @@
     }
     .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
         background-color: rgb(219, 40, 219) !important;
+    }
+    .input{
+        display: flex;
+        flex-direction: row;
+        gap: 7px;
     }
