@@ -1,0 +1,141 @@
+	/* Coded with love by Mutiullah Samim */
+    @import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Lobster&family=Staatliches&display=swap");
+    
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+       /* background: #60a3bc !important; */
+        background-image: url('https://i.ibb.co/NWwyjrY/1200-stethoscope-on-purple.jpg');
+        background-repeat:no-repeat;
+        background-size: cover;
+    }
+    .user_card {
+        height: 480px;
+        width: 400px;
+        margin-top: auto;
+        margin-bottom: auto;
+        background: white;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5px;
+
+    }
+    .brand_logo_container {
+        position: absolute;
+        height: 170px;
+        width: 170px;
+        top: -75px;
+        border-radius: 50%;
+        background: white;
+        padding: 10px;
+        text-align: center;
+    }
+    .brand_logo {
+        height: 130px;
+        width: 150px;
+        border-radius: 50%;
+        border: 2px solid white;
+    }
+    .form_container {
+        margin-top: 100px;
+    }
+    .login_btn {
+        width: 100%;
+        background: rgb(219, 40, 219) !important;
+        color: white !important;
+    }
+    .login_btn:focus {
+        box-shadow: none !important;
+        outline: 0px !important;
+    }
+    .login_btn:hover{
+        width: 100%;
+        background: rgb(0, 0, 0) !important;
+        color: rgb(252, 249, 255) !important;
+    }
+    .login_container {
+        padding: 0 2rem;
+    }
+    .input-group-text {
+        background: rgb(219, 40, 219) !important;
+        color: white !important;
+        border: 0 !important;
+        border-radius: 0.25rem 0 0 0.25rem !important;
+    }
+    .input_user,
+    .input_pass:focus {
+        box-shadow: none !important;
+        outline: 0px !important;
+    }
+    .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+        background-color: rgb(219, 40, 219) !important;
+    }
+    .input{
+        display: flex;
+        flex-direction: row;
+        gap: 7px;
+    }
+
+    .logintitle{
+        text-align: center;
+        
+        font-family: 'Concert One', cursive;
+        font-size: 20px;
+        color: #495057;
+    }
+
+
+    .warn {
+        color: red;
+        text-align: center;
+        
+        animation: flash 3s infinite;
+    }
+    
+    @keyframes flash {
+        0% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        75% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+    .alreadyLogin{
+        background-color: white;
+    }
+    
+.mat-card1 {
+    margin-top: 1em;
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+}
+
+.confused {
+    font-family: "Lobster", cursive;
+    font-size: 30px;
+    color: Purple;
+}
+.b1{
+    background-color: rgb(219, 40, 219) !important;
+    color: white;
+}
+.b1:hover{
+    background: white;
+    color:black ;
+}

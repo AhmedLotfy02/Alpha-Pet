@@ -32,6 +32,8 @@ export class AuthService {
   private deletionError = new Subject<boolean>();
   deletionerror = false;
   private tokenTimer: any;
+  private loginListener = new Subject<boolean>();
+
 
   constructor(private http: HttpClient, private router: Router) {
 
@@ -232,6 +234,116 @@ export class AuthService {
   getisAuth() {
     return this.isAuthenticated;
   }
+  getUser() {
+    return this.user;
+  }
+  autoAuthUser() {
+    const authInformation = this.getAuthData();
 
+    if (!authInformation) {
+      return;
+    }
+    this.http
+      .post<{ message: string; user: AuthData }>(
+        'http://localhost:3000/api/users',
+        { email: authInformation.email }
+      )
+      .subscribe((responsedata: any) => {
+        this.user = responsedata.user;
+      });
+    const now = new Date();
+    const expiresIn = authInformation!.expirationDate.getTime() - now.getTime();
+    if (expiresIn > 0) {
+      this.token = authInformation.token;
+      if (authInformation.email) {
+        this.userEmail = authInformation.email;
+      }
+      this.isAuthenticated = true;
+      this.setAuthTimer(expiresIn / 1000);
+      this.authStatusListener.next(true);
+    }
+  }
+
+  private setAuthTimer(duraion: number) {
+    this.tokenTimer = setTimeout(() => {
+     // this.logout();
+    }, duraion * 1000);
+  }
+  private saveAuthData(token: string, expirtationDate: Date, email: string) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('expirationDate', expirtationDate.toISOString());
+    localStorage.setItem('email', email);
+  }
+  private clearAuthData() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expirationDate');
+    localStorage.removeItem('email');
+  }
+  private getAuthData() {
+    const token = localStorage.getItem('token');
+    const expirationDate = localStorage.getItem('expirationDate');
+    const email = localStorage.getItem('email');
+    if (!token || !expirationDate) {
+      return;
+    } else {
+      return {
+        token: token,
+        expirationDate: new Date(expirationDate),
+        email: email,
+      };
+    }
+  }
   
+  getloginListener() {
+    return this.loginListener.asObservable();
+  }
+  getAuthStatusListener() {
+    return this.authStatusListener.asObservable();
+  }
+  
+  loginAsPharmacist(email:string,password:string){
+    
+    const authData={
+      email:email,
+      password:password
+    }
+    console.log(authData);
+    this.http
+      .post<{ token: string; expiresIn: number; user: AuthData }>(
+        'http://localhost:5000/pharmacists/signin',
+        authData
+      )
+      .subscribe(
+        (response) => {
+          const token = response.token;
+          this.token = token;
+          console.log(response);
+          if (token) {
+            this.authStatusListener.next(true);
+            this.isAuthenticated = true;
+            const expiresInDuration = response.expiresIn;
+            console.log(expiresInDuration);
+            const user = response.user;
+            this.user = user;
+            // this.userEmail = email;
+            console.log(user.email);
+            console.log(this.user);
+            this.setAuthTimer(expiresInDuration);
+            const now = new Date();
+            const expirationDate = new Date(
+              now.getTime() + expiresInDuration * 1000
+            );
+            console.log(expirationDate);
+            this.saveAuthData(token, expirationDate, user.email);
+            //this.router.navigate(['/mainstore']);
+          }
+        },
+        (error) => {
+          console.log(error);
+          this.loginListener.next(true);
+        }
+      );
+  }
+
+
 }

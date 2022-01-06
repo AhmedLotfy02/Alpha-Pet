@@ -27,8 +27,9 @@ import { AccountComponent } from './views/account/account.component';
 import { SignUpAsOwnerComponent } from './views/signUp/sign-up-as-owner/sign-up-as-owner.component';
 import { SignUpAsVetComponent } from './views/signUp/sign-up-as-vet/sign-up-as-vet.component';
 import { SignUpAsPharmacistComponent } from './views/signUp/sign-up-as-pharmacist/sign-up-as-pharmacist.component';
-//import { AuthInterceptor } from './Auth/auth-interceptor';
+import { AuthInterceptor } from './Auth/auth-interceptor';
 import { CreateComponent } from './views/Appointments/create/create.component';
+import { LoginAsPharmacistComponent } from './views/login-pages/login-as-pharmacist/login-as-pharmacist.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { CreateComponent } from './views/Appointments/create/create.component';
     SignUpAsOwnerComponent,
     SignUpAsVetComponent,
     SignUpAsPharmacistComponent,
-    CreateComponent
+    CreateComponent,
+    LoginAsPharmacistComponent
   
   ],
   imports: [
@@ -62,7 +64,7 @@ import { CreateComponent } from './views/Appointments/create/create.component';
     MatSelectModule,
   ],
   providers: [
-   //{provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}
+   {provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}
   ],
   bootstrap: [AppComponent],
 })
