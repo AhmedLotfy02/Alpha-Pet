@@ -27,7 +27,7 @@ app.use(cors());
 
 //Lotfy's Update
 app.use(express.static("public"));
-app.use("/images", express.static(path.join("backend/images")));
+// app.use("/images", express.static(path.join("backend/images")));		//	Error
 
 //  end-points
 app.use('/appointments', appointmentRoutes);
