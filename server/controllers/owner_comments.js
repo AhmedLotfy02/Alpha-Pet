@@ -8,10 +8,10 @@ const getCommentsOfOwner = (req, res) => {
     const { email } = req.params;
     const { postType } = req.query;
     let sqlStr;
-    if(postType == 'owner') sqlStr = `SELECT * FROM OwnerPost_OwnerComment, Owner_Comment WHERE OwnerComment_ID = C_Id AND OWNEREMAIL = '${email}';`;
-    else if(postType == 'vet') sqlStr = `SELECT * FROM VetPost_OwnerComment, Owner_Comment WHERE OwnerComment_ID = C_Id AND OWNEREMAIL = '${email}';`;
-    else if(postType == 'pharmacist') sqlStr = `SELECT * FROM PharmacistPost_OwnerComment, Owner_Comment WHERE OwnerComment_ID = C_Id AND OWNEREMAIL = '${email}';`;
-    else sqlStr = `SELECT * FROM Owner_Comment WHERE OWNEREMAIL = '${email}'`;
+    if(postType == 'owner') sqlStr = `SELECT * FROM OwnerPost_OwnerComment, Owner_Comment WHERE OwnerComment_ID = C_Id AND OwnerEmail = '${email}';`;
+    else if(postType == 'vet') sqlStr = `SELECT * FROM VetPost_OwnerComment, Owner_Comment WHERE OwnerComment_ID = C_Id AND OwnerEmail = '${email}';`;
+    else if(postType == 'pharmacist') sqlStr = `SELECT * FROM PharmacistPost_OwnerComment, Owner_Comment WHERE OwnerComment_ID = C_Id AND OwnerEmail = '${email}';`;
+    else sqlStr = `SELECT * FROM Owner_Comment WHERE OwnerEmail = '${email}'`;
     
     try {
         connection.query(sqlStr, (error, results, fields) => {
