@@ -66,7 +66,7 @@ router.patch(
     '/update',
     auth,
     body('currentUserEmail').isEmail().normalizeEmail(),
-    body('password').notEmpty().isStrongPassword(),
+    body('password').notEmpty(),
     body('fName').notEmpty(),
     body('lName').notEmpty(),
     body('phone').notEmpty(),

@@ -32,13 +32,14 @@ const signin =  (req, res) => {
             if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
 
             existingUser = results[0];
+			
+			if(existingUser.password != password) return res.status(400).json({ message: 'Invalid Credintials' });
+
+			const token = jwt.sign({ email: existingUser.Email }, "this_should_be_very_long", { expiresIn: '1h' });    //  creating token to send it back to the client        //  'test' is a secret string
+
+			res.status(200).json({ data: existingUser, token });
         });
         
-        if(existingUser.password != password) return res.status(400).json({ message: 'Invalid Credintials' });
-
-        const token = jwt.sign({ email: existingUser.Email }, process.env.JWTSECRETKEY, { expiresIn: '1h' });    //  creating token to send it back to the client        //  'test' is a secret string
-
-        res.status(200).json({ data: existingUser, token });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -67,7 +68,10 @@ const signup = (req, res) => {
         });
 
         
-        const sqlStr = `INSERT INTO OWNER_TABLE VALUES('${req.body.email}', '${req.body.FirstName}', '${req.body.LastName}', ${req.body.phone}, ${req.body.balance}, '${favEmail}', '${req.body.city}', '${req.body.password}');`;
+        let sqlStr = `INSERT INTO OWNER_TABLE VALUES('${req.body.email}', '${req.body.FirstName}', '${req.body.LastName}', ${req.body.phone}, ${req.body.balance}, '${req.body.favouriteVetEmail}', '${req.body.city}', '${req.body.password}');`;
+        if(!req.body.favouriteVetEmail){
+			sqlStr = `INSERT INTO OWNER_TABLE VALUES('${req.body.email}', '${req.body.FirstName}', '${req.body.LastName}', ${req.body.phone}, ${req.body.balance}, ${null}, '${req.body.city}', '${req.body.password}');`;
+		} 
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
@@ -85,7 +89,10 @@ const updateOwner = (req, res) => {
     const { currentUserEmail, password, fName, lName, phone, balance, favouriteVetEmail, city } = req.body;
     
     try {
-        const sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${fName}', LNAME = '${lName}', PHONE = ${phone}, BALANCE = ${balance}, FAVOURITE_VET_EMAIL = '${favouriteVetEmail}', CITY = '${city}', PASSWORD '${password}' WHERE EMAIL = '${currentUserEmail}'`;
+        let sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${fName}', LNAME = '${lName}', PHONE = ${phone}, BALANCE = ${balance}, FAVOURITE_VET_EMAIL = '${favouriteVetEmail}', CITY = '${city}', PASSWORD = '${password}' WHERE EMAIL = '${currentUserEmail}';`;
+        if(!favouriteVetEmail){
+			sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${fName}', LNAME = '${lName}', PHONE = ${phone}, BALANCE = ${balance}, CITY = '${city}', PASSWORD = '${password}' WHERE EMAIL = '${currentUserEmail}';`;
+		}
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
