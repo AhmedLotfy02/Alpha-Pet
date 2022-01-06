@@ -145,7 +145,7 @@ export class AuthService {
     
     console.log('data is ' + data);
 
-    this.http.post('http://localhost:3000/signuptest', data).subscribe(
+    this.http.post('http://localhost:5000/pharmacists/signup', data).subscribe(
       (response) => {
         console.log(response);
         const data: signData = {
@@ -157,6 +157,7 @@ export class AuthService {
         //this.router.navigate(['/signup/signupSuccessfully']);
       },
       (error) => {
+        console.log(error);
         const data: signData = {
           isauthenticated: false,
           failed: true,

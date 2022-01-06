@@ -63,14 +63,6 @@ app.use('/ownerComments', ownerCommentsRouters);
 app.use('/vetComments', vetCommentsRouters);
 app.use('/pharmacistComments', pharmacistCommentsRouters);
 
-
-app.post('/hamdy',(req,res)=>{
-    console.log(req.body);
-    res.status(200).json({
-        message:'DONE'
-    })
-    
-});
 app.use('/', (req, res) => {
     res.send('Welcome to Alpha-Pet App');
     
