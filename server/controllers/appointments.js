@@ -149,16 +149,16 @@ const updateAppointment = (req, res) => {
             if(error) return res.status(400).json({ message: error.message });
 
             results.forEach(appointment => {
-                if(appointment.startDate == oldStartDate) continue;
-
-                if(
-                    (appointment.startDate < startDate && appointment.endDate > startDate) ||
-                    (appointment.startDate > startDate && appointment.startDate < endDate) ||
-                    appointment.startDate == startDate ||
-                    appointment.endDate == endDate
-                ){
-                    return res.status(400).json({ message: "The vet is not available at this time" });
-                }
+                if(appointment.startDate != oldStartDate) {
+					if(
+						(appointment.startDate < startDate && appointment.endDate > startDate) ||
+						(appointment.startDate > startDate && appointment.startDate < endDate) ||
+						appointment.startDate == startDate ||
+						appointment.endDate == endDate
+					){
+						return res.status(400).json({ message: "The vet is not available at this time" });
+					}
+				}
             });           
         });
     } catch (error) {
@@ -171,16 +171,16 @@ const updateAppointment = (req, res) => {
             if(error) return res.status(400).json({ message: error.message });
 
             results.forEach(appointment => {
-                if(appointment.startDate == oldStartDate) continue;
-
-                if(
-                    (appointment.startDate < startDate && appointment.endDate > startDate) ||
-                    (appointment.startDate > startDate && appointment.startDate < endDate) ||
-                    appointment.startDate == startDate ||
-                    appointment.endDate == endDate
-                ){
-                    return res.status(400).json({ message: "The owner is not available at this time" });
-                }
+                if(appointment.startDate != oldStartDate) {
+					if(
+						(appointment.startDate < startDate && appointment.endDate > startDate) ||
+						(appointment.startDate > startDate && appointment.startDate < endDate) ||
+						appointment.startDate == startDate ||
+						appointment.endDate == endDate
+					){
+						return res.status(400).json({ message: "The owner is not available at this time" });
+					}
+				}
             });           
         });
     } catch (error) {

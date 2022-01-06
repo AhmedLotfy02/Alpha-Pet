@@ -56,13 +56,27 @@ const getInvoicesOfVet = (req, res) => {
     }
 }
 
+const getInvoicesOfOwner = (req, res) => {
+    const { ownerEmail } = req.params;
+    const sqlStr = `SELECT * FROM INVOICE WHERE OWNEREMAIL = '${ownerEmail}';`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            res.status(200).json({ data: results, fields });
+        });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
 const createInvoice = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { invoiceId, pharmacyId, notes, requiredMedicines, currentUserEmail } = req.body;
+    const { invoiceId, pharmacyId, notes, requiredMedicines, ownerEmail, price, currentUserEmail } = req.body;
     
-    const sqlStr = `INSERT INTO INVOICE VALUES (${invoiceId}, '${notes}', '${requiredMedicines}', ${pharmacyId}, '${currentUserEmail}');`;
+    const sqlStr = `INSERT INTO INVOICE VALUES (${invoiceId}, '${notes}', '${requiredMedicines}', ${pharmacyId}, '${currentUserEmail}', '${ownerEmail}', ${price});`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -78,9 +92,9 @@ const updateInvoice = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { invoiceId, pharmacyId, notes, requiredMedicines, currentUserEmail } = req.body;
+    const { invoiceId, pharmacyId, notes, requiredMedicines, ownerEmail, price, currentUserEmail } = req.body;
     
-    const sqlStr = `UPDATE INVOICE SET NOTES = '${notes}', REQUIREDMEDICINES = '${requiredMedicines}', PHARMACYID = '${pharmacyId}' WHERE INVOICEID = ${invoiceId} AND VETEMAIL = '${currentUserEmail}';`;
+const sqlStr = `UPDATE INVOICE SET NOTES = '${notes}', REQUIREDMEDICINES = '${requiredMedicines}', PHARMACYID = ${pharmacyId}, OWNEREMAIL = '${ownerEmail}', PRICE = ${price} WHERE INVOICEID = ${invoiceId} AND VETEMAIL = '${currentUserEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -115,6 +129,7 @@ module.exports = {
     getInvoiceById,
     getInvoicesOfPharmacy,
     getInvoicesOfVet,
+	getInvoicesOfOwner,
     createInvoice,
     updateInvoice,
     deleteInvoice
