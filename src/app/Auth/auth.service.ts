@@ -203,6 +203,13 @@ export class AuthService {
       }
     );
   }
+
+  getAllVets(){
+
+  }
+  RequestAppointment(vet:string){
+    
+  }
   //////////////////////////////////////////////////////////////////////////////////////////////
   //Authentication Part
   getisAuth() {
