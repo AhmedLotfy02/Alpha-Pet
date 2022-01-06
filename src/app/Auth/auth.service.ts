@@ -36,14 +36,14 @@ export class AuthService {
   deletionerror = false;
   private tokenTimer: any;
   private loginListener = new Subject<boolean>();
-
+  private OwnerEmailListener=new Subject<OwnerAuthData>();
 
   constructor(private http: HttpClient, private router: Router) {
-
-
-
     }
    
+    getCurrentOwner(){
+      return this.OwnerEmailListener.asObservable();
+    }
 
   create_Owner_User(
     email: string,
@@ -237,6 +237,7 @@ export class AuthService {
       )
       .subscribe((responsedata: any) => {
         this.Owneruser1 = responsedata.user;
+        this.OwnerEmailListener.next(responsedata.user);
         console.log(this.Owneruser1);
       });
     

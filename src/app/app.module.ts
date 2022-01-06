@@ -32,6 +32,9 @@ import { CreateComponent } from './views/Appointments/create/create.component';
 import { LoginAsPharmacistComponent } from './views/login-pages/login-as-pharmacist/login-as-pharmacist.component';
 import { LoginAsVetComponent } from './views/login-pages/login-as-vet/login-as-vet.component';
 import { LoginAsOwnerComponent } from './views/login-pages/login-as-owner/login-as-owner.component';
+import { MainPageComponent } from './views/OwnerAccount/main-page/main-page.component';
+import { MyPetComponent } from './views/OwnerAccount/my-pet/my-pet.component';
+import { MyInformationComponent } from './views/OwnerAccount/my-information/my-information.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,10 @@ import { LoginAsOwnerComponent } from './views/login-pages/login-as-owner/login-
     CreateComponent,
     LoginAsPharmacistComponent,
     LoginAsVetComponent,
-    LoginAsOwnerComponent
+    LoginAsOwnerComponent,
+    MainPageComponent,
+    MyPetComponent,
+    MyInformationComponent
   
   ],
   imports: [
