@@ -20,7 +20,7 @@ router.post(
 router.post(
     '/signup',
     body('email').isEmail().normalizeEmail(),
-    body('password').notEmpty().isStrongPassword(),
+    body('password').notEmpty(),
     body('fName').notEmpty(),
     body('lName').notEmpty(),
     body('phone').notEmpty(),

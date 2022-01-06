@@ -50,7 +50,7 @@ const signup = (req, res) => {
 
       const { email, password, fName, lName, charge, state } = req.body;
     try {
-        const sqlStr2 = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${email}';`;
+        let sqlStr2 = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${email}';`;
         connection.query(sqlStr2, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
@@ -66,7 +66,7 @@ const signup = (req, res) => {
 
         const token = jwt.sign({ email }, process.env.JWTSECRETKEY, { expiresIn: '1h' });
         
-        const sqlStr = `INSERT INTO VET VALUES('${email}', '${fName}', '${lName}', ${charge}, '${state}', '${password}');`;
+        const sqlStr = `INSERT INTO VET VALUES('${email}', '${fName}', '${lName}', ${charge}, ${state}, '${password}');`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
@@ -84,7 +84,7 @@ const updateVet = (req, res) => {
     const { currentUserEmail, password, fName, lName, charge, state } = req.body;
 
     try {
-        const sqlStr = `UPDATE VET SET FNAME = '${fName}', LNAME = '${lName}', CHARGE = ${charge}, STATE = '${state}', PASSWORD '${password}' WHERE EMAIL = '${currentUserEmail}';`;
+        const sqlStr = `UPDATE VET SET FNAME = '${fName}', LNAME = '${lName}', CHARGE = ${charge}, STATE = ${state}, PASSWORD = '${password}' WHERE EMAIL = '${currentUserEmail}';`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
