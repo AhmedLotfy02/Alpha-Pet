@@ -5,7 +5,8 @@ const {
     getAllPharmacists,
     signin,
     signup,
-    updatePharmacist
+    updatePharmacist,
+    getPharmacistByEmail
 } = require('../controllers/pharmacists.js');
 const path = require("path");
 
@@ -71,5 +72,5 @@ router.patch(
     body('lName').notEmpty(),
     updatePharmacist
 );
-
+router.post('/getPharmacistByEmail',getPharmacistByEmail);
 module.exports = router;

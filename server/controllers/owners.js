@@ -5,6 +5,25 @@ const connection = require('../connection.js');
 const AuthCheck = require("../middlewares/auth");
 dotenv.config();
 
+const getOwnerByEmail=(req,res)=>{
+    const sqlStr = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${req.body.email}';`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
+
+            existingUser = results[0];
+			
+			
+			
+			res.status(200).json({ user: existingUser });
+        });
+        
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
 const getAllOwners = (req, res) => {
     const sqlStr = `SELECT EMAIL, FNAME, LNAME, PHONE, FAVOURITE_VET_EMAIL, CITY FROM OWNER_TABLE;`;
     try {
@@ -24,7 +43,7 @@ const signin =  (req, res) => {
 
     const { email, password } = req.body;
     let existingUser;
-    const sqlStr = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${email}';`;
+    const sqlStr = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${req.body.email}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -35,9 +54,12 @@ const signin =  (req, res) => {
 			
 			if(existingUser.password != password) return res.status(400).json({ message: 'Invalid Credintials' });
 
-			const token = jwt.sign({ email: existingUser.Email }, "this_should_be_very_long", { expiresIn: '1h' });    //  creating token to send it back to the client        //  'test' is a secret string
-
-			res.status(200).json({ data: existingUser, token });
+            const token = jwt.sign({ email: existingUser.email},
+                "this_should_be_very_long", { expiresIn: "1h" }
+            );
+			res.status(200).json({   token: token,
+                expiresIn: 3600,
+                user: existingUser, });
         });
         
     } catch (error) {
@@ -107,5 +129,6 @@ module.exports = {
     getAllOwners,
     signin,
     signup,
-    updateOwner
+    updateOwner,
+    getOwnerByEmail
 };

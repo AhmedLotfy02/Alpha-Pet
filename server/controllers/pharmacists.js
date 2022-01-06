@@ -5,6 +5,27 @@ const connection = require('../connection.js');
 
 dotenv.config();
 
+const getPharmacistByEmail=(req,res)=>{
+    const sqlStr = `SELECT * FROM PHARMACIST WHERE EMAIL = '${req.body.email}';`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
+
+            existingUser = results[0];
+			
+			
+			
+			res.status(200).json({ user: existingUser });
+        });
+        
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+
+}
+
 const getAllPharmacists = (req, res) => {
     const sqlStr = `SELECT EMAIL, FNAME, LNAME, PHARMACY_ID FROM PHARMACIST;`;
     try {
@@ -108,5 +129,6 @@ module.exports = {
     getAllPharmacists,
     signin,
     signup,
-    updatePharmacist
+    updatePharmacist,
+    getPharmacistByEmail
 };

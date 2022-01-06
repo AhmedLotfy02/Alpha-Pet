@@ -5,7 +5,8 @@ const {
     getAllOwners,
     signin,
     signup,
-    updateOwner
+    updateOwner,
+    getOwnerByEmail
 } = require('../controllers/owners.js');
 const path = require("path");
 
@@ -73,5 +74,5 @@ router.patch(
     body('city').notEmpty(),
     updateOwner
 );
-
+router.post('/getOwnerByEmail',getOwnerByEmail);
 module.exports = router;

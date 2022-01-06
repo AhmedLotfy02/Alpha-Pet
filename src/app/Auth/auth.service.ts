@@ -217,25 +217,27 @@ export class AuthService {
       });
     
     }
-    else if(authInformation.token==='Pharmacist'){
+    else if(authInformation.type==='Pharmacist'){
       this.http
       .post<{ message: string; user: PharmacistAuthData }>(
-        'http://localhost:5000/pharmacists/',
+        'http://localhost:5000/pharmacists/getPharmacistByEmail',
         { email: authInformation.email }
       )
       .subscribe((responsedata: any) => {
         this.Pharmacistuser1 = responsedata.user;
+        console.log(this.Pharmacistuser1);
       });
     
     }
-    else if(authInformation.token==='Owner'){
+    else if(authInformation.type==='Owner'){
       this.http
       .post<{ message: string; user: OwnerAuthData }>(
-        'http://localhost:5000/owners/',
+        'http://localhost:5000/owners/getOwnerByEmail',
         { email: authInformation.email }
       )
       .subscribe((responsedata: any) => {
-        this.Pharmacistuser1 = responsedata.user;
+        this.Owneruser1 = responsedata.user;
+        console.log(this.Owneruser1);
       });
     
     }
@@ -375,6 +377,50 @@ export class AuthService {
             );
             console.log(expirationDate);
             this.saveAuthData(token, expirationDate, response.user.Email,'Vet');
+            this.router.navigate(['/Home']);
+          }
+        },
+        (error) => {
+          console.log(error);
+          this.loginListener.next(true);
+        }
+      );
+  }
+  loginAsOwner(email:string,password:string){
+    const authData1={
+      email:email,
+      password:password
+    }
+    console.log(authData1);
+    this.http
+      .post<{ token: string; expiresIn: number; user:OwnerAuthData }>(
+        'http://localhost:5000/owners/signin',
+        authData1
+      )
+      .subscribe(
+        (response) => {
+          const token = response.token;
+          this.token = token;
+          console.log(response);
+          if (token) {
+            this.authStatusListener.next(true);
+            this.isAuthenticated = true;
+            const expiresInDuration = response.expiresIn;
+            console.log(expiresInDuration);
+           // const user1 = response.user;
+           // this.user = user;
+            // this.userEmail = email;
+             this.Owneruser1=response.user;
+             console.log(this.Owneruser1);
+            console.log(response.user.Email);
+            
+            this.setAuthTimer(expiresInDuration);
+            const now = new Date();
+            const expirationDate = new Date(
+              now.getTime() + expiresInDuration * 1000
+            );
+            console.log(expirationDate);
+            this.saveAuthData(token, expirationDate, response.user.Email,'Owner');
             this.router.navigate(['/Home']);
           }
         },
