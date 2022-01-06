@@ -7,6 +7,7 @@ import {   FormBuilder,
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/Auth/auth.service';
 @Component({
   selector: 'app-sign-up-as-vet',
   templateUrl: './sign-up-as-vet.component.html',
@@ -23,7 +24,7 @@ export class SignUpAsVetComponent implements OnInit {
 
   constructor(  private router: Router,
     private _snackBar: MatSnackBar,
-    private _fb: FormBuilder) { }
+    private _fb: FormBuilder,private AuthSerivce:AuthService) { }
     openSnackBar(message: string, action: string) {
       this._snackBar.open(message, action);
     }
@@ -43,7 +44,10 @@ export class SignUpAsVetComponent implements OnInit {
     if (this.form.invalid || this.form.value.phone < 10) {
       return;
     } 
-    console.log(this.form.value);
+    //console.log(this.form.value);
+    // this.AuthSerivce.create_Vet_User()
+   // console.log('doneinfunc');  
+    this.AuthSerivce.create_Vet_User(this.form.value.email,this.form.value.password,this.form.value.FirstName,this.form.value.image,this.form.value.LastName,this.form.value.charge);
 
     // this.authService.createUser(
     //   this.form.value.email,
@@ -53,6 +57,7 @@ export class SignUpAsVetComponent implements OnInit {
     //   this.form.value.mobile,
     //   this.selected
     // );
+    
   }
   ngOnInit(): void {
     this.form = this._fb.group({

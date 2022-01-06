@@ -21,13 +21,28 @@ const vetCommentsRouters = require('./routers/vet_comments.js');
 const pharmacistCommentsRouters = require('./routers/pharmacist_comments.js');
 
 const app = express();
-app.use(bodyParser.json({ limit: "30mb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+
+
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PATCH, DELETE, OPTIONS"
+    );
+    next();
+});
 
 //Lotfy's Update
+const path = require("path");
 app.use(express.static("public"));
-// app.use("/images", express.static(path.join("backend/images")));		//	Error
+app.use("/images", express.static(path.join("backend/images")));		//	Error
 
 //  end-points
 app.use('/appointments', appointmentRoutes);
@@ -48,9 +63,19 @@ app.use('/ownerComments', ownerCommentsRouters);
 app.use('/vetComments', vetCommentsRouters);
 app.use('/pharmacistComments', pharmacistCommentsRouters);
 
+
+app.post('/hamdy',(req,res)=>{
+    console.log(req.body);
+    res.status(200).json({
+        message:'DONE'
+    })
+    
+});
 app.use('/', (req, res) => {
     res.send('Welcome to Alpha-Pet App');
+    
 });
+
 
 const PORT = process.env.PORT || 5000;
 

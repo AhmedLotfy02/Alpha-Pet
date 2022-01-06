@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/Auth/auth.service';
 
 @Component({
@@ -12,9 +13,13 @@ selected = ' ';
   VetArray=[
     "ahmed","hamdy","asd","asda"
   ]
+  errorAppoint=false;
+  doneAppoint=false;
+  ApppointListener!: Subscription;
   constructor(private AuthService:AuthService) { }
 
   ngOnInit(): void {
+
   }
   appoint(){
     this.AuthService.RequestAppointment(this.selected);

@@ -7,6 +7,7 @@ import {   FormBuilder,
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/Auth/auth.service';
 
 @Component({
   selector: 'app-sign-up-as-owner',
@@ -26,7 +27,9 @@ export class SignUpAsOwnerComponent implements OnInit {
 
   constructor(  private router: Router,
     private _snackBar: MatSnackBar,
-    private _fb: FormBuilder) { }
+    private _fb: FormBuilder
+    ,private AuthSerivce:AuthService
+    ) { }
     openSnackBar(message: string, action: string) {
       this._snackBar.open(message, action);
     }
@@ -60,6 +63,7 @@ export class SignUpAsOwnerComponent implements OnInit {
     //   this.form.value.mobile,
     //   this.selected
     // );
+    this.AuthSerivce.create_Owner_User(this.form.value.email,this.form.value.password,this.form.value.FirstName,this.form.value.image,this.form.value.phone,this.selected,this.form.value.LastName);
   }
   ngOnInit(): void {
     this.form = this._fb.group({

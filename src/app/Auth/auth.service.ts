@@ -100,10 +100,12 @@ export class AuthService {
     data.append('city', city);
     data.append('image', image, email);
     data.append('favouriteVetEmail','');
-    data.append('balance','0');
-    console.log('data is ' + data);
-
-    this.http.post('http://localhost:3000/signuptest', data).subscribe(
+    data.append('balance','10000');
+    data.forEach(element => {
+      console.log(element);
+    });
+   
+    this.http.post('http://localhost:5000/owners/signup', data).subscribe(
       (response) => {
         console.log(response);
         const data: signData = {
@@ -115,6 +117,7 @@ export class AuthService {
         //this.router.navigate(['/signup/signupSuccessfully']);
       },
       (error) => {
+        console.log(error);
         const data: signData = {
           isauthenticated: false,
           failed: true,
@@ -172,25 +175,34 @@ export class AuthService {
     LastName:string,
     charge:number
   ) {
-    const data = new FormData();
-    data.append('email', email);
-    data.append('password', password);
-    data.append('FirstName', FirstName);
-    data.append('LastName',LastName);
-    data.append('image', image, email);
-    data.append('state','false');
-    data.append('charge',charge.toString());
-    console.log('data is ' + data);
-
-    this.http.post('http://localhost:3000/signuptest', data).subscribe(
+    const data1 = new FormData();
+    data1.append('email', email);
+    data1.append('password', password);
+    data1.append('fName', FirstName);
+    data1.append('lName',LastName);
+    data1.append('image', image, email);
+    data1.append('state','0');
+    data1.append('charge',charge.toString());
+    data1.forEach(element => {
+      console.log(element);
+    });
+    // console.log('data is ' + data);
+// const obj={
+//   'email': email,
+//   'password': password,
+//   'fName': FirstName,
+// }
+    this.http.post('http://localhost:5000/vets/signup', data1).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         const data: signData = {
           isauthenticated: true,
           failed: false,
           success: true,
         };
         this.testData.next(data);
+       // console.log(data);
+        console.log(response);
         //this.router.navigate(['/signup/signupSuccessfully']);
       },
       (error) => {
@@ -200,6 +212,7 @@ export class AuthService {
           success: false,
         };
         this.testData.next(data);
+        console.log(error);
       }
     );
   }
@@ -208,7 +221,10 @@ export class AuthService {
 
   }
   RequestAppointment(vet:string){
-    
+    this.http.post('http://localhost:3000/api/Appoint',vet).subscribe((response:any)=>{
+
+    })
+
   }
   //////////////////////////////////////////////////////////////////////////////////////////////
   //Authentication Part

@@ -3,27 +3,6 @@ const { validationResult } = require('express-validator');
 const dotenv = require('dotenv');
 const connection = require('../connection.js');
 const AuthCheck = require("../middlewares/auth");
-const multer = require("multer");
-const MIME_TYPE_MAP = {
-    "image/png": "png",
-    "image/jpeg": "jpg",
-    "image/jpg": "jpg",
-};
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const isValid = MIME_TYPE_MAP[file.mimetype];
-        let error = new Error("Invalid mime type");
-        if (isValid) {
-            error = null;
-        }
-        cb(error, "backend/images");
-    },
-    filename: (req, file, cb) => {
-        const name = file.originalname.toLowerCase().split(" ").join("-");
-        const ext = MIME_TYPE_MAP[file.mimetype];
-        cb(null, name + "-" + Date.now() + "." + ext);
-    },
-});
 dotenv.config();
 
 const getAllOwners = (req, res) => {
@@ -68,30 +47,31 @@ const signin =  (req, res) => {
 const signup = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
+    console.log(req.body);
+    var favEmail='none@gmail.com';
     const { email, password, fName, lName, phone, balance, favouriteVetEmail, city } = req.body;
+    
     try {
-        let sqlStr2 = `SELECT * FROM VET WHERE EMAIL = '${email}';`;
+        let sqlStr2 = `SELECT * FROM VET WHERE EMAIL = '${req.body.email}';`;
         connection.query(sqlStr2, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
             if(results.length > 0) return res.status(400).json({ message: 'User already exist' });
         });
         
-        sqlStr2 = `SELECT * FROM PHARMACIST WHERE EMAIL = '${email}'`;
+        sqlStr2 = `SELECT * FROM PHARMACIST WHERE EMAIL = '${req.body.email}'`;
         connection.query(sqlStr2, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
             if(results.length > 0) return res.status(400).json({ message: 'User already exist' });
         });
 
-        const token = jwt.sign({ email }, process.env.JWTSECRETKEY, { expiresIn: '1h' });
         
-        const sqlStr = `INSERT INTO OWNER_TABLE VALUES('${email}', '${fName}', '${lName}', ${phone}, ${balance}, '${favouriteVetEmail}', '${city}', '${password}');`;
+        const sqlStr = `INSERT INTO OWNER_TABLE VALUES('${req.body.email}', '${req.body.FirstName}', '${req.body.LastName}', ${req.body.phone}, ${req.body.balance}, '${favEmail}', '${req.body.city}', '${req.body.password}');`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
-            res.status(200).json({ data: results[0], token });
+            res.status(200).json({ data: results[0],message:'Signup as Owner is done' });
         });
     } catch (error) {
         res.status(404).json({ message: error.message });

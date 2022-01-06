@@ -48,30 +48,51 @@ const signup = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-      const { email, password, fName, lName, charge, state } = req.body;
-    try {
-        let sqlStr2 = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${email}';`;
-        connection.query(sqlStr2, (error, results, fields) => {
-            if(error) return res.status(400).json({ message: error.message });
-            
-            if(results.length > 0) return res.status(400).json({ message: 'User already exist' });
-        });
-        
-        sqlStr2 = `SELECT * FROM PHARMACIST WHERE EMAIL = '${email}';`;
-        connection.query(sqlStr2, (error, results, fields) => {
-            if(error) return res.status(400).json({ message: error.message });
-            
-            if(results.length > 0) return res.status(400).json({ message: 'User already exist' });
-        });
 
-        const token = jwt.sign({ email }, process.env.JWTSECRETKEY, { expiresIn: '1h' });
         
-        const sqlStr = `INSERT INTO VET VALUES('${email}', '${fName}', '${lName}', ${charge}, ${state}, '${password}');`;
+
+
+        var state1=true;
+        if(req.body.state==='0'){
+            state1=false;
+        }else{
+            state1=true;
+        }
+        console.log(state1);
+        const req2={
+            email:req.body.email,
+            password:req.body.password,
+            fName:req.body.fName,
+            lName:req.body.lName,
+            charge:req.body.charge,
+            state:state1
+        }
+      const { email, password, fName, lName, charge, state } = req2;
+    
+      try {
+        let sqlStr2 = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${req.body.email}';`;
+        connection.query(sqlStr2, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            if(results.length > 0) return res.status(400).json({ message: 'User already exist' });
+        });
+        
+        sqlStr2 = `SELECT * FROM PHARMACIST WHERE EMAIL = '${req.body.email}';`;
+        connection.query(sqlStr2, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            if(results.length > 0) return res.status(400).json({ message: 'User already exist' });
+        });
+        
+        const sqlStr = `INSERT INTO VET VALUES('${req.body.email}', '${req.body.fName}', '${req.body.lName}', ${req.body.charge}, ${state1}, '${req.body.password}');`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
-            res.status(200).json({ result: results[0], token });
+            res.status(200).json({ result: results[0],message:'SignUp vet is done' });
+         
         });
+
+      
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

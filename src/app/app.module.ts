@@ -27,7 +27,7 @@ import { AccountComponent } from './views/account/account.component';
 import { SignUpAsOwnerComponent } from './views/signUp/sign-up-as-owner/sign-up-as-owner.component';
 import { SignUpAsVetComponent } from './views/signUp/sign-up-as-vet/sign-up-as-vet.component';
 import { SignUpAsPharmacistComponent } from './views/signUp/sign-up-as-pharmacist/sign-up-as-pharmacist.component';
-import { AuthInterceptor } from './Auth/auth-interceptor';
+//import { AuthInterceptor } from './Auth/auth-interceptor';
 import { CreateComponent } from './views/Appointments/create/create.component';
 
 @NgModule({
