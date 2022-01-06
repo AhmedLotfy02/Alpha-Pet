@@ -5,6 +5,27 @@ const connection = require('../connection.js');
 
 dotenv.config();
 
+const getVetByEmail=(req,res)=>{
+    const sqlStr = `SELECT * FROM VET WHERE EMAIL = '${req.body.email}';`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
+
+            existingUser = results[0];
+			
+			
+			
+			res.status(200).json({ user: existingUser });
+        });
+        
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+
 const getAllVets = (req, res) => {
     const sqlStr = `SELECT EMAIL, FNAME, LNAME, CHARGE, STATE FROM VET;`;
     try {
@@ -37,7 +58,9 @@ const signin =  (req, res) => {
 
 			const token = jwt.sign({ email: existingUser.Email }, "this_should_be_very_long", { expiresIn: '1h' });    //  creating token to send it back to the client        //  'test' is a secret string
 
-			res.status(200).json({ data: existingUser, token });
+			res.status(200).json({   token: token,
+                expiresIn: 3600,
+                user: existingUser, });
         });
         
     } catch (error) {
@@ -121,5 +144,6 @@ module.exports = {
     getAllVets,
     signin,
     signup,
-    updateVet
+    updateVet,
+    getVetByEmail
 };

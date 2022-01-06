@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from './Auth/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'Alpha-Pet';
-  constructor() {}
+  constructor(private authService:AuthService) {}
   ngOnInit() {
+  this.authService.autoAuthUser();
   }
 }

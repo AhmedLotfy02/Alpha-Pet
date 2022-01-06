@@ -11,7 +11,8 @@ const {
     getAllVets,
     signin,
     signup,
-    updateVet
+    updateVet,
+    getVetByEmail
 } = require('../controllers/vets.js');
 
 const router = express.Router();
@@ -73,7 +74,7 @@ router.post(
     // body('lName').notEmpty(),
     signup
 );
-
+router.post('/getVetByEmail',getVetByEmail);
 // router.post('/hamdy',(req,res,next)=>{
 //     console.log(req.body);
 // })

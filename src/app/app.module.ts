@@ -30,6 +30,7 @@ import { SignUpAsPharmacistComponent } from './views/signUp/sign-up-as-pharmacis
 import { AuthInterceptor } from './Auth/auth-interceptor';
 import { CreateComponent } from './views/Appointments/create/create.component';
 import { LoginAsPharmacistComponent } from './views/login-pages/login-as-pharmacist/login-as-pharmacist.component';
+import { LoginAsVetComponent } from './views/login-pages/login-as-vet/login-as-vet.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { LoginAsPharmacistComponent } from './views/login-pages/login-as-pharmac
     SignUpAsVetComponent,
     SignUpAsPharmacistComponent,
     CreateComponent,
-    LoginAsPharmacistComponent
+    LoginAsPharmacistComponent,
+    LoginAsVetComponent
   
   ],
   imports: [

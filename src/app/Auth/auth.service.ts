@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { check } from 'express-validator';
 import { Subject } from 'rxjs';
 import { signData } from '../models/signUpData-model';
-import { AuthData } from './auth-data-model';
+import {  OwnerAuthData, PharmacistAuthData, VetAuthData } from './auth-data-model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,7 +16,10 @@ export class AuthService {
 
     private token!: string;
   private userEmail!: string;
-  private user!: AuthData;
+  private Pharmacistuser1!: PharmacistAuthData;
+  private Vetuser1!: VetAuthData;
+  private Owneruser1!: OwnerAuthData;
+
   private authStatusListener = new Subject<boolean>();
   isAuthenticated = false;
   private creationListener = new Subject<boolean>();
@@ -41,48 +44,6 @@ export class AuthService {
 
     }
    
-   login(username: string, password: string) {
-    const authData: AuthData = {
-      email: '',
-      password: password,
-      username: username,
-      image: '',
-      mobile: 0,
-      gover: ' ',
-     
-    };
-    this.http.post<{ token: string; expiresIn: number; user: AuthData }>('http://localhost:3000/login',authData)
-      .subscribe(
-        (response) => {
-          const token = response.token;
-          this.token = token;
-          console.log(response);
-          if (token) {
-            this.authStatusListener.next(true);
-            this.isAuthenticated = true;
-            const expiresInDuration = response.expiresIn;
-            console.log(expiresInDuration);
-            const user = response.user;
-            this.user = user;
-            // this.userEmail = email;
-            console.log(user.email);
-            console.log(this.user);
-          //  this.setAuthTimer(expiresInDuration);
-            const now = new Date();
-            const expirationDate = new Date(
-              now.getTime() + expiresInDuration * 1000
-            );
-            console.log(expirationDate);
-          //  this.saveAuthData(token, expirationDate, user.email);
-            this.router.navigate(['/mainstore']);
-          }
-        },
-        (error) => {
-         // this.loginListener.next(true);
-        }
-      );
-  }
-
 
   create_Owner_User(
     email: string,
@@ -235,7 +196,7 @@ export class AuthService {
     return this.isAuthenticated;
   }
   getUser() {
-    return this.user;
+    return this.Pharmacistuser1;
   }
   autoAuthUser() {
     const authInformation = this.getAuthData();
@@ -243,14 +204,41 @@ export class AuthService {
     if (!authInformation) {
       return;
     }
-    this.http
-      .post<{ message: string; user: AuthData }>(
-        'http://localhost:3000/api/users',
+    if(authInformation.type==='Vet'){
+      this.http
+      .post<{ message: string; user:VetAuthData }>(
+        'http://localhost:5000/vets/getVetByEmail',
         { email: authInformation.email }
       )
       .subscribe((responsedata: any) => {
-        this.user = responsedata.user;
+        this.Vetuser1 = responsedata.user;
+        console.log(this.Vetuser1);
+
       });
+    
+    }
+    else if(authInformation.token==='Pharmacist'){
+      this.http
+      .post<{ message: string; user: PharmacistAuthData }>(
+        'http://localhost:5000/pharmacists/',
+        { email: authInformation.email }
+      )
+      .subscribe((responsedata: any) => {
+        this.Pharmacistuser1 = responsedata.user;
+      });
+    
+    }
+    else if(authInformation.token==='Owner'){
+      this.http
+      .post<{ message: string; user: OwnerAuthData }>(
+        'http://localhost:5000/owners/',
+        { email: authInformation.email }
+      )
+      .subscribe((responsedata: any) => {
+        this.Pharmacistuser1 = responsedata.user;
+      });
+    
+    }
     const now = new Date();
     const expiresIn = authInformation!.expirationDate.getTime() - now.getTime();
     if (expiresIn > 0) {
@@ -269,20 +257,25 @@ export class AuthService {
      // this.logout();
     }, duraion * 1000);
   }
-  private saveAuthData(token: string, expirtationDate: Date, email: string) {
+  private saveAuthData(token: string, expirtationDate: Date, email: string,type:string) {
     localStorage.setItem('token', token);
     localStorage.setItem('expirationDate', expirtationDate.toISOString());
     localStorage.setItem('email', email);
+    localStorage.setItem('type', type);
+
   }
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
     localStorage.removeItem('email');
+    localStorage.removeItem('type');
+
   }
   private getAuthData() {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expirationDate');
     const email = localStorage.getItem('email');
+    const type=  localStorage.getItem('type');
     if (!token || !expirationDate) {
       return;
     } else {
@@ -290,6 +283,7 @@ export class AuthService {
         token: token,
         expirationDate: new Date(expirationDate),
         email: email,
+        type:type
       };
     }
   }
@@ -303,15 +297,15 @@ export class AuthService {
   
   loginAsPharmacist(email:string,password:string){
     
-    const authData={
+    const authData1={
       email:email,
       password:password
     }
-    console.log(authData);
+    console.log(authData1);
     this.http
-      .post<{ token: string; expiresIn: number; user: AuthData }>(
+      .post<{ token: string; expiresIn: number; user:PharmacistAuthData }>(
         'http://localhost:5000/pharmacists/signin',
-        authData
+        authData1
       )
       .subscribe(
         (response) => {
@@ -323,19 +317,20 @@ export class AuthService {
             this.isAuthenticated = true;
             const expiresInDuration = response.expiresIn;
             console.log(expiresInDuration);
-            const user = response.user;
-            this.user = user;
+           // const user1 = response.user;
+           // this.user = user;
             // this.userEmail = email;
-            console.log(user.email);
-            console.log(this.user);
+             
+            console.log(response.user.Email);
+            console.log(this.Pharmacistuser1);
             this.setAuthTimer(expiresInDuration);
             const now = new Date();
             const expirationDate = new Date(
               now.getTime() + expiresInDuration * 1000
             );
             console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, user.email);
-            //this.router.navigate(['/mainstore']);
+            this.saveAuthData(token, expirationDate, response.user.Email,'Pharmacist');
+            this.router.navigate(['/Home']);
           }
         },
         (error) => {
@@ -345,5 +340,48 @@ export class AuthService {
       );
   }
 
-
+  loginAsVet(email:string,password:string){
+    const authData1={
+      email:email,
+      password:password
+    }
+    console.log(authData1);
+    this.http
+      .post<{ token: string; expiresIn: number; user:VetAuthData }>(
+        'http://localhost:5000/vets/signin',
+        authData1
+      )
+      .subscribe(
+        (response) => {
+          const token = response.token;
+          this.token = token;
+          console.log(response);
+          if (token) {
+            this.authStatusListener.next(true);
+            this.isAuthenticated = true;
+            const expiresInDuration = response.expiresIn;
+            console.log(expiresInDuration);
+           // const user1 = response.user;
+           // this.user = user;
+            // this.userEmail = email;
+             this.Vetuser1=response.user;
+             console.log(this.Vetuser1);
+            console.log(response.user.Email);
+            
+            this.setAuthTimer(expiresInDuration);
+            const now = new Date();
+            const expirationDate = new Date(
+              now.getTime() + expiresInDuration * 1000
+            );
+            console.log(expirationDate);
+            this.saveAuthData(token, expirationDate, response.user.Email,'Vet');
+            this.router.navigate(['/Home']);
+          }
+        },
+        (error) => {
+          console.log(error);
+          this.loginListener.next(true);
+        }
+      );
+  }
 }

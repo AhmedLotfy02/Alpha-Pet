@@ -36,9 +36,12 @@ const signin =  (req, res) => {
 			
 			if(existingUser.password != password) return res.status(400).json({ message: 'Invalid Credintials' });
 
-			const token = jwt.sign({ email: existingUser.Email }, process.env.JWTSECRETKEY, { expiresIn: '1h' });    //  creating token to send it back to the client
-
-			res.status(200).json({ data: existingUser, token });
+            const token = jwt.sign({ email: existingUser.Email },
+                "this_should_be_very_long", { expiresIn: "1h" }
+            );
+			res.status(200).json({   token: token,
+                expiresIn: 3600,
+                user: existingUser, });
         });
         
     } catch (error) {
