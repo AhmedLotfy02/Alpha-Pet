@@ -44,7 +44,7 @@ const signin =  (req, res) => {
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { email, password } = req.body;
-    const existingUser;
+    let existingUser;
     const sqlStr = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${email}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
@@ -71,14 +71,14 @@ const signup = (req, res) => {
 
     const { email, password, fName, lName, phone, balance, favouriteVetEmail, city } = req.body;
     try {
-        const sqlStr2 = `SELECT * FROM VET WHERE EMAIL = '${email}';`;
+        let sqlStr2 = `SELECT * FROM VET WHERE EMAIL = '${email}';`;
         connection.query(sqlStr2, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
             if(results.length > 0) return res.status(400).json({ message: 'User already exist' });
         });
         
-        sqlStr2 = `SELECT * FROM PHARMACIST WHERE EMAIL = ${email}`;
+        sqlStr2 = `SELECT * FROM PHARMACIST WHERE EMAIL = '${email}'`;
         connection.query(sqlStr2, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             

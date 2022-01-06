@@ -23,7 +23,7 @@ const signin =  (req, res) => {
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { email, password } = req.body;
-    const existingUser;
+    let existingUser;
     const sqlStr = `SELECT * FROM PHARMACIST WHERE EMAIL = '${email}';`;
 
     try {

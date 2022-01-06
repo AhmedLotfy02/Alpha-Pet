@@ -10,7 +10,7 @@ const {
 } = require('../controllers/vet_comments.js');
 
 const router = express.Router();
-val
+
 router.get(
     '/vet/:email', 
     param('email').isEmail().normalizeEmail().customSanitizer().notEmpty(),
