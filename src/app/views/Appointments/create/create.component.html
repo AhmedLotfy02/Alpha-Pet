@@ -1,6 +1,23 @@
 <body>
 
+ <mat-card class="card">
+    <p>Choose the vet you want to appoint with:</p>
+    <mat-form-field>
+        <mat-label>Select your Vet</mat-label>
+        <mat-select [(value)]="selected">
+            <div>
+                <mat-option  *ngFor="let vet of VetArray" [value]="vet">{{vet}}</mat-option>
 
+            </div>
+           
+          
+        </mat-select>
+    </mat-form-field>
+    <p class="alert" *ngIf="selectionAlert">
+        Please enter a Vet
+    </p>
+    <button mat-raised-button class="appoint" (click)="appoint()" >Done</button>
 
-    
+ </mat-card>
+
 </body>
