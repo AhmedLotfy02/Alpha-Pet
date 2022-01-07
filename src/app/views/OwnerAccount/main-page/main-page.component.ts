@@ -31,4 +31,9 @@ export class MainPageComponent implements OnInit {
     this.router.navigate(['/Account/MyPet']);
 
   }
+  gotoMyFavVet(){
+    this.router.navigate(['/Account/MyFavVet']);
+
+  }
+  
 }

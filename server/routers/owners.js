@@ -66,13 +66,7 @@ router.post(
 );
 router.patch(
     '/update',
-    auth,
-    body('currentUserEmail').isEmail().normalizeEmail(),
-    body('password').notEmpty(),
-    body('fName').notEmpty(),
-    body('lName').notEmpty(),
-    body('phone').notEmpty(),
-    body('city').notEmpty(),
+    
     updateOwner
 );
 router.post('/getOwnerByEmail',getOwnerByEmail);
