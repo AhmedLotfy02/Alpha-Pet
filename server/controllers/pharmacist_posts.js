@@ -42,9 +42,9 @@ const getCommentsOfPost = (req, res) => {
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { id } = req.params;
-    const ownerComments = `SELECT * FROM Owner_Comment, PharmacistPost_OwnerComment WHERE OwnerComment_ID = C_Id AND PharmacistPost_ID = ${id};`;    
-    const vetComments = `SELECT * FROM Vet_Comment, PharmacistPost_VetComment WHERE VetComment_ID = C_Id AND PharmacistPost_ID = ${id};`;    
-    const pharmacistComments = `SELECT * FROM Pharmacist_Comment, PharmacistPost_PharmacistComment WHERE PharmacistComment_ID = C_Id AND PharmacistPost_ID = ${id};`;
+    const ownerComments = `SELECT COMMENT_CONTENT, fName, lName FROM Owner_Comment, PharmacistPost_OwnerComment, Owner_Table WHERE OwnerComment_ID = C_Id AND OWNEREMAIL = EMAIL AND PharmacistPost_ID = ${id}`;    
+    const vetComments = `SELECT COMMENT_CONTENT, fName, lName FROM Vet_Comment, PharmacistPost_VetComment, VET WHERE VetComment_ID = C_Id AND VETEMAIL = EMAIL AND PharmacistPost_ID = ${id}`;    
+    const pharmacistComments = `SELECT COMMENT_CONTENT, fName, lName FROM Pharmacist_Comment, PharmacistPost_PharmacistComment, PHARMACIST WHERE PharmacistComment_ID = C_Id AND PHARMACISTEMAIL = EMAIL AND PharmacistPost_ID = ${id};`;
     
     const sqlStr = `${ownerComments} UNION ${vetComments} UNION ${pharmacistComments}`;
     connection.query(sqlStr, (error, results, fields) => {
