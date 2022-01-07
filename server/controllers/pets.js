@@ -16,12 +16,13 @@ const getAllPets = (req, res) => {
 
 const getPetOfOwner = (req, res) => {
     const { ownerEmail } = req.params;
+    console.log('we are in');
     const sqlStr = `SELECT * FROM PET WHERE OWNEREMAIL = '${ownerEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
-            
-            res.status(200).json({ data: results, fields });
+            console.log(results[0]);
+            res.status(200).json({ pet:results[0] });
         });
     } catch (error) {
         res.status(404).json({ message: error.message });

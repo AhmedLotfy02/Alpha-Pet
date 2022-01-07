@@ -165,7 +165,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Ahmed Lotfy</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.FName}} {{user.LName}}</span>
                                 <img class="img-profile rounded-circle"
                                     src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
                             </a>
@@ -205,14 +205,21 @@
                             <!-- Illustrations -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Dr.Hamdy</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Pet's Information</h6>
                                 </div>
                                 <div class="card-body">
                                    
-                                    <p>You dog need an urgent surgery to save him from death and wants to take these medicines 
-                                            , //Loop for Medicines Med1,Med2 
-                                        </p>
-                                        
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            Pet Name: {{pet.petName}}
+                                        </div>
+                                        <div class="row">
+                                            Pet Color: {{pet.color}}
+                                        </div>
+                                        <div class="row">
+                                            Pet Age: {{pet.age}}
+                                        </div>
+                                    </div>    
                                 </div>
                             </div>
 

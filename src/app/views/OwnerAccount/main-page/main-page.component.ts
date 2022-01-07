@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscriber, Subscription } from 'rxjs';
 import { OwnerAuthData } from 'src/app/Auth/auth-data-model';
 import { AuthService } from 'src/app/Auth/auth.service';
@@ -13,7 +14,7 @@ export class MainPageComponent implements OnInit {
   user!:OwnerAuthData;
   UserListener!:Subscription;
   constructor(
-    private authSerivce:AuthService
+    private authSerivce:AuthService,private router:Router
   ) { }
 
   ngOnInit(): void {
@@ -22,5 +23,12 @@ export class MainPageComponent implements OnInit {
     })
   
   }
+  gotoInform(){
+    this.router.navigate(['/Account/MyInformation']);
 
+  }
+  gotoMyPet(){
+    this.router.navigate(['/Account/MyPet']);
+
+  }
 }

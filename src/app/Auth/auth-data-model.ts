@@ -17,7 +17,8 @@ export interface PharmacistAuthData {
     Charge:number;
     state:boolean;
     
-  }export interface OwnerAuthData {
+  }
+  export interface OwnerAuthData {
     Email: string;
     password: string;
     FName:string;
@@ -28,3 +29,10 @@ export interface PharmacistAuthData {
     City:string;
     
   }
+export interface PetAuthData{
+  OwnerEmail:string,
+  petName:String,
+  color:string,
+  age:number;
+}
+

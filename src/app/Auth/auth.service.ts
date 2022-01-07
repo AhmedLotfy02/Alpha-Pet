@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { check } from 'express-validator';
 import { Subject } from 'rxjs';
 import { signData } from '../models/signUpData-model';
-import {  OwnerAuthData, PharmacistAuthData, VetAuthData } from './auth-data-model';
+import {  OwnerAuthData, PetAuthData, PharmacistAuthData, VetAuthData } from './auth-data-model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -19,7 +19,7 @@ export class AuthService {
   private Pharmacistuser1!: PharmacistAuthData;
   private Vetuser1!: VetAuthData;
   private Owneruser1!: OwnerAuthData;
-
+  private Pet!: PetAuthData;
   private authStatusListener = new Subject<boolean>();
   isAuthenticated = false;
   private creationListener = new Subject<boolean>();
@@ -37,14 +37,24 @@ export class AuthService {
   private tokenTimer: any;
   private loginListener = new Subject<boolean>();
   private OwnerEmailListener=new Subject<OwnerAuthData>();
-
+  private PetListener = new Subject<PetAuthData>();
+  private PetFoundListener= new Subject<boolean>();
+  private changepassListener = new Subject<{
+    changed: boolean;
+    failed: boolean;
+  }>();
   constructor(private http: HttpClient, private router: Router) {
     }
    
     getCurrentOwner(){
       return this.OwnerEmailListener.asObservable();
     }
-
+    getChangePassListener() {
+      return this.changepassListener.asObservable();
+    }
+    getPetOfOwner(){
+      return this.PetListener.asObservable();
+    }
   create_Owner_User(
     email: string,
     password: string,
@@ -240,7 +250,17 @@ export class AuthService {
         this.OwnerEmailListener.next(responsedata.user);
         console.log(this.Owneruser1);
       });
-    
+      this.http.get<{pet:PetAuthData}>(`http://localhost:5000/pets/owner/${this.Owneruser1.Email}`).
+      subscribe((response)=>{
+        this.PetListener.next(response.pet);
+        this.Pet=response.pet;
+        console.log(this.Pet);
+        this.PetFoundListener.next(true);
+      },(error)=>{
+        this.PetFoundListener.next(false);
+        console.log(error);
+      })
+
     }
     const now = new Date();
     const expiresIn = authInformation!.expirationDate.getTime() - now.getTime();
@@ -255,6 +275,35 @@ export class AuthService {
     }
   }
 
+  RequestInformationsofUser(){
+    const authInformation = this.getAuthData();
+
+    if (!authInformation) {
+      return;
+    }
+    this.http
+    .post<{ message: string; user: OwnerAuthData }>(
+      'http://localhost:5000/owners/getOwnerByEmail',
+      { email: authInformation.email }
+    )
+    .subscribe((responsedata: any) => {
+      this.Owneruser1 = responsedata.user;
+      this.OwnerEmailListener.next(responsedata.user);
+      console.log(this.Owneruser1);
+    });
+    this.http.get<{pet:PetAuthData}>(`http://localhost:5000/pets/owner/${authInformation.email}`).
+    subscribe((response)=>{
+      this.PetListener.next(response.pet);
+      this.Pet=response.pet;
+      console.log(this.Pet);
+      console.log(response.pet);
+      this.PetFoundListener.next(true);
+    },(error)=>{
+      this.PetFoundListener.next(false);
+      console.log(error);
+    })
+
+  }
   private setAuthTimer(duraion: number) {
     this.tokenTimer = setTimeout(() => {
      // this.logout();
@@ -290,7 +339,9 @@ export class AuthService {
       };
     }
   }
-  
+  getPetFoundListener(){
+    return this.PetFoundListener.asObservable();
+  }
   getloginListener() {
     return this.loginListener.asObservable();
   }
@@ -431,4 +482,48 @@ export class AuthService {
         }
       );
   }
+
+  changePasswordofOwner(password: string, currentpass: string) {
+    console.log(password);
+    console.log(this.Owneruser1);
+    if(currentpass!=this.Owneruser1.password){
+      this.changepassListener.next({ changed: false, failed: true });
+
+    return;
+    
+    }
+    const data = {
+      newpassword: password,
+      currentpass: currentpass,
+      email: this.Owneruser1.Email,
+    };
+    this.http
+      .post<{ message: string; user: OwnerAuthData }>(
+        'http://localhost:5000/owners/updatePassofOwner',
+        data
+      )
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.changepassListener.next({ changed: true, failed: false });
+          this.Owneruser1 = response.user;
+        },
+        (error) => {
+          this.changepassListener.next({ changed: false, failed: true });
+
+          console.log(error);
+        }
+      );
+  }
+  logout() {
+    this.token = '';
+    this.authStatusListener.next(false);
+    this.isAuthenticated = false;
+    clearTimeout(this.tokenTimer);
+    this.clearAuthData();
+    this.router.navigate(['/']);
+  }
+  
+
+
 }

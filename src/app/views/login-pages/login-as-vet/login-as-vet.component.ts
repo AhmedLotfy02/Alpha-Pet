@@ -15,7 +15,7 @@ export class LoginAsVetComponent implements OnInit {
   private authListenerSubs!: Subscription;
   private loginListener!: Subscription;
   constructor(private authService:AuthService) { }
-
+  
   ngOnInit(): void {
     this.loginListener = this.authService
     .getloginListener()

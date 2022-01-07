@@ -35,6 +35,7 @@ import { LoginAsOwnerComponent } from './views/login-pages/login-as-owner/login-
 import { MainPageComponent } from './views/OwnerAccount/main-page/main-page.component';
 import { MyPetComponent } from './views/OwnerAccount/my-pet/my-pet.component';
 import { MyInformationComponent } from './views/OwnerAccount/my-information/my-information.component';
+import { MyFavVetComponent } from './views/OwnerAccount/my-fav-vet/my-fav-vet.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { MyInformationComponent } from './views/OwnerAccount/my-information/my-i
     LoginAsOwnerComponent,
     MainPageComponent,
     MyPetComponent,
-    MyInformationComponent
+    MyInformationComponent,
+    MyFavVetComponent
   
   ],
   imports: [

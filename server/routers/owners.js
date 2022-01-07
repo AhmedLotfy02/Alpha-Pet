@@ -6,7 +6,8 @@ const {
     signin,
     signup,
     updateOwner,
-    getOwnerByEmail
+    getOwnerByEmail,
+    updatePassofOwner
 } = require('../controllers/owners.js');
 const path = require("path");
 
@@ -75,4 +76,5 @@ router.patch(
     updateOwner
 );
 router.post('/getOwnerByEmail',getOwnerByEmail);
+router.post('/updatePassofOwner',updatePassofOwner);
 module.exports = router;

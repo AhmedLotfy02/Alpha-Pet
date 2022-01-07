@@ -22564,4 +22564,6 @@
     color: #ea7166;
     transform: scale(1.07);
   }
-  
+  li{
+      cursor: pointer;
+  }
