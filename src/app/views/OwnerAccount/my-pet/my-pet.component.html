@@ -195,15 +195,15 @@
 
                     
                     <!-- Content Row -->
-                    <div class="row">
+                    <div   class="row">
 
                         <!-- Content Column -->
                        
-
-                        <div class="col-lg-6 mb-4">
+                        <div  class="col-lg-6 mb-4">
 
                             <!-- Illustrations -->
-                            <div class="card shadow mb-4">
+                            <div >
+                            <div  class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Pet's Information</h6>
                                 </div>
@@ -222,14 +222,31 @@
                                     </div>    
                                 </div>
                             </div>
-
+                        </div>
+                            
+                            
+                            <!-- Illustrations -->
                             <!-- Approach -->
                            
                         </div>
                     </div>
 
                 </div>
-                <!-- /.container-fluid -->
+                <div class="col-lg-6 mb-4">
+   
+                <div *ngIf="!petFound">
+                    <div  class="card shadow mb-4" >
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Pet's Information</h6>
+                        </div>
+                        <div class="card-body">
+                           
+                          <p>You don't have any pets</p>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+                 <!-- /.container-fluid -->
                 <div class="col-lg-6 mb-4">
    
                     <div  class="card shadow mb-4">
@@ -284,7 +301,7 @@
         
         <div class="col-lg-6 mb-4">
    
-        <div *ngIf="pet===null||pet.petName===''" class="card shadow mb-4">
+        <div *ngIf="pet===null||pet.petName===' '" class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Enter Your Pet's Information</h6>
                 </div>

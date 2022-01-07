@@ -16,12 +16,10 @@ const getAllPets = (req, res) => {
 
 const getPetOfOwner = (req, res) => {
     const { ownerEmail } = req.params;
-    console.log('we are in');
     const sqlStr = `SELECT * FROM PET WHERE OWNEREMAIL = '${ownerEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
-            console.log(results[0]);
             res.status(200).json({ pet:results[0] });
         });
     } catch (error) {
@@ -78,7 +76,6 @@ const createPet = (req, res) => {
 const updatePet = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-    console.log(req.body);
     const { petName, color, age, currentUserEmail } = req.body;
     
     const sqlStr = `UPDATE PET SET PETNAME = '${petName}', COLOR = '${color}',  AGE = ${age} WHERE OWNEREMAIL = '${currentUserEmail}';`;

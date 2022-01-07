@@ -192,6 +192,33 @@
                     
 
                     <!-- Content Row -->
+                  
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Balance</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">${{user.Balance}}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <mat-icon> attach_money</mat-icon>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Pending Requests Card Example -->
+                    </div>
 
                     
                     <!-- Content Row -->
@@ -205,70 +232,48 @@
                             <!-- Illustrations -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Your Favourite Vet</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Your Invoices</h6>
                                 </div>
-                                <div  class="card-body">
-                                    <div> Your Favourite Vet: {{user.Favourite_Vet_Email    }}</div>
-                                    <br>
-                                    <br>
-                                    <div >
-                                        <p> Please Choose favourite Vet</p>
-                                        <mat-form-field>
-                                            <mat-label>Select your Vet</mat-label>
-                                            <mat-select [(value)]="selected">
-                                                <div>
-                                                    <mat-option  *ngFor="let vet of vetArray" [value]="vet.EMAIL">{{vet.FNAME}} {{vet.LNAME}}</mat-option>
-                                    
-                                                </div>   </mat-select>
-                                        </mat-form-field>
-                                        <button (click)="Select()" >DONE</button>
-                                        <p class="alert" *ngIf="selectionAlert">
-                                            Please enter a Vet
-                                        </p>
-                                        <p class="alert" *ngIf="doneEditing">
-                                            Done Adding 
-                                        </p>
-                                        
-                                    </div>
-                                    
-                                     
+                            <div class="card-body">
+                                <div *ngFor="let invoice of invoices">
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">InvoiceID: {{invoice.InvoiceId}}</h6>
+                                            </div>
 
+                                            <div class="card-body">
+                                                <p>Notes:  {{invoice.Notes}} </p>
+                                                <p>From Vet: {{invoice.VetEmail}}</p>
+                                                <p>Price: {{invoice.Price}}</p>
+                                                <div class="col-lg-6 mb-4">
+                                                    <div class="card shadow mb-4">
+                                                        <div class="card-header py-3">
+                                                            <h6 class="m-0 font-weight-bold text-primary">PharmacyID: {{invoice.PharmacyID}}</h6>
+                                                        </div>
+            
+                                                        <div class="card-body">
+                                                            <p>Required Medicines: {{invoice.RequiredMedicines}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="warning" *ngIf="invoice.State===1">The Pharmacist still didn't check the invoice</p>
+                                            <div *ngIf="invoice.State===2">
+                                                <p class="warning" >The Pharmacy has these medicines check out</p>
+                                                <button>CheckOut</button>
+
+                                            </div>
+                                            <p class="warning" *ngIf="invoice.State===3">The Pharmacy didn't have these medicines</p>
+                                        </div>
+                                    </div> 
                                 </div>
                             </div>
-
-
-                            <div *ngIf="user.Favourite_Vet_Email==null" class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Change Favourite Vet</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div >
-                                        <p> Please Choose favourite Vet</p>
-                                        <mat-form-field>
-                                            <mat-label>Select your Vet</mat-label>
-                                            <mat-select [(value)]="selected">
-                                                <div>
-                                                    <mat-option  *ngFor="let vet of vetArray" [value]="vet.EMAIL">{{vet.FNAME}} {{vet.LNAME}}</mat-option>
-                                    
-                                                </div>   </mat-select>
-                                        </mat-form-field>
-                                        <button (click)="Select()" >DONE</button>
-                                        <p class="alert" *ngIf="selectionAlert">
-                                            Please enter a Vet
-                                        </p>
-                                        <p class="alert" *ngIf="doneEditing">
-                                            Done Adding Please Reload
-                                        </p>
-                                        
-                                    </div>
-                                      
-                                     
-                                    
-                                </div>
                             </div>
 
                             <!-- Approach -->
                            
+                            
                         </div>
                     </div>
 
@@ -295,30 +300,9 @@
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
 
 </body>
 

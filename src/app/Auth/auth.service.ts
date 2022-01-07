@@ -7,19 +7,20 @@ import { Router } from '@angular/router';
 import { check } from 'express-validator';
 import { Subject } from 'rxjs';
 import { signData } from '../models/signUpData-model';
-import {  OwnerAuthData, PetAuthData, PharmacistAuthData, VetAuthData } from './auth-data-model';
+import {  InvoiceAuthData, OwnerAuthData, PetAuthData, PharmacistAuthData, VetAuthData } from './auth-data-model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
   private testData = new Subject<signData>();
-
+  
     private token!: string;
   private userEmail!: string;
   private Pharmacistuser1!: PharmacistAuthData;
   private Vetuser1!: VetAuthData;
   private Owneruser1!: OwnerAuthData;
   private Pet!: PetAuthData;
+  private Invoices!:InvoiceAuthData[];
   private authStatusListener = new Subject<boolean>();
   isAuthenticated = false;
   private creationListener = new Subject<boolean>();
@@ -37,6 +38,7 @@ export class AuthService {
   private tokenTimer: any;
   private loginListener = new Subject<boolean>();
   private OwnerEmailListener=new Subject<OwnerAuthData>();
+  private PharmacistUserListener=new Subject<PharmacistAuthData>();
   private PetListener = new Subject<PetAuthData>();
   private PetFoundListener= new Subject<boolean>();
   private changepassListener = new Subject<{
@@ -49,6 +51,9 @@ export class AuthService {
    
     getCurrentOwner(){
       return this.OwnerEmailListener.asObservable();
+    }
+    getCurrentPharmacist(){
+      return this.PharmacistUserListener.asObservable();
     }
     getChangePassListener() {
       return this.changepassListener.asObservable();
@@ -267,7 +272,7 @@ export class AuthService {
         this.PetFoundListener.next(false);
         console.log(error);
       })
-
+      this.getInvoicesOfOwner();
     }
     const now = new Date();
     const expiresIn = authInformation!.expirationDate.getTime() - now.getTime();
@@ -303,14 +308,54 @@ export class AuthService {
       this.PetListener.next(response.pet);
       this.Pet=response.pet;
       console.log(this.Pet);
-      console.log(response.pet);
+      console.log(response);
+      if(this.Pet===undefined){
+        this.PetFoundListener.next(false);
+        return;
+      }
       this.PetFoundListener.next(true);
     },(error)=>{
       this.PetFoundListener.next(false);
       console.log(error);
     })
+    this.http.get<{data:InvoiceAuthData[]}>(`http://localhost:5000/invoices/owner/${authInformation.email}`).subscribe((response)=>{
+      this.InvoicesListener.next(response.data); 
+    this.Invoices=response.data;
 
+    },(error)=>{
+      console.log(error);
+    })
   }
+
+  RequestInformationsofPharmacistUser(){
+    const authInformation = this.getAuthData();
+
+    if (!authInformation) {
+      return;
+    }
+    this.http
+    .post<{ message: string; user: PharmacistAuthData }>(
+      'http://localhost:5000/pharmacists/getPharmacistByEmail',
+      { email: authInformation.email }
+    )
+    .subscribe((responsedata: any) => {
+      this.PharmacistUserListener.next(responsedata.user);
+      this.Pharmacistuser1 = responsedata.user;
+      console.log(this.Pharmacistuser1);
+    });
+    
+    this.http.get<{data:InvoiceAuthData[]}>('http://localhost:5000/invoices/').subscribe((response)=>{
+      this.InvoicesListener.next(response.data); 
+    this.Invoices=response.data;
+
+    },(error)=>{
+      console.log(error);
+    })
+  }
+
+
+
+
   private setAuthTimer(duraion: number) {
     this.tokenTimer = setTimeout(() => {
      // this.logout();
@@ -548,6 +593,7 @@ export class AuthService {
       this.FavVetListener.next(false);
     })
   }
+
   private PetsListener=new Subject<PetAuthData[]>();  
   getPetsListener(){
     return this.PetsListener.asObservable();
@@ -587,6 +633,21 @@ export class AuthService {
       console.log(response);
     },(error)=>{
       console.log(error)
+    })
+  }
+
+  private InvoicesListener=new Subject<InvoiceAuthData[]>();  
+  getInvoicesListener(){
+    return this.InvoicesListener.asObservable();
+  }
+  
+  getInvoicesOfOwner(){
+    this.http.get<{data:InvoiceAuthData[]}>(`http://localhost:5000/invoices/owner/${this.Owneruser1.Email}`).subscribe((response)=>{
+    this.InvoicesListener.next(response.data);  
+    this.Invoices=response.data;
+      console.log(response);
+    },(error)=>{
+      console.log(error);
     })
   }
 }
