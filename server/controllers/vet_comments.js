@@ -7,11 +7,12 @@ const getCommentsOfVet = (req, res) => {
 
     const { email } = req.params;
     const { postType } = req.query;
-    let sqlStr;
-    if(postType == 'owner') sqlStr = `SELECT * FROM OwnerPost_VetComment, Vet_Comment WHERE VetComment_ID = C_Id AND VetEmail = '${email}';`;
-    else if(postType == 'vet') sqlStr = `SELECT * FROM VetPost_VetComment, Vet_Comment WHERE VetComment_ID = C_Id AND VetEmail = '${email}';`;
-    else if(postType == 'pharmacist') sqlStr = `SELECT * FROM PharmacistPost_VetComment, Vet_Comment WHERE VetComment_ID = C_Id AND VetEmail = '${email}';`;
-    else sqlStr = `SELECT * FROM Vet_Comment WHERE VetEmail = '${email}';`;
+	let sqlStr = `CALL getCommentsOfVet('${email}', '${postType}')`;
+    // let sqlStr;
+    // if(postType == 'owner') sqlStr = `SELECT * FROM OwnerPost_VetComment, Vet_Comment WHERE VetComment_ID = C_Id AND VetEmail = '${email}';`;
+    // else if(postType == 'vet') sqlStr = `SELECT * FROM VetPost_VetComment, Vet_Comment WHERE VetComment_ID = C_Id AND VetEmail = '${email}';`;
+    // else if(postType == 'pharmacist') sqlStr = `SELECT * FROM PharmacistPost_VetComment, Vet_Comment WHERE VetComment_ID = C_Id AND VetEmail = '${email}';`;
+    // else sqlStr = `SELECT * FROM Vet_Comment WHERE VetEmail = '${email}';`;
     
     try {
         connection.query(sqlStr, (error, results, fields) => {
@@ -29,7 +30,8 @@ const getCommentById = (req, res) => {
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { id } = req.params;
-    const sqlStr = `SELECT * FROM Vet_Comment WHERE C_Id = ${id};`;
+    // const sqlStr = `SELECT * FROM Vet_Comment WHERE C_Id = ${id};`;
+	let sqlStr = `CALL getVetCommentByID(${id})`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -49,28 +51,20 @@ const createComment = (req, res) => {
     const { postType } = req.query;
     let commentId = 0;
     let comment;
-    const sqlStr = `INSERT INTO VET_COMMENT(COMMENT_CONTENT, VETEMAIL) VALUES ('${content}', '${currentUserEmail}');`;
-    try {
+    // const sqlStr = `INSERT INTO VET_COMMENT(COMMENT_CONTENT, VETEMAIL) VALUES ('${content}', '${currentUserEmail}');`;
+    let sqlStr = `CALL createVetComment('${content}', '${currentUserEmail}')`;
+	try {
         connection.query(sqlStr, (error, results, fields) => {
-            if(error) return res.status(400).json({ message: error.message });
-            
-            comment = results;
-            commentId = results[0].C_Id;            
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-
-    if(postType == 'owner') sqlStr = `INSERT INTO OwnerPost_VetComment VALUES (${postId}, ${commentId});`;
-    else if(postType == 'vet') sqlStr = `INSERT INTO VetPost_VetComment VALUES (${postId}, ${commentId});`;
-    else sqlStr = `INSERT INTO PharmacistPost_VetComment VALUES (${postId}, ${commentId});`;
-
-    try {
-        connection.query(sqlStr, (error, results, fields) => {
-            if(error) return res.status(400).json({ message: error.message });
-
-            res.status(200).json({ data: comment, fields });            
-        });
+			if (error) return res.status(400).json({ message: error.message });
+			
+			commentId = results[0][0]['_orderId '];
+			sqlStr = `CALL createVetCommentOnPost(${postId}, ${commentId}, '${postType}')`;
+			connection.query(sqlStr, true, (error, results, fields) => {
+				if (error) return res.status(400).json({ message: error.message });
+				
+				res.status(200).json({ data: results, fields });
+			});
+		});
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -82,8 +76,9 @@ const updateComment = (req, res) => {
 
     const { commentId, content, currentUserEmail } = req.body;
 
-    const sqlStr = `UPDATE VET_COMMENT SET CONTENT = '${content}' WHERE C_ID = ${commentId} AND VETEMAIL = '${currentUserEmail}';`;
-    try {
+    // const sqlStr = `UPDATE VET_COMMENT SET CONTENT = '${content}' WHERE C_ID = ${commentId} AND VETEMAIL = '${currentUserEmail}';`;
+    let sqlStr = `CALL updateVetComment(${commentId}, '${content}', '${currentUserEmail}')`;
+	try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
 
@@ -100,7 +95,8 @@ const deleteComment = (req, res) => {
 
     const { commentId, currentUserEmail } = req.body;
 
-    const sqlStr = `DELETE FROM VET_COMMENT WHERE C_ID = ${commentId} AND VETEMAIL = '${currentUserEmail}';`;
+    // const sqlStr = `DELETE FROM VET_COMMENT WHERE C_ID = ${commentId} AND VETEMAIL = '${currentUserEmail}';`;
+	let sqlStr = `CALL deleteVetComment(${commentId}, '${currentUserEmail}')`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
