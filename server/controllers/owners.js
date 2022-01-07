@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const dotenv = require('dotenv');
 const connection = require('../connection.js');
@@ -37,7 +38,7 @@ const getAllOwners = (req, res) => {
     }
 }
 
-const signin =  (req, res) => {
+const signin =  async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
@@ -51,8 +52,8 @@ const signin =  (req, res) => {
             if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
 
             existingUser = results[0];
-			
-			if(existingUser.password != password) return res.status(400).json({ message: 'Invalid Credintials' });
+			const hashedPassword = await bcrypt.hash(password, 12);
+			if(existingUser.password != hashedPassword) return res.status(400).json({ message: 'Invalid Credintials' });
 
             const token = jwt.sign({ email: existingUser.email},
                 "this_should_be_very_long", { expiresIn: "1h" }
@@ -67,7 +68,7 @@ const signin =  (req, res) => {
     }
 }
 
-const signup = (req, res) => {
+const signup = async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     console.log(req.body);
@@ -89,10 +90,10 @@ const signup = (req, res) => {
             if(results.length > 0) return res.status(400).json({ message: 'User already exist' });
         });
 
-        
-        let sqlStr = `INSERT INTO OWNER_TABLE VALUES('${req.body.email}', '${req.body.FirstName}', '${req.body.LastName}', ${req.body.phone}, ${req.body.balance}, '${req.body.favouriteVetEmail}', '${req.body.city}', '${req.body.password}');`;
+        const hashedPassword = await bcrypt.hash(req.body.password, 12);
+        let sqlStr = `INSERT INTO OWNER_TABLE VALUES('${req.body.email}', '${req.body.FirstName}', '${req.body.LastName}', ${req.body.phone}, ${req.body.balance}, '${req.body.favouriteVetEmail}', '${req.body.city}', '${hashedPassword}');`;
         if(!req.body.favouriteVetEmail){
-			sqlStr = `INSERT INTO OWNER_TABLE VALUES('${req.body.email}', '${req.body.FirstName}', '${req.body.LastName}', ${req.body.phone}, ${req.body.balance}, ${null}, '${req.body.city}', '${req.body.password}');`;
+			sqlStr = `INSERT INTO OWNER_TABLE VALUES('${req.body.email}', '${req.body.FirstName}', '${req.body.LastName}', ${req.body.phone}, ${req.body.balance}, ${null}, '${req.body.city}', '${hashedPassword}');`;
 		} 
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -104,13 +105,14 @@ const signup = (req, res) => {
     }
 }
 
-const updatePassofOwner=(req,res)=>{
+const updatePassofOwner = async(req,res)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     console.log(req.body);
 
     try {
-        let sqlStr = `UPDATE OWNER_TABLE SET  PASSWORD = '${req.body.newpassword}' WHERE EMAIL = '${req.body.email}';`;
+		const hashedPassword = await bcrypt.hash(req.body.newpassword, 12);
+        let sqlStr = `UPDATE OWNER_TABLE SET  PASSWORD = '${hashedPassword}' WHERE EMAIL = '${req.body.email}';`;
        
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
@@ -123,16 +125,17 @@ const updatePassofOwner=(req,res)=>{
 }
 
 
-const updateOwner = (req, res) => {
+const updateOwner = async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     console.log(req.body);
     const { Email, password, FName, LName, phone, Balance, Favourite_Vet_Email, City } = req.body;
     
     try {
-        let sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${FName}', LNAME = '${LName}', PHONE = ${phone}, BALANCE = ${Balance}, FAVOURITE_VET_EMAIL = '${Favourite_Vet_Email}', CITY = '${City}', PASSWORD = '${password}' WHERE EMAIL = '${Email}';`;
+		const hashedPassword = await bcrypt.hash(req.body.password, 12);
+        let sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${FName}', LNAME = '${LName}', PHONE = ${phone}, BALANCE = ${Balance}, FAVOURITE_VET_EMAIL = '${Favourite_Vet_Email}', CITY = '${City}', PASSWORD = '${hashedPassword}' WHERE EMAIL = '${Email}';`;
         if(!Favourite_Vet_Email){
-			sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${FName}', LNAME = '${LName}', PHONE = ${phone}, BALANCE = ${Balance}, CITY = '${City}', PASSWORD = '${password}' WHERE EMAIL = '${Email}';`;
+			sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${FName}', LNAME = '${LName}', PHONE = ${phone}, BALANCE = ${Balance}, CITY = '${City}', PASSWORD = '${hashedPassword}' WHERE EMAIL = '${Email}';`;
 		}
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });

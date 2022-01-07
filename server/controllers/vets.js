@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const dotenv = require('dotenv');
 const connection = require('../connection.js');
@@ -39,7 +40,7 @@ const getAllVets = (req, res) => {
     }
 }
 
-const signin =  (req, res) => {
+const signin =  async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
@@ -53,8 +54,8 @@ const signin =  (req, res) => {
             if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
 
             existingUser = results[0];
-			
-			if(existingUser.password != password) return res.status(400).json({ message: 'Invalid Credintials' });
+			const hashedPassword = await bcrypt.hash(password, 12);
+			if(existingUser.password != hashedPassword) return res.status(400).json({ message: 'Invalid Credintials' });
 
 			const token = jwt.sign({ email: existingUser.Email }, "this_should_be_very_long", { expiresIn: '1h' });    //  creating token to send it back to the client        //  'test' is a secret string
 
@@ -68,7 +69,7 @@ const signin =  (req, res) => {
     }
 }
 
-const signup = (req, res) => {
+const signup = async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
@@ -107,8 +108,8 @@ const signup = (req, res) => {
             
             if(results.length > 0) return res.status(400).json({ message: 'User already exist' });
         });
-        
-        const sqlStr = `INSERT INTO VET VALUES('${req.body.email}', '${req.body.fName}', '${req.body.lName}', ${req.body.charge}, ${state1}, '${req.body.password}');`;
+        const hashedPassword = await bcrypt.hash(req.body.password, 12);
+        const sqlStr = `INSERT INTO VET VALUES('${req.body.email}', '${req.body.fName}', '${req.body.lName}', ${req.body.charge}, ${state1}, '${hashedPassword}');`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
@@ -122,14 +123,15 @@ const signup = (req, res) => {
     }
 }
 
-const updateVet = (req, res) => {
+const updateVet = async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     
     const { currentUserEmail, password, fName, lName, charge, state } = req.body;
 
     try {
-        const sqlStr = `UPDATE VET SET FNAME = '${fName}', LNAME = '${lName}', CHARGE = ${charge}, STATE = ${state}, PASSWORD = '${password}' WHERE EMAIL = '${currentUserEmail}';`;
+		const hashedPassword = await bcrypt.hash(req.body.password, 12);
+        const sqlStr = `UPDATE VET SET FNAME = '${fName}', LNAME = '${lName}', CHARGE = ${charge}, STATE = ${state}, PASSWORD = '${hashedPassword}' WHERE EMAIL = '${currentUserEmail}';`;
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
