@@ -78,7 +78,7 @@ const createPet = (req, res) => {
 const updatePet = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
+    console.log(req.body);
     const { petName, color, age, currentUserEmail } = req.body;
     
     const sqlStr = `UPDATE PET SET PETNAME = '${petName}', COLOR = '${color}',  AGE = ${age} WHERE OWNEREMAIL = '${currentUserEmail}';`;
@@ -86,7 +86,7 @@ const updatePet = (req, res) => {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
 
-            res.status(200).json({ data: results, fields });            
+            res.status(200).json({ data: results });            
         });
     } catch (error) {
         res.status(404).json({ message: error.message });

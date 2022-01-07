@@ -230,11 +230,103 @@
 
                 </div>
                 <!-- /.container-fluid -->
-
+                <div class="col-lg-6 mb-4">
+   
+                    <div  class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary"> Change Your Pet's Information</h6>
+                            </div>
+                            <div class="card-body">
+                                <div >
+                                    <p> Please Choose your Pet</p>
+                                    <form (submit)="changePet(post1Form)" #post1Form="ngForm">
+                                        
+                                        <div class=" input mb-3">
+                                            <mat-form-field>
+                                                <input matInput floatLabel='never'  type="text" name="petName" ngModel #petNameInput="ngModel" required placeholder="Pet Name" />
+                                                <mat-error *ngIf="petNameInput.invalid">Please enter a vaild Pet Name</mat-error>
+                                            </mat-form-field>
+                                            <!-- <input type="text" name="" class="form-control input_user" value="" placeholder="username"> -->
+                                        </div>
+                                        <div class=" input mb-3">
+                                            <mat-form-field>
+                                                <input matInput floatLabel='never'  type="text" name="petAge" ngModel #PetAgeInput="ngModel" required placeholder="Pet Age" />
+                                                <mat-error *ngIf="PetAgeInput.invalid">Please enter a vaild age</mat-error>
+                                            </mat-form-field>
+                                            <!-- <input type="text" name="" class="form-control input_user" value="" placeholder="username"> -->
+                                        </div>
+                                        
+                                        <div class="input mb-2">
+                                            <mat-form-field>
+                                                <input matInput type="text" name="petColor" ngModel #password #petColorInput="ngModel" required placeholder="Pet Color" />
+                                                <mat-error *ngIf="petColorInput.invalid">Please enter color</mat-error>
+                                            </mat-form-field>					</div>
+                                            <div class="d-flex justify-content-center mt-3 login_container">
+                                                <button class="login_btn"  type="submit" mat-raised-button color="primary">Change</button>				   </div>
+                                    </form>
+                
+                                    <p class="alert" *ngIf="doneEditing">
+                                        Done Adding Please Reload
+                                    </p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+            
+                    
+            
+        
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
+            
+        
+        <div class="col-lg-6 mb-4">
+   
+        <div *ngIf="pet===null||pet.petName===''" class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Enter Your Pet's Information</h6>
+                </div>
+                <div class="card-body">
+                    <div >
+                        <p> Please Choose your Pet</p>
+                        <form (submit)="enterPet(postForm)" #postForm="ngForm">
+                            
+                            <div class=" input mb-3">
+                                <mat-form-field>
+                                    <input matInput floatLabel='never'  type="text" name="petName" ngModel #petNameInput="ngModel" required placeholder="Pet Name" />
+                                    <mat-error *ngIf="petNameInput.invalid">Please enter a vaild Pet Name</mat-error>
+                                </mat-form-field>
+                                <!-- <input type="text" name="" class="form-control input_user" value="" placeholder="username"> -->
+                            </div>
+                            <div class=" input mb-3">
+                                <mat-form-field>
+                                    <input matInput floatLabel='never'  type="text" name="petAge" ngModel #PetAgeInput="ngModel" required placeholder="Pet Age" />
+                                    <mat-error *ngIf="PetAgeInput.invalid">Please enter a vaild age</mat-error>
+                                </mat-form-field>
+                                <!-- <input type="text" name="" class="form-control input_user" value="" placeholder="username"> -->
+                            </div>
+                            
+                            <div class="input mb-2">
+                                <mat-form-field>
+                                    <input matInput type="text" name="petColor" ngModel #password #petColorInput="ngModel" required placeholder="Pet Color" />
+                                    <mat-error *ngIf="petColorInput.invalid">Please enter color</mat-error>
+                                </mat-form-field>					</div>
+                                <div class="d-flex justify-content-center mt-3 login_container">
+                                    <button class="login_btn"  type="submit" mat-raised-button color="primary">Change</button>				   </div>
+                        </form>
+    
+                        <p class="alert" *ngIf="doneEditing">
+                            Done Adding Please Reload
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>            
+        
+        <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">

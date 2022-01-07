@@ -21,6 +21,7 @@ selected = ' ';
   ngOnInit(): void {
 
   }
+  
   appoint(){
     if (this.selected === ' ') {
       this.selectionAlert = true;

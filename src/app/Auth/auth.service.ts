@@ -548,6 +548,45 @@ export class AuthService {
       this.FavVetListener.next(false);
     })
   }
+  private PetsListener=new Subject<PetAuthData[]>();  
+  getPetsListener(){
+    return this.PetsListener.asObservable();
+  }
+  getAllPets(){
+    this.http.get<{PetArray:PetAuthData[]}>('http://localhost:5000/pets/').subscribe((response:any)=>{
+      this.PetListener.next(response);
+    })
+  }
+  
+  changePet(petname:string,petAge:number,petColor:string){
+    const data={
+      petName:petname,
+      color:petColor
+      ,age:petAge,
+      currentUserEmail:this.Owneruser1.Email
+    }
+    this.http.patch('http://localhost:5000/pets/',data).subscribe((response:any)=>{
+      this.Pet=response;
+      console.log(response);
+    },(error)=>{
+      console.log(error)
+    })
+  }
 
 
+  
+  AddPet(petname:string,petAge:number,petColor:string){
+    const data={
+      petName:petname,
+      color:petColor
+      ,age:petAge,
+      currentUserEmail:this.Owneruser1.Email
+    }
+    this.http.post('http://localhost:5000/pets/createPet',data).subscribe((response:any)=>{
+      this.Pet=response;
+      console.log(response);
+    },(error)=>{
+      console.log(error)
+    })
+  }
 }

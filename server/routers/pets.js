@@ -19,20 +19,12 @@ router.get('/color/:color', getPetsWithColor);
 router.get('/age/:age', getPetsWithAge);
 router.post(
     '/',
-    auth,
-    body('currentUserEmail').isEmail().normalizeEmail(),
-    body('petName').notEmpty(),
-    body('color').notEmpty(),
-    body('age').notEmpty(),
+  
     createPet
 );
 router.patch(
     '/',
-    auth,
-    body('currentUserEmail').isEmail().normalizeEmail(),
-    body('petName').notEmpty(),
-    body('color').notEmpty(),
-    body('age').notEmpty(),
+    
     updatePet
 );
 router.delete(
