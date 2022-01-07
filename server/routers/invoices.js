@@ -9,6 +9,7 @@ const {
 	getInvoicesOfOwner,
     createInvoice,
     updateInvoice,
+	checkInvoice,
     deleteInvoice
 } = require('../controllers/invoices.js');
 
@@ -40,6 +41,14 @@ router.patch(
     body('invoiceId').isInt(),
     body('pharmacyId').isInt(),
     updateInvoice
+);
+router.patch(
+    '/check',
+    auth,
+    body('currentUserEmail').isEmail().normalizeEmail(), 
+	body('invoiceId').isInt(),
+    body('state').isInt(),
+    checkInvoice
 );
 router.delete(
     '/',

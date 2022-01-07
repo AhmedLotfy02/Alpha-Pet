@@ -106,6 +106,38 @@ const sqlStr = `UPDATE INVOICE SET NOTES = '${notes}', REQUIREDMEDICINES = '${re
     }
 }
 
+const checkInvoice = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+    const { invoiceId, state } = req.body;
+    
+	let sqlStr = `UPDATE INVOICE SET STATE = ${state} WHERE INVOICEID = ${invoiceId};`;
+    try {
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+
+            if(state == 2){
+				sqlStr = `SELECT OWNEREMAIL, PRICE FROM INVOICE WHERE INVOICEID = ${invoiceId};`;
+				connection.query(sqlStr, (error, results, fields) => {
+					if(error) return res.status(400).json({ message: error.message });
+					let price = results[0].Price;
+					let ownerEmail = results[0].OwnerEmail;
+					console.log(results);
+					sqlStr = `UPDATE OWNER_TABLE SET BALANCE = BALANCE - ${price} WHERE EMAIL = '${ownerEmail}';`;
+					connection.query(sqlStr, (error, results, fields) => {
+						if(error) return res.status(400).json({ message: error.message }); 
+						res.status(200).json({ data: "Invoice is Checked" }); 
+					});
+				});
+			}
+			res.status(200).json({ data: "Invoice is Checked" }); 
+        });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
 const deleteInvoice = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
@@ -132,5 +164,6 @@ module.exports = {
 	getInvoicesOfOwner,
     createInvoice,
     updateInvoice,
+	checkInvoice,
     deleteInvoice
 }
