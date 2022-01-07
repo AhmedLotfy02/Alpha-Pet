@@ -55,8 +55,8 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            <li   class="nav-item">
+                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <span>My Informations</span>
                 </a>
@@ -65,7 +65,7 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <span>My Pet</span>
                 </a>
@@ -84,15 +84,15 @@
            
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+            <li  class="nav-item">
+                <a class="nav-link" >
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Pay Invoices</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+            <li  class="nav-item">
+                <a class="nav-link">
                     <span>My Favorite Vets</span></a>
             </li>
 
@@ -190,10 +190,94 @@
 
                     <!-- Content Row -->
                     
-
                     <!-- Content Row -->
 
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Your Invoices</h6>
+                                    
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pie Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Available Pharmacies</h6>
+                                    <div class="card-body">
+                                        <div *ngFor="let invoice of invoices">
+                                            <div class="col-lg-6 mb-4">
+                                                <div class="card shadow mb-4">
+                                                    <div class="card-header py-3">
+                                                        <h6 class="m-0 font-weight-bold text-primary">InvoiceID: {{invoice.InvoiceId}}</h6>
+                                                    </div>
+        
+                                                    <div class="card-body">
+                                                        <p>Notes:  {{invoice.Notes}} </p>
+                                                        <p>From Vet: {{invoice.VetEmail}}</p>
+                                                        <p>Price: {{invoice.Price}}</p>
+                                                        <div class="col-lg-6 mb-4">
+                                                            <div class="card shadow mb-4">
+                                                                <div class="card-header py-3">
+                                                                    <h6 class="m-0 font-weight-bold text-primary">PharmacyID: {{invoice.PharmacyID}}</h6>
+                                                                </div>
                     
+                                                                <div class="card-body">
+                                                                    <p>Required Medicines: {{invoice.RequiredMedicines}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p class="warning" *ngIf="invoice.State===1">The Pharmacist still didn't check the invoice</p>
+                                                    <div *ngIf="invoice.State===2">
+                                                        <p class="warning" >The Pharmacy has these medicines check out</p>
+                                                        <button>CheckOut</button>
+        
+                                                    </div>
+                                                    <p class="warning" *ngIf="invoice.State===3">The Pharmacy didn't have these medicines</p>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                 
+        
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> Direct
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Social
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> Referral
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Content Row -->
                     <div class="row">
 
@@ -205,70 +289,43 @@
                             <!-- Illustrations -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Your Favourite Vet</h6>
-                                </div>
-                                <div  class="card-body">
-                                    <div> Your Favourite Vet: {{user.Favourite_Vet_Email    }}</div>
-                                    <br>
-                                    <br>
-                                    <div >
-                                        <p> Please Choose favourite Vet</p>
-                                        <mat-form-field>
-                                            <mat-label>Select your Vet</mat-label>
-                                            <mat-select [(value)]="selected">
-                                                <div>
-                                                    <mat-option  *ngFor="let vet of vetArray" [value]="vet.EMAIL">{{vet.FNAME}} {{vet.LNAME}}</mat-option>
-                                    
-                                                </div>   </mat-select>
-                                        </mat-form-field>
-                                        <button (click)="Select()" >DONE</button>
-                                        <p class="alert" *ngIf="selectionAlert">
-                                            Please enter a Vet
-                                        </p>
-                                        <p class="alert" *ngIf="doneEditing">
-                                            Done Adding 
-                                        </p>
-                                        
-                                    </div>
-                                    
-                                     
-
-                                </div>
-                            </div>
-
-
-                            <div *ngIf="user.Favourite_Vet_Email==null" class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Change Favourite Vet</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Dr.Hamdy</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div >
-                                        <p> Please Choose favourite Vet</p>
-                                        <mat-form-field>
-                                            <mat-label>Select your Vet</mat-label>
-                                            <mat-select [(value)]="selected">
-                                                <div>
-                                                    <mat-option  *ngFor="let vet of vetArray" [value]="vet.EMAIL">{{vet.FNAME}} {{vet.LNAME}}</mat-option>
-                                    
-                                                </div>   </mat-select>
-                                        </mat-form-field>
-                                        <button (click)="Select()" >DONE</button>
-                                        <p class="alert" *ngIf="selectionAlert">
-                                            Please enter a Vet
+                                   
+                                    <p>You dog need an urgent surgery to save him from death and wants to take these medicines 
+                                            , //Loop for Medicines Med1,Med2 
                                         </p>
-                                        <p class="alert" *ngIf="doneEditing">
-                                            Done Adding Please Reload
-                                        </p>
-                                        
-                                    </div>
-                                      
-                                     
-                                    
+                                        <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                                <h6 class="m-0 font-weight-bold text-primary">Pharmacist Lotfy</h6>
+                                            </div>
+                                            <div class="card-body">
+                                               
+                                                <p>Your Medicines are available at $Pharmacy Name 
+                                                    Pay the invoices and go to near far3
+                                                    </p>
+                                               
+                                            </div>
+                                        </div>
+            
                                 </div>
                             </div>
 
                             <!-- Approach -->
-                           
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
+                                        CSS bloat and poor page performance. Custom CSS classes are used to create
+                                        custom components and custom utility classes.</p>
+                                    <p class="mb-0">Before working with this theme, you should become familiar with the
+                                        Bootstrap framework, especially the utility classes.</p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -282,7 +339,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                       
+                        <span>Copyright &copy; Your Website 2021</span>
                     </div>
                 </div>
             </footer>
@@ -319,6 +376,22 @@
         </div>
     </div>
 
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
 
 </body>
 

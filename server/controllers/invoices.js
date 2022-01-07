@@ -3,11 +3,12 @@ const connection = require('../connection.js');
 
 const getAllInvoices = (req, res) => {
     const sqlStr = `SELECT * FROM INVOICE;`;
+   
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
-            
-            res.status(200).json({ data: results, fields });
+            console.log(results);
+            res.status(200).json({ data: results });
         });
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -48,7 +49,7 @@ const getInvoicesOfVet = (req, res) => {
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
-            
+           
             res.status(200).json({ data: results, fields });
         });
     } catch (error) {
@@ -57,13 +58,14 @@ const getInvoicesOfVet = (req, res) => {
 }
 
 const getInvoicesOfOwner = (req, res) => {
+    console.log(req.params);
     const { ownerEmail } = req.params;
     const sqlStr = `SELECT * FROM INVOICE WHERE OWNEREMAIL = '${ownerEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
-            
-            res.status(200).json({ data: results, fields });
+            console.log(results); 
+            res.status(200).json({ data: results });
         });
     } catch (error) {
         res.status(404).json({ message: error.message });

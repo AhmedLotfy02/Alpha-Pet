@@ -36,3 +36,16 @@ export interface PetAuthData{
   age:number;
 }
 
+export interface InvoiceAuthData{
+  InvoiceId:number;
+  PharmacyID:number;
+  Notes:string;
+  RequiredMedicines:string;
+  ownerEmail:string;
+  Price:number;
+  VetEmail:string;
+  State:number;
+}
+export interface InvoiceAuthDataWhenOwner{
+
+}

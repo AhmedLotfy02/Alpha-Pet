@@ -16,11 +16,14 @@ export class MyPetComponent implements OnInit {
   PetListener!:Subscription;
   PetFoundListener!:Subscription;
   user!:OwnerAuthData;
+  
   pet!: PetAuthData;
-  PetFound=false;
+  petFound:Boolean=false;
   doneEditing=false;
   constructor(private authService:AuthService) {
     this.authService.RequestInformationsofUser();
+   
+
    }
 
   ngOnInit(): void {
@@ -31,7 +34,9 @@ export class MyPetComponent implements OnInit {
       this.pet=repsonse;
     })
     this.PetFoundListener=this.authService.getPetFoundListener().subscribe((response)=>{
-      this.PetFound=response;
+      console.log(response);
+      this.petFound=response;
+      console.log(this.petFound);
     })
 
   }

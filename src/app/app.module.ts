@@ -38,6 +38,8 @@ import { MyInformationComponent } from './views/OwnerAccount/my-information/my-i
 import { MyFavVetComponent } from './views/OwnerAccount/my-fav-vet/my-fav-vet.component';
 import { VetMainPageComponent } from './views/VetAccount/vet-main-page/vet-main-page.component';
 import { AppointmetsComponent } from './views/VetAccount/appointmets/appointmets.component';
+import { MyInvoicesComponent } from './views/OwnerAccount/my-invoices/my-invoices.component';
+import { PharmaMainPageComponent } from './views/PharmacistAccount/pharma-main-page/pharma-main-page.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { AppointmetsComponent } from './views/VetAccount/appointmets/appointmets
     MyInformationComponent,
     MyFavVetComponent,
     VetMainPageComponent,
-    AppointmetsComponent
+    AppointmetsComponent,
+    MyInvoicesComponent,
+    PharmaMainPageComponent
   
   ],
   imports: [
