@@ -9,6 +9,7 @@ import { LoginAsOwnerComponent } from './views/login-pages/login-as-owner/login-
 import { LoginAsPharmacistComponent } from './views/login-pages/login-as-pharmacist/login-as-pharmacist.component';
 import { LoginAsVetComponent } from './views/login-pages/login-as-vet/login-as-vet.component';
 import { MainPageComponent } from './views/OwnerAccount/main-page/main-page.component';
+import { MyFavVetComponent } from './views/OwnerAccount/my-fav-vet/my-fav-vet.component';
 import { MyInformationComponent } from './views/OwnerAccount/my-information/my-information.component';
 import { MyPetComponent } from './views/OwnerAccount/my-pet/my-pet.component';
 import { SignUpAsOwnerComponent } from './views/signUp/sign-up-as-owner/sign-up-as-owner.component';
@@ -19,7 +20,12 @@ import { SignUpAsVetComponent } from './views/signUp/sign-up-as-vet/sign-up-as-v
 const routes: Routes = [
  {path:'',component:LoginPageComponent},{path:'Home',component:HeaderComponent,canActivate: [AuthGuard]},{path:'Account',component:MainPageComponent},{path:'Sign-UpAsOwner',component:SignUpAsOwnerComponent},{path:'Sign-UpAsPharmacist',component:SignUpAsPharmacistComponent}
 ,{path:'Sign-UpAsVet',component:SignUpAsVetComponent},{path:'Request-Appointment',component:CreateComponent}
-,{path:'Login-As-Pharmacist',component:LoginAsPharmacistComponent},{path:'Login-As-Vet',component:LoginAsVetComponent},{path:'Login-As-Owner',component:LoginAsOwnerComponent},{path:'Account/MyPet',component:MyPetComponent},{path:'Account/MyInformation',component:MyInformationComponent}
+,{path:'Login-As-Pharmacist',component:LoginAsPharmacistComponent},
+{path:'Login-As-Vet',component:LoginAsVetComponent},
+{path:'Login-As-Owner',component:LoginAsOwnerComponent},
+{path:'Account/MyPet',component:MyPetComponent},
+{path:'Account/MyInformation',component:MyInformationComponent},
+{path:'Account/MyFavVet',component:MyFavVetComponent}
 ];
 
 @NgModule({

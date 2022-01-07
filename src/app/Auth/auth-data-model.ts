@@ -10,12 +10,12 @@ export interface PharmacistAuthData {
 
 
   export interface VetAuthData {
-    Email: string;
+    EMAIL: string;
     password: string;
-    FName:string;
-    LName:string;
-    Charge:number;
-    state:boolean;
+    FNAME:string;
+    LNAME:string;
+    CHARGE:number;
+    STATE:boolean;
     
   }
   export interface OwnerAuthData {

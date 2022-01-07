@@ -43,6 +43,7 @@ export class AuthService {
     changed: boolean;
     failed: boolean;
   }>();
+  private VetsListener=new Subject<VetAuthData[]>();
   constructor(private http: HttpClient, private router: Router) {
     }
    
@@ -190,9 +191,15 @@ export class AuthService {
       }
     );
   }
+  getVetsListener(){
+    return this.VetsListener.asObservable();
+  }
 
   getAllVets(){
-
+    this.http.get<{vetArray:VetAuthData[]}>('http://localhost:5000/vets/').subscribe((response:any)=>{
+    this.VetsListener.next(response);
+    console.log(response);
+    })
   }
   RequestAppointment(vet:string){
     this.http.post('http://localhost:3000/api/Appoint',vet).subscribe((response:any)=>{
@@ -420,7 +427,7 @@ export class AuthService {
             // this.userEmail = email;
              this.Vetuser1=response.user;
              console.log(this.Vetuser1);
-            console.log(response.user.Email);
+            console.log(response.user.EMAIL);
             
             this.setAuthTimer(expiresInDuration);
             const now = new Date();
@@ -428,7 +435,7 @@ export class AuthService {
               now.getTime() + expiresInDuration * 1000
             );
             console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, response.user.Email,'Vet');
+            this.saveAuthData(token, expirationDate, response.user.EMAIL,'Vet');
             this.router.navigate(['/Home']);
           }
         },
@@ -523,7 +530,24 @@ export class AuthService {
     this.clearAuthData();
     this.router.navigate(['/']);
   }
-  
+  private FavVetListener=new Subject<boolean>();  
+  getFavVetListener(){
+    return this.FavVetListener.asObservable();
+  }
+  FavVet(OwnerEmail:string,VetEmail:string){
+    this.Owneruser1.Favourite_Vet_Email=VetEmail;
+    console.log(this.Owneruser1);
+    //const data={...this.Owneruser1,Favourite_Vet_Email:VetEmail};
+    this.http.patch('http://localhost:5000/owners/update',this.Owneruser1).subscribe((response)=>{
+      console.log('FavEmail done updated');
+      this.FavVetListener.next(true);
+    },(error)=>{
+      this.Owneruser1.Favourite_Vet_Email='none@gmail.com';
+
+      console.log(error);
+      this.FavVetListener.next(false);
+    })
+  }
 
 
 }

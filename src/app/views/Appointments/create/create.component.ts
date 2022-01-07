@@ -22,6 +22,10 @@ selected = ' ';
 
   }
   appoint(){
+    if (this.selected === ' ') {
+      this.selectionAlert = true;
+      return;
+    }
     this.AuthService.RequestAppointment(this.selected);
     console.log(this.selected);
   }

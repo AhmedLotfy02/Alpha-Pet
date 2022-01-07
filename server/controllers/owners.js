@@ -126,13 +126,13 @@ const updatePassofOwner=(req,res)=>{
 const updateOwner = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-    
-    const { currentUserEmail, password, fName, lName, phone, balance, favouriteVetEmail, city } = req.body;
+    console.log(req.body);
+    const { Email, password, FName, LName, phone, Balance, Favourite_Vet_Email, City } = req.body;
     
     try {
-        let sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${fName}', LNAME = '${lName}', PHONE = ${phone}, BALANCE = ${balance}, FAVOURITE_VET_EMAIL = '${favouriteVetEmail}', CITY = '${city}', PASSWORD = '${password}' WHERE EMAIL = '${currentUserEmail}';`;
-        if(!favouriteVetEmail){
-			sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${fName}', LNAME = '${lName}', PHONE = ${phone}, BALANCE = ${balance}, CITY = '${city}', PASSWORD = '${password}' WHERE EMAIL = '${currentUserEmail}';`;
+        let sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${FName}', LNAME = '${LName}', PHONE = ${phone}, BALANCE = ${Balance}, FAVOURITE_VET_EMAIL = '${Favourite_Vet_Email}', CITY = '${City}', PASSWORD = '${password}' WHERE EMAIL = '${Email}';`;
+        if(!Favourite_Vet_Email){
+			sqlStr = `UPDATE OWNER_TABLE SET FNAME = '${FName}', LNAME = '${LName}', PHONE = ${phone}, BALANCE = ${Balance}, CITY = '${City}', PASSWORD = '${password}' WHERE EMAIL = '${Email}';`;
 		}
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
