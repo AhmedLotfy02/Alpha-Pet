@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const connection = require('../connection.js');
 
 const getAllPosts = (req, res) => {
-    const sqlStr = 'SELECT * FROM Vet_Post;';
+    const sqlStr = 'SELECT P_Id, Post_Content, fName, lName FROM Vet_Post, vet where vetemail = email;';
     connection.query(sqlStr, (error, results, fields) => {
         if(error) return res.status(400).json({ message: error.message });
         

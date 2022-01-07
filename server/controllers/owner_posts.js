@@ -3,7 +3,7 @@ const connection = require('../connection.js');
 
 const getAllPosts = (req, res) => {
 
-    const sqlStr = 'SELECT * FROM Owner_Post;';
+    const sqlStr = 'SELECT P_Id, Post_Content, fName, lName FROM Owner_Post, Owner_Table where OwnerEmail = email;';
     connection.query(sqlStr, (error, results, fields) => {
         if(error) return res.status(400).json({ message: error.message });
         

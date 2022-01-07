@@ -7,7 +7,8 @@ module.exports = (req, res, next) => {
         // jwt.verify(token, "this_should_be_very_long");
 		const decoded = jwt.verify(token, "this_should_be_very_long");
         req.body.currentUserEmail = decoded.email;						//	used in the the functions
-        next();
+        console.log(decoded);
+		next();
     } catch (error) {
         res.status(401).json({ message: "Auth failed!" });
     }

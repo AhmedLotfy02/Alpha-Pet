@@ -60,7 +60,7 @@ console.log(req.body);
             console.log(existingUser.password);
 			if(!x) return res.status(400).json({ message: 'Invalid Credintials' });
 
-            const token = jwt.sign({ email: existingUser.email},
+            const token = jwt.sign({ email: existingUser.Email},
                 "this_should_be_very_long", { expiresIn: "1h" }
             );
 			res.status(200).json({   token: token,
