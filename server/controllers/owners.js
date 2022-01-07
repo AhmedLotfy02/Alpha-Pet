@@ -41,19 +41,24 @@ const getAllOwners = (req, res) => {
 const signin =  async(req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
+console.log(req.body);
     const { email, password } = req.body;
     let existingUser;
     const sqlStr = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${req.body.email}';`;
     try {
-        connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, async(error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
             if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
 
             existingUser = results[0];
-			const hashedPassword = await bcrypt.hash(password, 12);
-			if(existingUser.password != hashedPassword) return res.status(400).json({ message: 'Invalid Credintials' });
+            let x= bcrypt.compare(req.body.password, existingUser.password);
+
+            console.log(x);
+
+            console.log(results[0]);
+            console.log(existingUser.password);
+			if(!x) return res.status(400).json({ message: 'Invalid Credintials' });
 
             const token = jwt.sign({ email: existingUser.email},
                 "this_should_be_very_long", { expiresIn: "1h" }

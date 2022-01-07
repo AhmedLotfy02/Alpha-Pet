@@ -55,8 +55,6 @@ const storage = multer.diskStorage({
 router.get('/', getAllOwners);
 router.post(
     '/signin',
-    body('email').isEmail().normalizeEmail(),
-    body('password').notEmpty(),
     signin
 );
 router.post(

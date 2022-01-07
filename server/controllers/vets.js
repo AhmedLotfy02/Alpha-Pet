@@ -48,7 +48,7 @@ const signin =  async(req, res) => {
     let existingUser;
     const sqlStr = `SELECT * FROM VET WHERE EMAIL = '${email}';`;
     try {
-        connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, async(error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
             if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
@@ -96,7 +96,7 @@ const signup = async(req, res) => {
     
       try {
         let sqlStr2 = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${req.body.email}';`;
-        connection.query(sqlStr2, (error, results, fields) => {
+        connection.query(sqlStr2, async(error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
             if(results.length > 0) return res.status(400).json({ message: 'User already exist' });

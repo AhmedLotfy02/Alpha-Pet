@@ -49,7 +49,7 @@ const signin =  async(req, res) => {
     const sqlStr = `SELECT * FROM PHARMACIST WHERE EMAIL = '${email}';`;
 
     try {
-        connection.query(sqlStr, (error, results, fields) => {
+        connection.query(sqlStr, async(error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
             if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
@@ -78,7 +78,7 @@ const signup = async(req, res) => {
     const { email, password, fName, lName, pharmacy_id } = req.body;
     try {
         const sqlStr2 = `SELECT * FROM OWNER_TABLE WHERE EMAIL = '${req.body.email}';`;
-        connection.query(sqlStr2, (error, results, fields) => {
+        connection.query(sqlStr2, async(error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message ,errorLoc:'1'});
             
             if(results.length > 0) return res.status(400).json({ message: 'User already exist' });
