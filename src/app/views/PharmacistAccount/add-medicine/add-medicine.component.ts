@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscriber, Subscription } from 'rxjs';
 import { InvoiceAuthData, OwnerAuthData, PharmacistAuthData } from 'src/app/Auth/auth-data-model';
 import { AuthService } from 'src/app/Auth/auth.service';
 
 @Component({
-  selector: 'app-pharma-main-page',
-  templateUrl: './pharma-main-page.component.html',
-  styleUrls: ['./pharma-main-page.component.css']
+  selector: 'app-add-medicine',
+  templateUrl: './add-medicine.component.html',
+  styleUrls: ['./add-medicine.component.css']
 })
-export class PharmaMainPageComponent implements OnInit {
+export class AddMedicineComponent implements OnInit {
   user!:PharmacistAuthData;
   UserListener!:Subscription;
   invoices!:InvoiceAuthData[];
@@ -31,9 +32,8 @@ export class PharmaMainPageComponent implements OnInit {
       console.log(this.invoices);
     })
     
-  
   }
-  gotoaddMed(){
-    this.router.navigate(['MyAccount/AddMedicine']);
+  AddMed(form:NgForm){
+    
   }
 }

@@ -13,6 +13,7 @@ import { MyFavVetComponent } from './views/OwnerAccount/my-fav-vet/my-fav-vet.co
 import { MyInformationComponent } from './views/OwnerAccount/my-information/my-information.component';
 import { MyInvoicesComponent } from './views/OwnerAccount/my-invoices/my-invoices.component';
 import { MyPetComponent } from './views/OwnerAccount/my-pet/my-pet.component';
+import { AddMedicineComponent } from './views/PharmacistAccount/add-medicine/add-medicine.component';
 import { PharmaMainPageComponent } from './views/PharmacistAccount/pharma-main-page/pharma-main-page.component';
 import { SignUpAsOwnerComponent } from './views/signUp/sign-up-as-owner/sign-up-as-owner.component';
 import { SignUpAsPharmacistComponent } from './views/signUp/sign-up-as-pharmacist/sign-up-as-pharmacist.component';
@@ -29,7 +30,8 @@ const routes: Routes = [
 {path:'Account/MyInformation',component:MyInformationComponent},
 {path:'Account/MyFavVet',component:MyFavVetComponent},
 {path:'Account/MyInvoices',component:MyInvoicesComponent},
-{path:'MyAccount',component:PharmaMainPageComponent}
+{path:'MyAccount',component:PharmaMainPageComponent},
+{path:'MyAccount/AddMedicine',component:AddMedicineComponent}
 ];
 
 @NgModule({

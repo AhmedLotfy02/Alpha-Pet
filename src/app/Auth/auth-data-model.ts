@@ -46,6 +46,14 @@ export interface InvoiceAuthData{
   VetEmail:string;
   State:number;
 }
-export interface InvoiceAuthDataWhenOwner{
+export interface InvoiceAuthDataWhenPharmacist{
 
+InvoiceId:number;
+  PharmacyID:number;
+  Notes:string;
+  RequiredMedicines:string;
+  ownerEmail:string;
+  Price:number;
+  VetEmail:string;
+  State:number;
 }

@@ -344,7 +344,7 @@ export class AuthService {
       console.log(this.Pharmacistuser1);
     });
     
-    this.http.get<{data:InvoiceAuthData[]}>(`http://localhost:5000/invoices/pharmacy/${this.Pharmacistuser1.Pharmacy_Id}`).subscribe((response)=>{
+    this.http.get<{data:InvoiceAuthData[]}>('http://localhost:5000/invoices/').subscribe((response)=>{
       this.InvoicesListener.next(response.data); 
     this.Invoices=response.data;
 

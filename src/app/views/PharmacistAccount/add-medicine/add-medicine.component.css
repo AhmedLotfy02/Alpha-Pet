@@ -22567,17 +22567,3 @@
   li{
       cursor: pointer;
   }
-
-  .btns{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-  }
-  .btns button{
-      background-color: purple;
-      color:white;
-  }
-  .btns button:hover{
-    background-color: black;
-    color:white;
-}

@@ -86,7 +86,7 @@
             <!-- Nav Item - Charts -->
            
             <!-- Nav Item - Tables -->
-            <li (click)="gotoaddMed()" class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link">
                     <span>Add Medicine</span></a>
             </li>
@@ -94,6 +94,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
+         
             
    
 
@@ -195,127 +196,42 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Your Invoices</h6>
-                                    
+                                    <h6 class="m-0 font-weight-bold text-primary">Add Medicine</h6>
+                                   
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div *ngFor="let invoice of invoices">
-                                        <div *ngIf="invoice.State===1">
-                                        <div *ngIf="invoice.PharmacyID===user.Pharmacy_Id " class="col-xl-8 col-lg-7">
-                                            <div class="card shadow mb-4">
-                                                <div class="card-header py-3">
-                                                    <h6 class="m-0 font-weight-bold text-primary">InvoiceID: {{invoice.InvoiceId}}</h6>
-                                                </div>
-    
-                                                <div class="card-body">
-                                                    <p>Notes:  {{invoice.Notes}} </p>
-                                                    <p>From Vet: {{invoice.VetEmail}}</p>
-                                                    <p>Price: {{invoice.Price}}</p>
-                                                    <div class="col-xl-8 col-lg-7">
-                                                        <div class="card shadow mb-4">
-                                                            <div class="card-header py-3">
-                                                                <h6 class="m-0 font-weight-bold text-primary">PharmacyID: {{invoice.PharmacyID}}</h6>
-                                                            </div>
-                
-                                                            <div class="card-body">
-                                                                <p>Required Medicines: {{invoice.RequiredMedicines}}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="btns">
-                                                            <button mat-raised-button>Found</button>
-                                                            <button  mat-raised-button>Not Found</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                               </div>
-                                        </div> 
-                                    </div>
-                                </div>
-                                
+                                    <form (submit)="AddMed(postForm)" #postForm="ngForm">
+                                        <div class="col-md-6">
+                                            <mat-form-field>
+                                                <input matInput type="text" name="username" ngModel #usernameInput="ngModel" required placeholder="Username" />
+                                                <mat-error *ngIf="usernameInput.invalid">Please enter a vaild username</mat-error>
+                                            </mat-form-field>
+                                            <br />
+                                            <mat-form-field>
+                                                <input matInput type="password" name="password" ngModel #password #passwordInput="ngModel" required placeholder="Password" />
+                                                <mat-error *ngIf="passwordInput.invalid">Please enter password</mat-error>
+                                            </mat-form-field>
+                                            
+                                        </div>
+                                        
+                                        <br>
+                                        <br>
+                                        <button class="b1" type="submit" mat-raised-button color="accent">
+                                  Login
+                                </button>
+                                    </form>
+                                    
                                 </div>
                             </div>
                         </div>
 
                         <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Available Medicines</h6>
-                                    <div class="card-body">
-                                        
-
-
-                                        
-
-
-
-
-                                    </div>
-                                 
-        
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Content Column -->
-                       
-
-                        <div class="col-lg-6 mb-4">
-
-                            <!-- Illustrations -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Dr.Hamdy</h6>
-                                </div>
-                                <div class="card-body">
-                                   
-                                    <p>You dog need an urgent surgery to save him from death and wants to take these medicines 
-                                            , //Loop for Medicines Med1,Med2 
-                                        </p>
-                                        <div class="card shadow mb-4">
-                                            <div class="card-header py-3">
-                                                <h6 class="m-0 font-weight-bold text-primary">Pharmacist Lotfy</h6>
-                                            </div>
-                                            <div class="card-body">
-                                               
-                                                <p>Your Medicines are available at $Pharmacy Name 
-                                                    Pay the invoices and go to near far3
-                                                    </p>
-                                               
-                                            </div>
-                                        </div>
-            
-                                </div>
-                            </div>
-
-                            <!-- Approach -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
-                                        CSS bloat and poor page performance. Custom CSS classes are used to create
-                                        custom components and custom utility classes.</p>
-                                    <p class="mb-0">Before working with this theme, you should become familiar with the
-                                        Bootstrap framework, especially the utility classes.</p>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
+                    
                 </div>
                 <!-- /.container-fluid -->
 
