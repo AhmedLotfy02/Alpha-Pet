@@ -122,6 +122,24 @@ const signup = async(req, res) => {
         res.status(404).json({ message: error.message });
     }
 }
+const updatePassofVet = async(req,res)=>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    console.log(req.body);
+
+    try {
+		const hashedPassword = await bcrypt.hash(req.body.newpassword, 12);
+        let sqlStr = `UPDATE VET SET  PASSWORD = '${hashedPassword}' WHERE EMAIL = '${req.body.email}';`;
+       
+        connection.query(sqlStr, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+            
+            res.status(200).json({ data: results });
+        });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
 
 const updateVet = async(req, res) => {
     const errors = validationResult(req);
@@ -147,5 +165,6 @@ module.exports = {
     signin,
     signup,
     updateVet,
-    getVetByEmail
+    getVetByEmail,
+    updatePassofVet
 };

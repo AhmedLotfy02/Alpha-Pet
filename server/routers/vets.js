@@ -12,7 +12,8 @@ const {
     signin,
     signup,
     updateVet,
-    getVetByEmail
+    getVetByEmail,
+    updatePassofVet
 } = require('../controllers/vets.js');
 
 const router = express.Router();
@@ -79,7 +80,7 @@ router.post('/getVetByEmail',getVetByEmail);
 //     console.log(req.body);
 // })
 
-
+router.post('/updatePassofVet',updatePassofVet);
 
 router.patch(
     '/update',

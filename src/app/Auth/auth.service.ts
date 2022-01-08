@@ -626,6 +626,40 @@ export class AuthService {
         }
       );
   }
+
+  changePasswordofVet(password: string, currentpass: string) {
+    console.log(password);
+    console.log(this.Owneruser1);
+    if(currentpass!=this.Owneruser1.password){
+      this.changepassListener.next({ changed: false, failed: true });
+
+    return;
+    
+    }
+    const data = {
+      newpassword: password,
+      currentpass: currentpass,
+      email: this.Owneruser1.Email,
+    };
+    this.http
+      .post<{ message: string; user: VetAuthData }>(
+        'http://localhost:5000/owners/updatePassofOwner',
+        data
+      )
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.changepassListener.next({ changed: true, failed: false });
+          this.Vetuser1 = response.user;
+        },
+        (error) => {
+          this.changepassListener.next({ changed: false, failed: true });
+
+          console.log(error);
+        }
+      );
+  }
+
   logout() {
     this.token = '';
     this.authStatusListener.next(false);
