@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const connection = require('../connection.js');
 
 const getAllPosts = (req, res) => {
-    const sqlStr = 'SELECT P_Id, Post_Content, fName, lName FROM Pharmacist_Post, Pharmacist where PharmacistEmail = email;';
+    const sqlStr = 'SELECT email, P_Id, Post_Content, fName, lName FROM Pharmacist_Post, Pharmacist where PharmacistEmail = email;';
     connection.query(sqlStr, (error, results, fields) => {
         if(error) return res.status(400).json({ message: error.message });
         
@@ -42,9 +42,9 @@ const getCommentsOfPost = (req, res) => {
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { id } = req.params;
-    const ownerComments = `SELECT COMMENT_CONTENT, fName, lName FROM Owner_Comment, PharmacistPost_OwnerComment, Owner_Table WHERE OwnerComment_ID = C_Id AND OWNEREMAIL = EMAIL AND PharmacistPost_ID = ${id}`;    
-    const vetComments = `SELECT COMMENT_CONTENT, fName, lName FROM Vet_Comment, PharmacistPost_VetComment, VET WHERE VetComment_ID = C_Id AND VETEMAIL = EMAIL AND PharmacistPost_ID = ${id}`;    
-    const pharmacistComments = `SELECT COMMENT_CONTENT, fName, lName FROM Pharmacist_Comment, PharmacistPost_PharmacistComment, PHARMACIST WHERE PharmacistComment_ID = C_Id AND PHARMACISTEMAIL = EMAIL AND PharmacistPost_ID = ${id};`;
+    const ownerComments = `SELECT email, COMMENT_CONTENT, fName, lName FROM Owner_Comment, PharmacistPost_OwnerComment, Owner_Table WHERE OwnerComment_ID = C_Id AND OWNEREMAIL = EMAIL AND PharmacistPost_ID = ${id}`;    
+    const vetComments = `SELECT email, COMMENT_CONTENT, fName, lName FROM Vet_Comment, PharmacistPost_VetComment, VET WHERE VetComment_ID = C_Id AND VETEMAIL = EMAIL AND PharmacistPost_ID = ${id}`;    
+    const pharmacistComments = `SELECT email, COMMENT_CONTENT, fName, lName FROM Pharmacist_Comment, PharmacistPost_PharmacistComment, PHARMACIST WHERE PharmacistComment_ID = C_Id AND PHARMACISTEMAIL = EMAIL AND PharmacistPost_ID = ${id};`;
     
     const sqlStr = `${ownerComments} UNION ${vetComments} UNION ${pharmacistComments}`;
     connection.query(sqlStr, (error, results, fields) => {
