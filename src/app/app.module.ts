@@ -41,6 +41,7 @@ import { AppointmetsComponent } from './views/VetAccount/appointmets/appointmets
 import { MyInvoicesComponent } from './views/OwnerAccount/my-invoices/my-invoices.component';
 import { PharmaMainPageComponent } from './views/PharmacistAccount/pharma-main-page/pharma-main-page.component';
 import { AddMedicineComponent } from './views/PharmacistAccount/add-medicine/add-medicine.component';
+import { MyInfoComponent } from './views/VetAccount/my-info/my-info.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { AddMedicineComponent } from './views/PharmacistAccount/add-medicine/add
     AppointmetsComponent,
     MyInvoicesComponent,
     PharmaMainPageComponent,
-    AddMedicineComponent
+    AddMedicineComponent,
+    MyInfoComponent
   
   ],
   imports: [

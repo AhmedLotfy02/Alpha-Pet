@@ -24,7 +24,9 @@ export class SignUpAsVetComponent implements OnInit {
 
   constructor(  private router: Router,
     private _snackBar: MatSnackBar,
-    private _fb: FormBuilder,private AuthSerivce:AuthService) { }
+    private _fb: FormBuilder,private AuthSerivce:AuthService
+   
+    ) { }
     openSnackBar(message: string, action: string) {
       this._snackBar.open(message, action);
     }
@@ -44,20 +46,15 @@ export class SignUpAsVetComponent implements OnInit {
     if (this.form.invalid || this.form.value.phone < 10) {
       return;
     } 
-    //console.log(this.form.value);
-    // this.AuthSerivce.create_Vet_User()
-   // console.log('doneinfunc');  
+  
     this.AuthSerivce.create_Vet_User(this.form.value.email,this.form.value.password,this.form.value.FirstName,this.form.value.image,this.form.value.LastName,this.form.value.charge);
 
-    // this.authService.createUser(
-    //   this.form.value.email,
-    //   this.form.value.password,
-    //   this.form.value.username,
-    //   this.form.value.image,
-    //   this.form.value.mobile,
-    //   this.selected
-    // );
+   
     
+  }
+  gotovetLogin(){
+    this.router.navigate(['/Login-As-Vet']);
+
   }
   ngOnInit(): void {
     this.form = this._fb.group({
@@ -105,5 +102,7 @@ export class SignUpAsVetComponent implements OnInit {
     //   });
   }
 //      const { email, password, fName, lName, charge, state } = req.body;
+
+//Login-As-Vet
 
 }

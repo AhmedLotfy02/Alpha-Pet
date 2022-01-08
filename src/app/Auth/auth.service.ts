@@ -46,6 +46,7 @@ export class AuthService {
     failed: boolean;
   }>();
   private VetsListener=new Subject<VetAuthData[]>();
+  private VetUserListener=new Subject<VetAuthData>();
   private MedicinesListener=new Subject<MedAuthData[]>();
   private medicines!:MedAuthData[];
   getMedicinesListener(){
@@ -368,6 +369,28 @@ export class AuthService {
   
   }
 
+  getVetUserListener(){
+    return this.VetUserListener.asObservable();
+  }
+  RequestInformationsofVetUser(){
+    const authInformation = this.getAuthData();
+
+    if (!authInformation) {
+      return;
+    }
+    this.http
+    .post<{ message: string; user: VetAuthData }>(
+      'http://localhost:5000/vets/getVetByEmail',
+      { email: authInformation.email }
+    )
+    .subscribe((responsedata: any) => {
+      this.VetUserListener.next(responsedata.user);
+      this.Vetuser1 = responsedata.user;
+      console.log(this.Vetuser1);
+    });
+    
+    
+  }
 
 
 

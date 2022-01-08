@@ -18,6 +18,7 @@ import { PharmaMainPageComponent } from './views/PharmacistAccount/pharma-main-p
 import { SignUpAsOwnerComponent } from './views/signUp/sign-up-as-owner/sign-up-as-owner.component';
 import { SignUpAsPharmacistComponent } from './views/signUp/sign-up-as-pharmacist/sign-up-as-pharmacist.component';
 import { SignUpAsVetComponent } from './views/signUp/sign-up-as-vet/sign-up-as-vet.component';
+import { MyInfoComponent } from './views/VetAccount/my-info/my-info.component';
 import { VetMainPageComponent } from './views/VetAccount/vet-main-page/vet-main-page.component';
 
 
@@ -33,7 +34,8 @@ const routes: Routes = [
 {path:'Account/MyInvoices',component:MyInvoicesComponent},
 {path:'MyAccount',component:PharmaMainPageComponent},
 {path:'MyAccount/AddMedicine',component:AddMedicineComponent},
-{path:'MyPanel',component:VetMainPageComponent}
+{path:'MyPanel',component:VetMainPageComponent},
+{path:'MyPanel/MyInfo',component:MyInfoComponent}
 ];
 
 @NgModule({

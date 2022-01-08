@@ -5,7 +5,7 @@
             <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
             <h3>Welcome</h3>
             <p>We will help you to cure your pet</p>
-            <input type="submit" name="" value="Login"/><br/>
+            <input (click)="gotovetLogin()" type="submit" name="" value="Login"/><br/>
         </div>
         <div class="col-md-9 register-right">
             <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
@@ -82,7 +82,7 @@
                             <input type="file" #filePicker (change)="onImagePicked($event)" />
             
                             <div class="d-flex justify-content-center mt-3 login_container">
-                                <button class="btnRegister"  type="submit" mat-raised-button color="primary">SignUp</button>		
+                                <button class="btnRegister"  type="submit" mat-raised-button color="primary">Sign Up</button>		
                              </div>
                             <!--image ends-->
                         </div>
