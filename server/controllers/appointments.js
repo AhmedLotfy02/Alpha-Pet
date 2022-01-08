@@ -112,7 +112,7 @@ const createAppointment = (req, res) => {
 						}
 					});*/
 					
-					const sqlStr = `INSERT INTO APPOINTMENT VALUES ('${startDate}', '${endDate}', '${currentUserEmail}', '${vetEmail}', 1);`;
+					const sqlStr = `INSERT INTO APPOINTMENT(startDate, endDate, ownerEmail, vetEmail) VALUES ('${startDate}', '${endDate}', '${currentUserEmail}', '${vetEmail}');`;
 					connection.query(sqlStr, (error, results, fields) => {
 						if(error) return res.status(400).json({ message: error.message });
 
@@ -236,7 +236,7 @@ const updateStateOfAppointment = (req, res) => {
 					}
 				});*/
 
-				const sqlStr = `UPDATE APPOINTMENT SET STATE = ${state} WHERE VETEMAIL = $'{currentUserEmail}' AND STARTDATE = '${startDate}';`;
+				const sqlStr = `UPDATE APPOINTMENT SET STATE = ${state} WHERE VETEMAIL = $'{currentUserEmail}' AND ID = ${Id};`;
 				connection.query(sqlStr, (error, results, fields) => {
 					if(error) return res.status(400).json({ message: error.message });
 

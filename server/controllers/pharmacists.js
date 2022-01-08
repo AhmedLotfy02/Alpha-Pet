@@ -113,15 +113,23 @@ const updatePharmacist = async (req, res) => {
     const { currentUserEmail, password, fName, lName, pharmacy_id } = req.body;
 
     try {
-		const hashedPassword = await bcrypt.hash(password, 12);
-        let sqlStr = `UPDATE PHARMACIST SET FNAME = '${fName}', LNAME = '${lName}', PHARMACY_ID = ${pharmacy_id}, PASSWORD = '${hashedPassword}' WHERE EMAIL = '${currentUserEmail}';`;
-        if(!pharmacy_id){
-			sqlStr = `UPDATE PHARMACIST SET FNAME = '${fName}', LNAME = '${lName}', PASSWORD = '${hashedPassword}', PHARMACY_ID = ${null}, WHERE EMAIL = '${currentUserEmail}';`;
-		}
-        connection.query(sqlStr, (error, results, fields) => {
+		const sqlStr2 = `SELECT * FROM PHARMACIST WHERE EMAIL = '${email}';`;
+		connection.query(sqlStr2, async(error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
-            res.status(200).json({ data: results });
+            if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
+
+            let existingUser = results[0];
+			let x=await bcrypt.compare(req.body.currentPassword, existingUser.password);
+			if(!x) return res.status(400).json({ message: 'Invalid Credintials' });
+
+            const hashedPassword = await bcrypt.hash(req.body.newpassword, 12);
+			let sqlStr = `UPDATE PHARMACIST SET PASSWORD = '${hashedPassword}' WHERE EMAIL = '${currentUserEmail}';`;
+			connection.query(sqlStr, (error, results, fields) => {
+				if(error) return res.status(400).json({ message: error.message });
+				
+				res.status(200).json({ data: results });
+			});
         });
     } catch (error) {
         res.status(404).json({ message: error.message });
