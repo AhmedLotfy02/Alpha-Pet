@@ -66,10 +66,13 @@ function AddPost() {
 		   console.log(result.data.insertId);
 		   newPost.setAttribute('data-id', `id${result.data.insertId}`);
 		   newPost.setAttribute('data-type', `${type}`);
+		   newPost.setAttribute('data-expanded', `0`);
 		   let mainContent = document.querySelector(".main-content");
 		   newPost.children[3].children[newPost.children[3].children.length-1].children[1].classList.add('id'+result.data.insertId);
 		   newPost.children[3].children[newPost.children[3].children.length-1].children[1].classList.add(type);
-		   console.log(newPost.children[3].children[newPost.children[3].children.length-1].children[1]);
+		   newPost.children[0].children[0].children[0].setAttribute('src', `http://localhost:5000/images/${localStorage.getItem("email")}.jpg`);
+		   newPost.children[0].children[0].children[1].children[0].innerHTML = `${localStorage.getItem("fName")} ${localStorage.getItem("lName")}`;
+		   newPost.children[3].children[0].children[0].children[0].setAttribute('src', `http://localhost:5000/images/${localStorage.getItem("email")}.jpg`);
 		   mainContent.insertBefore(newPost, mainContent.childNodes[4]);
 	   },
 	   error: function (error) {
@@ -82,7 +85,8 @@ function AddComment(e) {
 	let post = e.parentElement.parentElement.parentElement;
 	let postId = e.parentElement.parentElement.parentElement.getAttribute('data-id');
 	let postType = e.parentElement.parentElement.parentElement.getAttribute('data-type');
-	// console.log(document.querySelector(`.${postId}.${postType}`));
+	post.setAttribute('data-expanded', `1`);
+	
 	console.log(`.${postId} .${postType}`);
 	console.log(post);
 	let commentText = document.querySelector(`.${postId}.${postType}`).value;
@@ -110,7 +114,8 @@ function AddComment(e) {
 	   },
 	   success: function (result) {
 		   post.children[3].insertBefore(newComment, post.children[3].children[post.children[3].children[length-1]]);
-		   console.log(post.children[3]);
+		   newComment.children[0].setAttribute('src', `http://localhost:5000/images/${localStorage.getItem("email")}.jpg`);
+		   newComment.children[1].children[0].innerHTML = `${localStorage.getItem("fName")} ${localStorage.getItem("lName")}`;
 	    },
 	    error: function (error) {
 			console.log(error);
@@ -120,6 +125,9 @@ function AddComment(e) {
 
 function loadAllPosts() {
 	
+	document.getElementById('main-profile-image').setAttribute('src', `http://localhost:5000/images/${localStorage.getItem("email")}.jpg`);
+	document.getElementById('post-profile-image').setAttribute('src', `http://localhost:5000/images/${localStorage.getItem("email")}.jpg`);
+	document.getElementById('username-in-post').innerHTML = `${localStorage.getItem("fName")} ${localStorage.getItem("lName")}`;
 	
 	
 	$.ajax({
@@ -136,14 +144,17 @@ function loadAllPosts() {
 				newPost.classList.remove('hidden');
 			    newPost.setAttribute('data-id', `id${post.P_Id}`);
 				newPost.setAttribute('data-type', `owner`);
+				newPost.setAttribute('data-expanded', `0`);
 				newPost.children[0].children[0].children[1].children[0].innerHTML = `${post.fName} ${post.lName}`;
 				
 				let mainContent = document.querySelector(".main-content");
 			    newPost.children[3].children[newPost.children[3].children.length-1].children[1].classList.add('id'+post.P_Id);
 			    newPost.children[3].children[newPost.children[3].children.length-1].children[1].classList.add('owner');
+				newPost.children[0].children[0].children[0].setAttribute('src', `http://localhost:5000/images/${post.email}.jpg`);
+				newPost.children[3].children[0].children[0].children[0].setAttribute('src', `http://localhost:5000/images/${localStorage.getItem("email")}.jpg`);
 			    mainContent.insertBefore(newPost, mainContent.childNodes[4]);
 			});
-			console.log(result.data.length);
+			console.log(result.data[0]);
 	    },
 	    error: function (error) {
 			console.log(error);
@@ -164,11 +175,14 @@ function loadAllPosts() {
 				newPost.classList.remove('hidden');
 			    newPost.setAttribute('data-id', `id${post.P_Id}`);
 				newPost.setAttribute('data-type', `vet`);
+				newPost.setAttribute('data-expanded', `0`);
 				newPost.children[0].children[0].children[1].children[0].innerHTML = `${post.fName} ${post.lName}`;
 				
 				let mainContent = document.querySelector(".main-content");
 			    newPost.children[3].children[newPost.children[3].children.length-1].children[1].classList.add('id'+post.P_Id);
 			    newPost.children[3].children[newPost.children[3].children.length-1].children[1].classList.add('vet');
+				newPost.children[0].children[0].children[0].setAttribute('src', `http://localhost:5000/images/${post.email}.jpg`);
+				newPost.children[3].children[0].children[0].children[0].setAttribute('src', `http://localhost:5000/images/${localStorage.getItem("email")}.jpg`);
 			    mainContent.insertBefore(newPost, mainContent.childNodes[4]);
 			});
 			console.log(result.data.length);
@@ -192,11 +206,14 @@ function loadAllPosts() {
 				newPost.classList.remove('hidden');
 			    newPost.setAttribute('data-id', `id${post.P_Id}`);
 				newPost.setAttribute('data-type', `pharmacist`);
+				newPost.setAttribute('data-expanded', `0`);
 				newPost.children[0].children[0].children[1].children[0].innerHTML = `${post.fName} ${post.lName}`;
 				
 				let mainContent = document.querySelector(".main-content");
 			    newPost.children[3].children[newPost.children[3].children.length-1].children[1].classList.add('id'+post.P_Id);
 			    newPost.children[3].children[newPost.children[3].children.length-1].children[1].classList.add('pharmacist');
+				newPost.children[0].children[0].children[0].setAttribute('src', `http://localhost:5000/images/${post.email}.jpg`);
+				newPost.children[3].children[0].children[0].children[0].setAttribute('src', `http://localhost:5000/images/${localStorage.getItem("email")}.jpg`);
 			    mainContent.insertBefore(newPost, mainContent.childNodes[4]);
 			});
 			console.log(result.data.length);
@@ -213,10 +230,17 @@ function loadCommentsOfPost(e) {
 	let post = e.parentElement.parentElement.parentElement;
 	let postId = e.parentElement.parentElement.parentElement.getAttribute('data-id');
 	let postType = e.parentElement.parentElement.parentElement.getAttribute('data-type');
-	// console.log(document.querySelector(`.${postId}.${postType}`));
-	console.log(`.${postId} .${postType}`);
-	console.log(post);
 	
+	if(post.getAttribute('data-expanded') == '1'){
+		let l = post.children[3].children.length;
+		while(post.children[3].children.length > 1) {
+			post.children[3].removeChild(post.children[3].children[1]);
+		}
+		// post.children[3].innerHTML = post.children[3].children[0];
+		post.setAttribute('data-expanded', `0`);
+		return;
+	}
+	post.setAttribute('data-expanded', `1`);
 	$.ajax({
 	    url: `http://localhost:5000/${postType}Posts/comments/${postId.substring(2)}`,
 	    type: 'GET',
@@ -233,6 +257,7 @@ function loadCommentsOfPost(e) {
 				newComment.children[1].children[1].innerHTML = comment.COMMENT_CONTENT;
 				newComment.classList.remove('hidden');
 				newComment.children[1].children[0].innerHTML = `${comment.fName} ${comment.lName}`;
+				newComment.children[0].setAttribute('src', `http://localhost:5000/images/${comment.email}.jpg`);
 				console.log(comment);
 				post.children[3].insertBefore(newComment, post.children[3].children[post.children[3].children[length-1]]);
 			});
