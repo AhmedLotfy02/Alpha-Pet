@@ -941,17 +941,17 @@ getPharmacPage(){
         console.log(error);
       })
 
-      // const data1={
-      //   Id:appoint.id,
-      //   ownerEmail:appoint.OwnerEmail,
-      //   state:6,
-      //   startDate:appoint.StartDate,
-      //   currentUserEmail:appoint.VetEmail
-      // }
-      // this.http.post('http://localhost:5000/appointments/updateStateOfAppointment',data1).subscribe((response)=>{
-      //   console.log(response);
-      //   this.ChoiceAppointListener.next(true);
-      // })
+      const data1={
+        Id:appoint.id,
+        ownerEmail:appoint.OwnerEmail,
+        state:6,
+        startDate:appoint.StartDate,
+        currentUserEmail:appoint.VetEmail
+      }
+      this.http.post('http://localhost:5000/appointments/updateStateOfAppointment',data1).subscribe((response)=>{
+        console.log(response);
+        this.ChoiceAppointListener.next(true);
+      })
 
 
   }

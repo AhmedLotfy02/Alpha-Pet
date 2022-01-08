@@ -78,7 +78,7 @@ const createInvoice = (req, res) => {
     console.log(req.body);
     const { invoiceId, pharmacyId, notes, requiredMedicines, ownerEmail, price, currentUserEmail,state} = req.body;
     
-    const sqlStr = `INSERT INTO INVOICE VALUES ( '${notes}', '${requiredMedicines}', ${pharmacyId}, '${currentUserEmail}', '${ownerEmail}', ${price},${state});`;
+    const sqlStr = `INSERT INTO INVOICE(NOTES,RequiredMedicines,PharmacyID,VetEmail,OwnerEmail,Price,State) VALUES ( '${notes}', '${requiredMedicines}', ${pharmacyId}, '${currentUserEmail}', '${ownerEmail}', ${price},${state});`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
