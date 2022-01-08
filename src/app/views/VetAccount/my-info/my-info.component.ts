@@ -46,7 +46,7 @@ export class MyInfoComponent implements OnInit {
       return;
     }
     console.log(form.value);
-    this.authSerivce.changePasswordofOwner(form.value.password1, form.value.password3);
+    this.authSerivce.changePasswordofVet(form.value.password1, form.value.password3);
   }
   
 

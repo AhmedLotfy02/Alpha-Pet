@@ -7,7 +7,7 @@ const connection = require('../connection.js');
 dotenv.config();
 
 const getVetByEmail=(req,res)=>{
-    const sqlStr = `SELECT EMAIL, FNAME, LNAME, CHARGE, STATE FROM VET WHERE EMAIL = '${req.body.email}';`;
+    const sqlStr = `SELECT EMAIL, FNAME, LNAME, CHARGE, STATE,password FROM VET WHERE EMAIL = '${req.body.email}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });

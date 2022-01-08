@@ -597,12 +597,7 @@ export class AuthService {
   changePasswordofOwner(password: string, currentpass: string) {
     console.log(password);
     console.log(this.Owneruser1);
-    if(currentpass!=this.Owneruser1.password){
-      this.changepassListener.next({ changed: false, failed: true });
-
-    return;
     
-    }
     const data = {
       newpassword: password,
       currentpass: currentpass,
@@ -629,21 +624,16 @@ export class AuthService {
 
   changePasswordofVet(password: string, currentpass: string) {
     console.log(password);
-    console.log(this.Owneruser1);
-    if(currentpass!=this.Owneruser1.password){
-      this.changepassListener.next({ changed: false, failed: true });
-
-    return;
+    console.log(this.Vetuser1);
     
-    }
     const data = {
       newpassword: password,
       currentpass: currentpass,
-      email: this.Owneruser1.Email,
+      email: this.Vetuser1.EMAIL,
     };
     this.http
       .post<{ message: string; user: VetAuthData }>(
-        'http://localhost:5000/owners/updatePassofOwner',
+        'http://localhost:5000/vets/updatePassofVet',
         data
       )
       .subscribe(
