@@ -79,57 +79,52 @@ const createAppointment = (req, res) => {
         
     const currentDate = Date.now();
     if(startDate < currentDate || endDate < currentDate || startDate > endDate) return res.status(400).json({ message: "Invalid Date" });
+	
+	else{
+		try {
+			/*const sqlStrCheckingVetAppointments = `SELECT STARTDATE, ENDDATE FROM APPOINTMENT WHERE VETEMAIL = '${vetEmail}' AND STATE = 2;`;
+			connection.query(sqlStrCheckingVetAppointments, (error, results, fields) => {
+				if(error) return res.status(400).json({ message: error.message });
 
-    const sqlStrCheckingVetAppointments = `SELECT STARTDATE, ENDDATE FROM APPOINTMENT WHERE VETEMAIL = '${vetEmail}';`;
-    try {
-        connection.query(sqlStrCheckingVetAppointments, (error, results, fields) => {
-            if(error) return res.status(400).json({ message: error.message });
+				results.forEach(appointment => {
+					if(
+						(appointment.STARTDATE < startDate && appointment.ENDDATE > startDate) ||
+						(appointment.STARTDATE > startDate && appointment.STARTDATE < endDate) ||
+						appointment.STARTDATE == startDate ||
+						appointment.ENDDATE == endDate
+					){
+						return res.status(400).json({ message: "The vet is not available at this time" });
+					}
+				});
+				
+				const sqlStrCheckingOwnerAppointments = `SELECT STARTDATE, ENDDATE FROM APPOINTMENT WHERE OWNEREMAIL = '${currentUserEmail}' AND STATE = 2;`;
+				connection.query(sqlStrCheckingOwnerAppointments, (error, results, fields) => {
+					if(error) return res.status(400).json({ message: error.message });
 
-            results.forEach(appointment => {
-                if(
-                    (appointment.startDate < startDate && appointment.endDate > startDate) ||
-                    (appointment.startDate > startDate && appointment.startDate < endDate) ||
-                    appointment.startDate == startDate ||
-                    appointment.endDate == endDate
-                ){
-                    return res.status(400).json({ message: "The vet is not available at this time" });
-                }
-            });           
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
+					results.forEach(appointment => {
+						if(
+							(appointment.STARTDATE < startDate && appointment.ENDDATE > startDate) ||
+							(appointment.STARTDATE > startDate && appointment.STARTDATE < endDate) ||
+							appointment.STARTDATE == startDate ||
+							appointment.ENDDATE == endDate
+						){
+							return res.status(400).json({ message: "The owner is not available at this time" });
+						}
+					});*/
+					
+					const sqlStr = `INSERT INTO APPOINTMENT VALUES ('${startDate}', '${endDate}', '${currentUserEmail}', '${vetEmail}', 1);`;
+					connection.query(sqlStr, (error, results, fields) => {
+						if(error) return res.status(400).json({ message: error.message });
 
-    const sqlStrCheckingOwnerAppointments = `SELECT STARTDATE, ENDDATE FROM APPOINTMENT WHERE OWNEREMAIL = '${currentUserEmail}';`;
-    try {
-        connection.query(sqlStrCheckingOwnerAppointments, (error, results, fields) => {
-            if(error) return res.status(400).json({ message: error.message });
-
-            results.forEach(appointment => {
-                if(
-                    (appointment.startDate < startDate && appointment.endDate > startDate) ||
-                    (appointment.startDate > startDate && appointment.startDate < endDate) ||
-                    appointment.startDate == startDate ||
-                    appointment.endDate == endDate
-                ){
-                    return res.status(400).json({ message: "The owner is not available at this time" });
-                }
-            });           
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-    
-    const sqlStr = `INSERT INTO APPOINTMENT VALUES ('${startDate}', '${endDate}', '${currentUserEmail}', '${vetEmail}');`;
-    try {
-        connection.query(sqlStr, (error, results, fields) => {
-            if(error) return res.status(400).json({ message: error.message });
-
-            res.status(200).json({ data: results, fields });            
-        });
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
+						res.status(200).json({ data: results, fields });            
+					});
+				// });
+			// });
+		}
+		catch (error) {
+			res.status(400).json({ message: error.message });
+		}
+	}
 }
 
 const updateAppointment = (req, res) => {
@@ -151,10 +146,10 @@ const updateAppointment = (req, res) => {
             results.forEach(appointment => {
                 if(appointment.startDate != oldStartDate) {
 					if(
-						(appointment.startDate < startDate && appointment.endDate > startDate) ||
-						(appointment.startDate > startDate && appointment.startDate < endDate) ||
-						appointment.startDate == startDate ||
-						appointment.endDate == endDate
+						(appointment.STARTDATE < startDate && appointment.ENDDATE > startDate) ||
+						(appointment.STARTDATE > startDate && appointment.STARTDATE < endDate) ||
+						appointment.STARTDATE == startDate ||
+						appointment.ENDDATE == endDate
 					){
 						return res.status(400).json({ message: "The vet is not available at this time" });
 					}
@@ -173,10 +168,10 @@ const updateAppointment = (req, res) => {
             results.forEach(appointment => {
                 if(appointment.startDate != oldStartDate) {
 					if(
-						(appointment.startDate < startDate && appointment.endDate > startDate) ||
-						(appointment.startDate > startDate && appointment.startDate < endDate) ||
-						appointment.startDate == startDate ||
-						appointment.endDate == endDate
+						(appointment.STARTDATE < startDate && appointment.ENDDATE > startDate) ||
+						(appointment.STARTDATE > startDate && appointment.STARTDATE < endDate) ||
+						appointment.STARTDATE == startDate ||
+						appointment.ENDDATE == endDate
 					){
 						return res.status(400).json({ message: "The owner is not available at this time" });
 					}
@@ -196,6 +191,61 @@ const updateAppointment = (req, res) => {
         });
     } catch (error) {
         res.status(404).json({ message: error.message });
+    }
+}
+
+const updateStateOfAppointment = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+    const { currentUserEmail, startDate, state, ownerEmail, Id } = req.body;
+
+    
+    try {
+		/*const sqlStrCheckingVetAppointments = `SELECT STARTDATE, ENDDATE, ID FROM APPOINTMENT WHERE VETEMAIL = '${currentUserEmail}' AND STATE = 2;`;
+        connection.query(sqlStrCheckingVetAppointments, (error, results, fields) => {
+            if(error) return res.status(400).json({ message: error.message });
+
+            results.forEach(appointment => {
+                if(appointment.ID != Id) {
+					if(
+						(appointment.STARTDATE < startDate && appointment.ENDDATE > startDate) ||
+						(appointment.STARTDATE > startDate && appointment.STARTDATE < endDate) ||
+						appointment.STARTDATE == startDate ||
+						appointment.ENDDATE == endDate
+					){
+						return res.status(400).json({ message: "The vet is not available at this time" });
+					}
+				}
+            });
+
+			const sqlStrCheckingOwnerAppointments = `SELECT STARTDATE, ENDDATE, ID FROM APPOINTMENT WHERE OWNEREMAIL = '${ownerEmail}' AND STATE = 2;`;
+			connection.query(sqlStrCheckingOwnerAppointments, (error, results, fields) => {
+				if(error) return res.status(400).json({ message: error.message });
+
+				results.forEach(appointment => {
+					if(appointment.ID != Id) {
+						if(
+							(appointment.startDate < startDate && appointment.endDate > startDate) ||
+							(appointment.startDate > startDate && appointment.startDate < endDate) ||
+							appointment.startDate == startDate ||
+							appointment.endDate == endDate
+						){
+							return res.status(400).json({ message: "The owner is not available at this time" });
+						}
+					}
+				});*/
+
+				const sqlStr = `UPDATE APPOINTMENT SET STATE = ${state} WHERE VETEMAIL = $'{currentUserEmail}' AND STARTDATE = '${startDate}';`;
+				connection.query(sqlStr, (error, results, fields) => {
+					if(error) return res.status(400).json({ message: error.message });
+
+					res.status(200).json({ data: results, fields });            
+				});
+			// });
+        // });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
 }
 
