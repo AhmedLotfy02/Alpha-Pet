@@ -11,11 +11,28 @@
             </div>
         </mat-select>
     </mat-form-field>
-    <p class="alert" *ngIf="selectionAlert">
+    <p class="warn" *ngIf="selectionAlert">
         Please enter a Vet
     </p>
+    
+	<form #postForm="ngForm">
+        <p>Please Enter The Date </p>
+        <mat-form-field>
+            <input id="dateinput" matInput floatLabel='never'  type="date" name="email" ngModel #emailInput="ngModel" required placeholder="MM/DD/YYYY" />
+            <mat-error *ngIf="emailInput.invalid">Please enter a vaild Date</mat-error>
+        </mat-form-field>
+        <p *ngIf="dateValidation">Please Enter the date</p>
+        <br>
+        <br>
+        <input id="timeinput" type="time" name="timestamp" step="1">
+        <p *ngIf="timeValidation">Please Enter the date</p>
+        
+    </form>
+
     <button mat-raised-button class="appoint" (click)="appoint()" >Done</button>
-    <div *ngIf="busyVet">This Vet is Busy in this time</div>
- </mat-card>
+    <div class="warn" *ngIf="errorAppoint">This Vet is Busy in this time</div>
+    <div  class="warn" *ngIf="doneAppoint">Appointment is set successfully</div>
+
+</mat-card>
 
 </body>

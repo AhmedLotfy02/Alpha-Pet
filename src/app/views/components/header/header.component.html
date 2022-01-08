@@ -44,25 +44,25 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#about">Feed</a></li>
-          <li><a class="nav-link scrollto " href="#portfolio">My Pet</a></li>
-          <li><a class="nav-link scrollto" href="#team">My Favorite Vets</a></li>
-          <li class="dropdown"><a href="#"><span>Account</span> <i class="bi bi-chevron-down"></i></a>
+          <li><a *ngIf="isAuthenticated" class="nav-link scrollto" href="#about">Feed</a></li>
+          <li><a *ngIf="isAuthenticated&&ownerPage" class="nav-link scrollto " >My Pet</a></li>
+          <li><a *ngIf="isAuthenticated&&ownerPage"  class="nav-link scrollto" >My Favorite Vets</a></li>
+          <li *ngIf="isAuthenticated" class="dropdown"><a ><span>Account</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">My Account</a></li>
-              <li class="dropdown"><a href="#"><span>Appointment</span> <i class="bi bi-chevron-right"></i></a>
+              <li><a (click)="goAccount()">My Account</a></li>
+              <li *ngIf="isAuthenticated&&ownerPage" class="dropdown"><a href="#"><span>Appointment</span> <i class="bi bi-chevron-right"></i></a>
                 <ul>
-                  <li><a href="#">Make Appointment</a></li>
-                  <li><a href="#">Modify Appointment</a></li>
-                  <li><a href="#">Delete Appointment</a></li>
+                  <li><a >Make Appointment</a></li>
+                  <li><a >Modify Appointment</a></li>
+                  <li><a >Delete Appointment</a></li>
                   
                 </ul>
               </li>
               
             </ul>
           </li>
-          <li><a class="getstarted scrollto" href="#about">Log In</a></li>
-          <li><a class="getstarted scrollto" href="#about">LogOut</a></li>
+          <li><a *ngIf="!isAuthenticated" (click)="login()"  class=" getstarted scrollto" >Log In</a></li>
+          <li><a *ngIf="isAuthenticated" (click)="logout()" class=" getstarted scrollto" >LogOut</a></li>
 
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>

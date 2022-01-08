@@ -67,3 +67,11 @@ export interface MedAuthData{
   price:number;
 
 }
+export interface AppointmentAuthData{
+  OwnerEmail:string;
+  EndDate:string;
+  StartDate:string;
+  State:number;
+  VetEmail:string;
+  id:number;
+}

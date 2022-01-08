@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscriber, Subscription } from 'rxjs';
-import { InvoiceAuthData, MedAuthData, OwnerAuthData, PharmacistAuthData } from 'src/app/Auth/auth-data-model';
+import { AppointmentAuthData, InvoiceAuthData, MedAuthData, OwnerAuthData, PharmacistAuthData, VetAuthData } from 'src/app/Auth/auth-data-model';
 import { AuthService } from 'src/app/Auth/auth.service';
 
 @Component({
@@ -11,31 +11,26 @@ import { AuthService } from 'src/app/Auth/auth.service';
 })
 export class VetMainPageComponent implements OnInit {
 
-  user!:PharmacistAuthData;
+  user!:VetAuthData;
   UserListener!:Subscription;
-  invoices!:InvoiceAuthData[];
-  invoicesListener!:Subscription;
-  medicines!:MedAuthData[];
-  medListener!:Subscription;
+  AppointsListener!:Subscription;
+  appoints!:AppointmentAuthData[];
   constructor(
     private authSerivce:AuthService,private router:Router
   ) { 
-    this.authSerivce.RequestInformationsofPharmacistUser();
+    this.authSerivce.RequestInformationsofVetUser();
   }
 
   ngOnInit(): void {
-    this.UserListener=this.authSerivce.getCurrentPharmacist().subscribe((response)=>{
+    this.UserListener=this.authSerivce.getVetUserListener().subscribe((response)=>{
       this.user=response;
     })
-    this.invoicesListener= this.authSerivce.getInvoicesListener().subscribe((response:any)=>{
-      this.invoices=response;
+    
+    this.AppointsListener=this.authSerivce.getAppointmentsofVetListener().subscribe((response)=>{
+      this.appoints=response;
       console.log(response);
-      console.log(this.invoices);
     })
-    this.medListener=this.authSerivce.getMedicinesListener().subscribe((response)=>{
-      this.medicines=response;
-      console.log(this.medicines);
-    })
+   
   
   }
   gotoaddMed(){

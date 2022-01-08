@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { check } from 'express-validator';
 import { Subject } from 'rxjs';
 import { signData } from '../models/signUpData-model';
-import {  InvoiceAuthData, MedAuthData, OwnerAuthData, PetAuthData, PharmacistAuthData, VetAuthData } from './auth-data-model';
+import {  AppointmentAuthData, InvoiceAuthData, MedAuthData, OwnerAuthData, PetAuthData, PharmacistAuthData, VetAuthData } from './auth-data-model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -23,18 +23,6 @@ export class AuthService {
   private Invoices!:InvoiceAuthData[];
   private authStatusListener = new Subject<boolean>();
   isAuthenticated = false;
-  private creationListener = new Subject<boolean>();
-  isCreated = false;
-  private creationError = new Subject<boolean>();
-  creationerror = false;
-  private updationListener = new Subject<boolean>();
-  isUpdated = false;
-  private updationError = new Subject<boolean>();
-  updationerror = false;
-  private deletionListener = new Subject<boolean>();
-  isdeleted = false;
-  private deletionError = new Subject<boolean>();
-  deletionerror = false;
   private tokenTimer: any;
   private loginListener = new Subject<boolean>();
   private OwnerEmailListener=new Subject<OwnerAuthData>();
@@ -52,6 +40,32 @@ export class AuthService {
   getMedicinesListener(){
     return this.MedicinesListener.asObservable();
   }
+private homeUserListener=new Subject<{ownerPage:boolean,VetPage:boolean,PharmacistPage:boolean}>();
+getHomeUserListener(){
+  return this.homeUserListener.asObservable();
+}
+ownerPage=false;
+vetPage=false;
+pharmacistpage=false;
+
+private appointmentsofVet!:AppointmentAuthData[];
+private AppointmentsofVetListener=new Subject<AppointmentAuthData[]>();
+getAppointmentsofVetListener(){
+  return this.AppointmentsofVetListener.asObservable();
+}
+
+getownerPage(){
+  return this.ownerPage;
+}
+
+getvetPage(){
+  return this.vetPage;
+}
+
+getPharmacPage(){
+  return this.pharmacistpage;
+}
+
   constructor(private http: HttpClient, private router: Router) {
     }
    
@@ -60,6 +74,9 @@ export class AuthService {
     }
     getCurrentPharmacist(){
       return this.PharmacistUserListener.asObservable();
+    }
+    getCurrentVetListener(){
+
     }
     getChangePassListener() {
       return this.changepassListener.asObservable();
@@ -212,8 +229,24 @@ export class AuthService {
     console.log(response);
     })
   }
-  RequestAppointment(vet:string){
-    this.http.post('http://localhost:3000/api/Appoint',vet).subscribe((response:any)=>{
+  private AppointAddedListener=new Subject<{doneadding:boolean,notadded:boolean}>();
+  getAppointAddedListener(){
+    return this.AppointAddedListener.asObservable();
+  }
+  RequestAppointment(vetEmail:string,FullDate:string,EndDate:string){
+    const data={
+      currentUserEmail:this.Owneruser1.Email,
+      vetEmail:vetEmail,
+      startDate:FullDate,
+      endDate:EndDate,
+      state:1
+    }
+    
+    this.http.post('http://localhost:5000/appointments/',data).subscribe((response:any)=>{
+      this.AppointAddedListener.next({doneadding:true,notadded:false});
+    },(error)=>{
+      console.log(error);
+      this.AppointAddedListener.next({doneadding:false,notadded:true});
 
     })
 
@@ -240,7 +273,7 @@ export class AuthService {
       )
       .subscribe((responsedata: any) => {
         this.Vetuser1 = responsedata.user;
-        console.log(this.Vetuser1);
+        //console.log(this.Vetuser1);
 
       });
     
@@ -285,7 +318,18 @@ export class AuthService {
     if (expiresIn > 0) {
       this.token = authInformation.token;
       if (authInformation.email) {
-        this.userEmail = authInformation.email;
+        if(authInformation.type==='vet'){
+          this.Vetuser1.EMAIL = authInformation.email;
+
+        }
+        if(authInformation.type==='pharmacist'){
+          this.Pharmacistuser1.Email = authInformation.email;
+
+        }
+        if(authInformation.type==='owner'){
+          this.Owneruser1.Email = authInformation.email;
+
+        }
       }
       this.isAuthenticated = true;
       this.setAuthTimer(expiresIn / 1000);
@@ -388,6 +432,11 @@ export class AuthService {
       this.Vetuser1 = responsedata.user;
       console.log(this.Vetuser1);
     });
+    this.http.get<{data:AppointmentAuthData[]}>(`http://localhost:5000/appointments/vet/${authInformation.email}`).subscribe((response)=>{
+      this.AppointmentsofVetListener.next(response.data);
+      this.appointmentsofVet=response.data;
+    console.log(response);
+    })
     
     
   }
@@ -396,7 +445,7 @@ export class AuthService {
 
   private setAuthTimer(duraion: number) {
     this.tokenTimer = setTimeout(() => {
-     // this.logout();
+     this.logout();
     }, duraion * 1000);
   }
   private saveAuthData(token: string, expirtationDate: Date, email: string,type:string,pharmacy_id:number) {
@@ -479,6 +528,11 @@ export class AuthService {
           console.log(response);
           if (token) {
             this.authStatusListener.next(true);
+            this.pharmacistpage=true;
+            this.vetPage=false;
+            this.ownerPage=false;
+
+            this.homeUserListener.next({ownerPage:false,VetPage:false,PharmacistPage:true});
             this.isAuthenticated = true;
             const expiresInDuration = response.expiresIn;
             console.log(expiresInDuration);
@@ -523,6 +577,11 @@ export class AuthService {
           console.log(response);
           if (token) {
             this.authStatusListener.next(true);
+            this.pharmacistpage=false;
+            this.vetPage=true;
+            this.ownerPage=false;
+            this.homeUserListener.next({ownerPage:false,VetPage:true,PharmacistPage:false});
+
             this.isAuthenticated = true;
             const expiresInDuration = response.expiresIn;
             console.log(expiresInDuration);
@@ -567,6 +626,11 @@ export class AuthService {
           console.log(response);
           if (token) {
             this.authStatusListener.next(true);
+            this.pharmacistpage=false;
+            this.vetPage=false;
+            this.ownerPage=true;
+            this.homeUserListener.next({ownerPage:true,VetPage:false,PharmacistPage:false});
+
             this.isAuthenticated = true;
             const expiresInDuration = response.expiresIn;
             console.log(expiresInDuration);
@@ -657,6 +721,10 @@ export class AuthService {
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(['/']);
+  }
+  login(){
+    this.router.navigate(['/']);
+
   }
   private FavVetListener=new Subject<boolean>();  
   getFavVetListener(){
@@ -783,6 +851,13 @@ export class AuthService {
     this.http.patch('http://localhost:5000/invoices/check',data).subscribe((response)=>{
       console.log(response);
     })
+  }
+
+
+  getAppointmentsOfVet(){
+       this.http.get(`http://localhost:5000/appointments/vet/${this.Vetuser1.EMAIL}`).subscribe((response)=>{
+         console.log(response);
+       })
   }
 
 }

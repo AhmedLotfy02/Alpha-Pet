@@ -49,7 +49,7 @@ const getAppointmentsWithOwnerEmail = (req, res) => {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
 
-            res.status(200).json({ data: results, fields });            
+            res.status(200).json({ data: results });            
         });
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -58,12 +58,13 @@ const getAppointmentsWithOwnerEmail = (req, res) => {
 
 const getAppointmentsWithVetEmail = (req, res) => {
     const { vetEmail } = req.params;
+    console.log(req.params);
     const sqlStr = `SELECT * FROM APPOINTMENT WHERE VETEMAIL = '${vetEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
 
-            res.status(200).json({ data: results, fields });            
+            res.status(200).json({ data: results });            
         });
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -74,13 +75,13 @@ const createAppointment = (req, res) => {
     
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
-    const { currentUserEmail, vetEmail, startDate, endDate } = req.body;
+    console.log(req.body);
+    const { currentUserEmail, vetEmail, startDate, endDate ,state} = req.body;
         
     const currentDate = Date.now();
-    if(startDate < currentDate || endDate < currentDate || startDate > endDate) return res.status(400).json({ message: "Invalid Date" });
+   // if(startDate < currentDate || endDate < currentDate || startDate > endDate) return res.status(400).json({ message: "Invalid Date" });
 	
-	else{
+	//else{
 		try {
 			/*const sqlStrCheckingVetAppointments = `SELECT STARTDATE, ENDDATE FROM APPOINTMENT WHERE VETEMAIL = '${vetEmail}' AND STATE = 2;`;
 			connection.query(sqlStrCheckingVetAppointments, (error, results, fields) => {
@@ -112,7 +113,7 @@ const createAppointment = (req, res) => {
 						}
 					});*/
 					
-					const sqlStr = `INSERT INTO APPOINTMENT(startDate, endDate, ownerEmail, vetEmail) VALUES ('${startDate}', '${endDate}', '${currentUserEmail}', '${vetEmail}');`;
+					const sqlStr = `INSERT INTO APPOINTMENT(startDate, endDate, ownerEmail, vetEmail,State) VALUES ('${startDate}', '${endDate}', '${currentUserEmail}', '${vetEmail}', ${state});`;
 					connection.query(sqlStr, (error, results, fields) => {
 						if(error) return res.status(400).json({ message: error.message });
 
@@ -124,7 +125,7 @@ const createAppointment = (req, res) => {
 		catch (error) {
 			res.status(400).json({ message: error.message });
 		}
-	}
+	//}
 }
 
 const updateAppointment = (req, res) => {

@@ -23,7 +23,7 @@ import { VetMainPageComponent } from './views/VetAccount/vet-main-page/vet-main-
 
 
 const routes: Routes = [
- {path:'',component:LoginPageComponent},{path:'Home',component:HeaderComponent,canActivate: [AuthGuard]},{path:'Account',component:MainPageComponent},{path:'Sign-UpAsOwner',component:SignUpAsOwnerComponent},{path:'Sign-UpAsPharmacist',component:SignUpAsPharmacistComponent}
+ {path:'',component:LoginPageComponent},{path:'Home',component:HeaderComponent},{path:'Account',component:MainPageComponent},{path:'Sign-UpAsOwner',component:SignUpAsOwnerComponent},{path:'Sign-UpAsPharmacist',component:SignUpAsPharmacistComponent}
 ,{path:'Sign-UpAsVet',component:SignUpAsVetComponent},{path:'Request-Appointment',component:CreateComponent}
 ,{path:'Login-As-Pharmacist',component:LoginAsPharmacistComponent},
 {path:'Login-As-Vet',component:LoginAsVetComponent},

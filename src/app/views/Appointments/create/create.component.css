@@ -29,6 +29,14 @@
     box-shadow:  linear-gradient(90deg, rgba(191,64,191,1) 35%, rgba(149,0,255,1) 100%);
     color: rgb(191,64,191);
 }
+
+.warn {
+    color: red;
+    text-align: center;
+    
+    animation: flash 3s infinite;
+}
+
 @keyframes flash {
     0% {
         opacity: 0;
@@ -42,9 +50,4 @@
     100% {
         opacity: 0;
     }
-}
-.done{
-    color:red;
-    
-    animation:flash 2s infinite;
 }

@@ -143,7 +143,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.FName}} {{user.LName}}</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.FNAME}} {{user.LNAME}}</span>
                                 <img class="img-profile rounded-circle"
                                     src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
                             </a>
@@ -183,38 +183,9 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div *ngFor="let invoice of invoices">
-                                        <div *ngIf="invoice.State===1">
-                                        <div *ngIf="invoice.PharmacyID===user.Pharmacy_Id " class="col-xl-8 col-lg-7">
-                                            <div class="card shadow mb-4">
-                                                <div class="card-header py-3">
-                                                    <h6 class="m-0 font-weight-bold text-primary">InvoiceID: {{invoice.InvoiceId}}</h6>
-                                                </div>
-    
-                                                <div class="card-body">
-                                                    <p>Notes:  {{invoice.Notes}} </p>
-                                                    <p>From Vet: {{invoice.VetEmail}}</p>
-                                                    <p>Price: {{invoice.Price}}</p>
-                                                    <div class="col-xl-8 col-lg-7">
-                                                        <div class="card shadow mb-4">
-                                                            <div class="card-header py-3">
-                                                                <h6 class="m-0 font-weight-bold text-primary">PharmacyID: {{invoice.PharmacyID}}</h6>
-                                                            </div>
-                
-                                                            <div class="card-body">
-                                                                <p>Required Medicines: {{invoice.RequiredMedicines}}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="btns">
-                                                            <button (click)="AcceptInvoice(invoice)" mat-raised-button>Found</button>
-                                                            <button (click)="refuseInvoice(invoice)"  mat-raised-button>Not Found</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                               </div>
-                                        </div> 
-                                    </div>
-                                </div>
+                                  <!--   <div *ngFor="let invoice of invoices">
+                                         
+                                    </div>-->
                                 
                                 </div>
                             </div>
@@ -240,14 +211,14 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div *ngFor="let med of medicines">
-
+                                    <div *ngFor="let app of appoints">
+                                        <div *ngIf="app.State==1"> 
                                         <div class="animate__animated animate__fadeInDown col-xl-10 col-lg-10">
                                             <div class="card shadow mb-4">
                                                 <!-- Card Header - Dropdown -->
                                                 <div
                                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                                    <h6 class="m-0 font-weight-bold text-primary">Medicine Name: {{med.MedName}}</h6>
+                                                    <h6 class="m-0 font-weight-bold text-primary">Appointment ID: {{app.id}} </h6>
                                                     <div class="card-body">
                                                 
                                                     </div>
@@ -257,11 +228,9 @@
                                                 
                                 <div class="card-body">
                                 <div class="medcontent">
-                                    <div>Medicine ID: {{med.MedName}}</div>
-                                    <div>Medicine Description: {{med.MedDescription}}</div>
-                                    <div>Medicine Quantity: {{med.Quantity}}</div>
-                                    <div>Medicine Price: {{med.price}}</div>
-                                    
+                                    <div>Owner Email: {{app.OwnerEmail}} </div>
+                                    <div>Date: {{app.StartDate}} </div>
+                            
                                     <hr class="sidebar-divider d-none d-md-block">
 
                                     <div class="btns">
@@ -270,7 +239,7 @@
                                     </div>
                                 </div>
 
-                                </div>
+                                </div></div>
                                             </div>
                                           
                                         </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { now } from 'mongoose';
 
 import { Subscription } from 'rxjs';
 import { OwnerAuthData, PetAuthData, VetAuthData } from 'src/app/Auth/auth-data-model';
@@ -21,6 +22,10 @@ selected = ' ';
   vetsListener!:Subscription;
   user!:OwnerAuthData;
   busyVet=false;
+  busyListener!:Subscription;
+  dateValidation=false;
+  timeValidation=false;
+  doneAddingListener!:Subscription;
   constructor(private AuthService:AuthService) { 
     this.AuthService.RequestInformationsofUser();
     this.AuthService.getAllVets();
@@ -33,6 +38,14 @@ selected = ' ';
       this.vetArray=response.vetArray;
       console.log(this.vetArray);
     });
+    this.doneAddingListener=this.AuthService.getAppointAddedListener().subscribe((response)=>{
+      this.doneAppoint=response.doneadding;
+      this.errorAppoint=response.notadded;
+    },(error)=>{
+     
+      this.errorAppoint=true;
+    })
+
   }
   
   appoint(){
@@ -40,7 +53,37 @@ selected = ' ';
       this.selectionAlert = true;
       return;
     }
-    this.AuthService.RequestAppointment(this.selected);
+    
+    const inputElement = document.getElementById("dateinput") as HTMLInputElement;
+    const inputElement1 = document.getElementById("timeinput") as HTMLInputElement;
+    if(inputElement.value===''){
+      this.dateValidation=true;
+      return ;
+    }
+    else if(inputElement1.value===''){
+      this.dateValidation=false;
+      this.selectionAlert=false;
+      this.timeValidation=true;
+      return;
+    }
+    console.log(inputElement.value);
+    console.log(inputElement1.value);
+    let input1=inputElement1.value.toString();
+    let x=inputElement1.value.slice(0,2);
+    let n=parseInt(x);
+    let z=(n+1)%13;
+    let s=z.toString();
+    console.log(z);
+    if(z<10){
+      input1=s[0]+input1.slice(2,input1.length);
+    }
+    else{
+      input1=s+input1.slice(2,input1.length);
+    }
+    input1=inputElement.value+'|'+input1;
+    console.log(input1.toString());
+    let Fulldate =inputElement.value+'|'+inputElement1.value;
+    this.AuthService.RequestAppointment(this.selected,Fulldate.toString(),input1.toString());
     console.log(this.selected);
   }
 }

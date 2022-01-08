@@ -15,7 +15,11 @@ export class MainPageComponent implements OnInit {
   UserListener!:Subscription;
   constructor(
     private authSerivce:AuthService,private router:Router
-  ) { }
+  ) { 
+    this.UserListener=this.authSerivce.getCurrentOwner().subscribe((response)=>{
+      this.user=response;
+    })
+  }
 
   ngOnInit(): void {
     this.UserListener=this.authSerivce.getCurrentOwner().subscribe((response)=>{
@@ -37,6 +41,11 @@ export class MainPageComponent implements OnInit {
   }
   gotoMyInvoices(){
     this.router.navigate(['/Account/MyInvoices']);
+
+    
+  }
+  goTorequestAppoint(){
+    this.router.navigate(['/Request-Appointment']);
 
     
   }

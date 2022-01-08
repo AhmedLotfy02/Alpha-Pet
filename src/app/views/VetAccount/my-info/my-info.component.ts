@@ -54,4 +54,8 @@ export class MyInfoComponent implements OnInit {
     this.router.navigate(['/Account/MyInformation']);
 
   }
+
+  GoHome(){
+    this.router.navigate(['/Home']);
+  }
 }

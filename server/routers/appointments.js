@@ -21,11 +21,6 @@ router.get('/owner/:ownerEmail', getAppointmentsWithOwnerEmail);
 router.get('/vet/:vetEmail', getAppointmentsWithVetEmail);
 router.post(
     '/',
-    auth,
-    body('startDate').isDate(),
-    body('endDate').isDate(),
-    body('vetEmail').isEmail().normalizeEmail(),
-    body('currentUserEmail').isEmail().normalizeEmail(),
     createAppointment
 );
 router.patch(

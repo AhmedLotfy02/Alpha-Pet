@@ -16,6 +16,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -86,9 +87,13 @@ import { MyInfoComponent } from './views/VetAccount/my-info/my-info.component';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatSelectModule,
+    MatDatepickerModule
   ],
+
   providers: [
-   {provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}
+  //  {
+  //   //  provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true
+  // }
   ],
   bootstrap: [AppComponent],
 })
