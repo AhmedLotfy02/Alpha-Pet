@@ -30,10 +30,7 @@ router.patch(
 );
 router.patch(
     '/check',
-    auth,
-    body('currentUserEmail').isEmail().normalizeEmail(), 
-	body('invoiceId').isInt(),
-    body('state').isInt(),
+    
     checkInvoice
 );
 router.delete(

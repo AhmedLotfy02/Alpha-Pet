@@ -118,22 +118,28 @@ const checkInvoice = (req, res) => {
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
-
+            console.log(state);
             if(state == 2){
 				sqlStr = `SELECT OWNEREMAIL, PRICE FROM INVOICE WHERE INVOICEID = ${invoiceId};`;
 				connection.query(sqlStr, (error, results, fields) => {
 					if(error) return res.status(400).json({ message: error.message });
-					let price = results[0].Price;
-					let ownerEmail = results[0].OwnerEmail;
-					console.log(results);
+					let price = results[0].PRICE;
+					let ownerEmail = results[0].OWNEREMAIL;
+					console.log(results[0]);
+                    
+                    console.log(results[0].OWNEREMAIL);
 					sqlStr = `UPDATE OWNER_TABLE SET BALANCE = BALANCE - ${price} WHERE EMAIL = '${ownerEmail}';`;
 					connection.query(sqlStr, (error, results, fields) => {
 						if(error) return res.status(400).json({ message: error.message }); 
-						res.status(200).json({ data: "Invoice is Checked" }); 
+						return res.status(200).json({ data: "Invoice is Accepted" }); 
 					});
 				});
 			}
-			res.status(200).json({ data: "Invoice is Checked" }); 
+           
+            else{
+                return res.status(200).json({ data: "Invoice is Rejected" }); 
+
+            }
         });
     } catch (error) {
         res.status(404).json({ message: error.message });

@@ -55,7 +55,7 @@ const signin =  async(req, res) => {
             if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
 
             existingUser = results[0];
-			let x= bcrypt.compare(req.body.password, existingUser.password);
+			let x=await bcrypt.compare(req.body.password, existingUser.password);
 			if(!x) return res.status(400).json({ message: 'Invalid Credintials' });
 
             const token = jwt.sign({ email: existingUser.Email },

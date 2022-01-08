@@ -65,12 +65,15 @@ const getMedicinesByPrice = (req, res) => {
 
 const getMedicinesOfPharmacy = (req, res) => {
     const { pharmacyId } = req.params;
-    const sqlStr = `SELECT * FROM MEDICINES NATURAL JOIN Medcine_Pharmacy PHARMACYID = ${pharmacyId};`;
+    let p_ID=parseInt(pharmacyId);
+    console.log(p_ID);
+    console.log(req.params);
+    const sqlStr = `SELECT * FROM MEDICINES NATURAL JOIN Medcine_Pharmacy WHERE PHARMACYID = ${p_ID};`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
-            res.status(200).json({ data: results, fields });
+            res.status(200).json({ data: results });
         });
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -123,53 +126,35 @@ const getMedicineQuantity = (req, res) => {
 const createMedicine = (req, res) => { 
     const errors = validationResult(req); 
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() }); 
- 
+    console.log(req.body);
     const { currentUserEmail, medicineId, medicineName, description, price } = req.body; 
     const { pharmacyId, quantity } = req.body; 
      
-    const sqlStrCheckingPharmacist1 = `SELECT * FROM PHARMACIST WHERE EMAIL = '${currentUserEmail}';`; 
+    const sqlStrCheckingPharmacist1 = `SELECT * FROM PHARMACIST WHERE   EMAIL = '${currentUserEmail}' AND PHARMACY_ID= ${pharmacyId};`; 
     try { 
         connection.query(sqlStrCheckingPharmacist1, (error, results, fields) => { 
             if(error) return res.status(400).json({ message: error.message }); 
-             
+                     
             if(results.length == 0) return res.status(400).json({ message: "Unauthorized User" }); 
+            const sqlStr1 = `INSERT INTO MEDICINES VALUES(${medicineId}, '${medicineName}', '${description}', ${price});`; 
+            connection.query(sqlStr1, (error, results, fields) => { 
+                if(error) return res.status(400).json({ message: error.message }); 
+                const sqlStr2 =` INSERT INTO Medcine_Pharmacy VALUES(${pharmacyId}, ${medicineId}, ${quantity});`; 
+                connection.query(sqlStr2, (error, results, fields) => { 
+                    if(error) return res.status(400).json({ message: error.message }); 
+                     
+                    res.status(200).json({ data: results, fields }); 
+                });         
+                //res.status(200).json({ data: results, fields }); 
+            });
         }); 
     } catch (error) { 
         res.status(404).json({ message: error.message }); 
     } 
      
-    const sqlStrCheckingPharmacist2 = `SELECT * FROM PHARMACIST, PHARMACY WHERE ID = PHARMACY_ID AND EMAIL = '${currentUserEmail}';`; 
-    try { 
-        connection.query(sqlStrCheckingPharmacist2, (error, results, fields) => { 
-            if(error) return res.status(400).json({ message: error.message }); 
-             
-            if(results.length == 0) return res.status(400).json({ message: "Unauthorized User" }); 
-        }); 
-    } catch (error) { 
-        res.status(404).json({ message: error.message }); 
-    } 
  
-    const sqlStr1 = `INSERT INTO MEDICINES VALUES(${medicineId}, '${medicineName}', '${description}', ${price});`; 
-    try { 
-        connection.query(sqlStr1, (error, results, fields) => { 
-            if(error) return res.status(400).json({ message: error.message }); 
-             
-            res.status(200).json({ data: results, fields }); 
-        }); 
-    } catch (error) { 
-        res.status(404).json({ message: error.message }); 
-    } 
  
-    const sqlStr2 =` INSERT INTO Medcine_Pharmacy VALUES(${pharmacyId}, ${medicineId}, ${quantity});`; 
-    try { 
-        connection.query(sqlStr2, (error, results, fields) => { 
-            if(error) return res.status(400).json({ message: error.message }); 
-             
-            res.status(200).json({ data: results, fields }); 
-        }); 
-    } catch (error) { 
-        res.status(404).json({ message: error.message }); 
-    } 
+  
 }
 
 const addMedicine = (req, res) => {

@@ -15,7 +15,9 @@ export class AddMedicineComponent implements OnInit {
   UserListener!:Subscription;
   invoices!:InvoiceAuthData[];
   invoicesListener!:Subscription;
-
+  doneAdding=false;
+  errorAdding=false;
+  medListener!:Subscription;
   constructor(
     private authSerivce:AuthService,private router:Router
   ) { 
@@ -31,9 +33,24 @@ export class AddMedicineComponent implements OnInit {
       console.log(response);
       console.log(this.invoices);
     })
+    this.medListener=this.authSerivce.getmedicineListener().subscribe((response)=>{
+      if(response){
+        this.doneAdding=true;
+        this.errorAdding=false;
+      }
+      else{
+        this.errorAdding=true;
+        this.doneAdding=false;
+        
+      }
+    })
     
   }
   AddMed(form:NgForm){
-    
+    if(form.invalid){
+      return;
+    }
+    console.log(form.value);
+    this.authSerivce.AddMedicine(form.value.MedName,form.value.price,form.value.quantity,form.value.desc,this.user.Pharmacy_Id,form.value.MedID);
   }
 }

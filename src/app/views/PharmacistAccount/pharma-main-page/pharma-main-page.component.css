@@ -22581,3 +22581,8 @@
     background-color: black;
     color:white;
 }
+.medcontent{
+    display: flex;
+    flex-direction: column;
+    
+}

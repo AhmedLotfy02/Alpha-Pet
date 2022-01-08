@@ -202,26 +202,49 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <form (submit)="AddMed(postForm)" #postForm="ngForm">
+                                        
+
                                         <div class="col-md-6">
                                             <mat-form-field>
-                                                <input matInput type="text" name="username" ngModel #usernameInput="ngModel" required placeholder="Username" />
-                                                <mat-error *ngIf="usernameInput.invalid">Please enter a vaild username</mat-error>
+                                                <input matInput type="number" name="MedID" ngModel #MedIDInput="ngModel" required placeholder="Medicine ID" />
+                                                <mat-error *ngIf="MedIDInput.invalid">Please enter a vaild Medicine ID</mat-error>
+                                            </mat-form-field>
+                                            
+                                            <mat-form-field>
+                                                <input matInput type="text" name="MedName" ngModel  #MedNameInput="ngModel" required placeholder="Medicine Name" />
+                                                <mat-error *ngIf="MedNameInput.invalid">Please enter Medicine name</mat-error>
+                                            </mat-form-field>
+                                            
+                                        </div>
+                                        <div class="col-md-6">
+                                            <mat-form-field>
+                                                <input matInput type="number" name="price" ngModel #priceInput="ngModel" required placeholder="Price" />
+                                                <mat-error *ngIf="priceInput.invalid">Please enter a vaild price</mat-error>
                                             </mat-form-field>
                                             <br />
                                             <mat-form-field>
-                                                <input matInput type="password" name="password" ngModel #password #passwordInput="ngModel" required placeholder="Password" />
-                                                <mat-error *ngIf="passwordInput.invalid">Please enter password</mat-error>
+                                                <input matInput type="number" name="quantity" ngModel  #quantityInput="ngModel" required placeholder="Quantity" />
+                                                <mat-error *ngIf="quantityInput.invalid">Please enter quantity of medicine</mat-error>
                                             </mat-form-field>
+                                            
+                                        </div>
+                                        <div class="row">
+                                            <mat-form-field>
+                                                <input matInput type="text" name="desc" ngModel #descInput="ngModel" required placeholder="Description" />
+                                                <mat-error *ngIf="descInput.invalid">Please enter a vaild description</mat-error>
+                                            </mat-form-field>
+                                          
                                             
                                         </div>
                                         
                                         <br>
-                                        <br>
+                                     
                                         <button class="b1" type="submit" mat-raised-button color="accent">
-                                  Login
+                                  Add Medicine
                                 </button>
                                     </form>
-                                    
+                                    <div class="warning" *ngIf="doneAdding">Done Adding</div>
+                                    <div class="warning" *ngIf="errorAdding">Enter Another ID cause this already in the db</div>
                                 </div>
                             </div>
                         </div>

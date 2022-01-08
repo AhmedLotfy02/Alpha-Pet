@@ -17,19 +17,13 @@ const {
 const router = express.Router();
 
 router.get('/', getAllMedicines);
-router.get('id/:id', getMedicineById);
-router.get('name/:name', getMedicineByName);
-router.get('price/:price', getMedicinesByPrice);
-router.get('pharmacyMedicines/:pharmacyId', getMedicinesOfPharmacy);
-router.get('quantity/:pharmacyId/:medicineId', getMedicineQuantity);
+router.get('/id/:id', getMedicineById);
+router.get('/name/:name', getMedicineByName);
+router.get('/price/:price', getMedicinesByPrice);
+router.get('/pharmacyMedicines/:pharmacyId', getMedicinesOfPharmacy);
+router.get('/quantity/:pharmacyId/:medicineId', getMedicineQuantity);
 router.post(
     '/', 
-    auth,
-    body('currentUserEmail').isEmail().normalizeEmail(),
-    body('medicineId').isInt().notEmpty(),
-    body('medicineName').notEmpty(),
-    body('description').notEmpty(),
-    body('price').isInt().notEmpty(),
     createMedicine
 );
 router.post(

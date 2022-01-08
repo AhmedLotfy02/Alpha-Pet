@@ -22567,3 +22567,21 @@
   li{
       cursor: pointer;
   }
+
+  
+.warning {
+    color: red;
+    animation: flash 2s infinite;
+}
+
+@keyframes flash {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}

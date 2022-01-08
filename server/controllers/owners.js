@@ -52,7 +52,7 @@ console.log(req.body);
             if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
 
             existingUser = results[0];
-            let x= bcrypt.compare(req.body.password, existingUser.password);
+            let x=await bcrypt.compare(req.body.password, existingUser.password);
 
             console.log(x);
 

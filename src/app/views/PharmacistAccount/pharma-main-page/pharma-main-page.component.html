@@ -190,7 +190,7 @@
                     <div class="row">
 
                         <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
+                        <div class="col-xl-7 col-lg-6  animate__animated animate__fadeInDown">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
@@ -223,8 +223,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="btns">
-                                                            <button mat-raised-button>Found</button>
-                                                            <button  mat-raised-button>Not Found</button>
+                                                            <button (click)="AcceptInvoice(invoice)" mat-raised-button>Found</button>
+                                                            <button (click)="refuseInvoice(invoice)"  mat-raised-button>Not Found</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -238,7 +238,7 @@
                         </div>
 
                         <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
+                        <div class="col-xl-5 col-lg-5">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
@@ -246,8 +246,6 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Available Medicines</h6>
                                     <div class="card-body">
                                         
-
-
                                         
 
 
@@ -259,7 +257,39 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    
+                                    <div *ngFor="let med of medicines">
+
+                                        <div class="animate__animated animate__fadeInDown col-xl-10 col-lg-10">
+                                            <div class="card shadow mb-4">
+                                                <!-- Card Header - Dropdown -->
+                                                <div
+                                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                                    <h6 class="m-0 font-weight-bold text-primary">Medicine Name: {{med.MedName}}</h6>
+                                                    <div class="card-body">
+                                                
+                                                    </div>
+                                                 
+                        
+                                                </div>
+                                                
+                                <div class="card-body">
+                                <div class="medcontent">
+                                    <div>Medicine ID: {{med.MedName}}</div>
+                                    <div>Medicine Description: {{med.MedDescription}}</div>
+                                    <div>Medicine Quantity: {{med.Quantity}}</div>
+                                    <div>Medicine Price: {{med.price}}</div>
+
+                                </div>
+
+                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
+
+                                    </div>
+
+                                
                                 </div>
                             </div>
                         </div>

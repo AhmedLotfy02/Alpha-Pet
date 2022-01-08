@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { check } from 'express-validator';
 import { Subject } from 'rxjs';
 import { signData } from '../models/signUpData-model';
-import {  InvoiceAuthData, OwnerAuthData, PetAuthData, PharmacistAuthData, VetAuthData } from './auth-data-model';
+import {  InvoiceAuthData, MedAuthData, OwnerAuthData, PetAuthData, PharmacistAuthData, VetAuthData } from './auth-data-model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -46,6 +46,11 @@ export class AuthService {
     failed: boolean;
   }>();
   private VetsListener=new Subject<VetAuthData[]>();
+  private MedicinesListener=new Subject<MedAuthData[]>();
+  private medicines!:MedAuthData[];
+  getMedicinesListener(){
+    return this.MedicinesListener.asObservable();
+  }
   constructor(private http: HttpClient, private router: Router) {
     }
    
@@ -226,7 +231,7 @@ export class AuthService {
     if (!authInformation) {
       return;
     }
-    if(authInformation.type==='Vet'){
+    if(authInformation.type==='vet'){
       this.http
       .post<{ message: string; user:VetAuthData }>(
         'http://localhost:5000/vets/getVetByEmail',
@@ -239,7 +244,7 @@ export class AuthService {
       });
     
     }
-    else if(authInformation.type==='Pharmacist'){
+    else if(authInformation.type==='pharmacist'){
       this.http
       .post<{ message: string; user: PharmacistAuthData }>(
         'http://localhost:5000/pharmacists/getPharmacistByEmail',
@@ -251,7 +256,7 @@ export class AuthService {
       });
     
     }
-    else if(authInformation.type==='Owner'){
+    else if(authInformation.type==='owner'){
       this.http
       .post<{ message: string; user: OwnerAuthData }>(
         'http://localhost:5000/owners/getOwnerByEmail',
@@ -351,6 +356,16 @@ export class AuthService {
     },(error)=>{
       console.log(error);
     })
+     console.log(authInformation.pharmacyID);
+    this.http.get<{data:MedAuthData[]}>(`http://localhost:5000/medicines/pharmacyMedicines/${authInformation.pharmacyID}`).subscribe((response)=>{
+      this.MedicinesListener.next(response.data);
+        this.medicines=response.data;
+    console.log(response);
+
+    },(error)=>{
+      console.log(error);
+    })
+  
   }
 
 
@@ -361,12 +376,15 @@ export class AuthService {
      // this.logout();
     }, duraion * 1000);
   }
-  private saveAuthData(token: string, expirtationDate: Date, email: string,type:string) {
+  private saveAuthData(token: string, expirtationDate: Date, email: string,type:string,pharmacy_id:number) {
     localStorage.setItem('token', token);
     localStorage.setItem('expirationDate', expirtationDate.toISOString());
     localStorage.setItem('email', email);
-    localStorage.setItem('type', type);
 
+    localStorage.setItem('type', type);
+    if(type==='pharmacist'){
+      localStorage.setItem('pharmacyID', pharmacy_id.toString());
+    }
   }
   private clearAuthData() {
     localStorage.removeItem('token');
@@ -380,16 +398,34 @@ export class AuthService {
     const expirationDate = localStorage.getItem('expirationDate');
     const email = localStorage.getItem('email');
     const type=  localStorage.getItem('type');
-    if (!token || !expirationDate) {
-      return;
-    } else {
-      return {
-        token: token,
-        expirationDate: new Date(expirationDate),
-        email: email,
-        type:type
-      };
+    const pharmacyID=  localStorage.getItem('pharmacyID');
+
+    if(type==='pharmacist'){
+      if (!token || !expirationDate) {
+        return;
+      } else {
+        return {
+          token: token,
+          expirationDate: new Date(expirationDate),
+          email: email,
+          type:type,
+          pharmacyID:pharmacyID
+        };
+      }
     }
+    else{
+      if (!token || !expirationDate) {
+        return;
+      } else {
+        return {
+          token: token,
+          expirationDate: new Date(expirationDate),
+          email: email,
+          type:type
+        };
+      }
+    }
+    
   }
   getPetFoundListener(){
     return this.PetFoundListener.asObservable();
@@ -435,7 +471,7 @@ export class AuthService {
               now.getTime() + expiresInDuration * 1000
             );
             console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, response.user.Email,'Pharmacist');
+            this.saveAuthData(token, expirationDate, response.user.Email,'pharmacist',response.user.Pharmacy_Id);
             this.router.navigate(['/Home']);
           }
         },
@@ -480,7 +516,7 @@ export class AuthService {
               now.getTime() + expiresInDuration * 1000
             );
             console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, response.user.EMAIL,'Vet');
+            this.saveAuthData(token, expirationDate, response.user.EMAIL,'vet',0);
             this.router.navigate(['/Home']);
           }
         },
@@ -524,7 +560,7 @@ export class AuthService {
               now.getTime() + expiresInDuration * 1000
             );
             console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, response.user.Email,'Owner');
+            this.saveAuthData(token, expirationDate, response.user.Email,'owner',0);
             this.router.navigate(['/Home']);
           }
         },
@@ -650,4 +686,56 @@ export class AuthService {
       console.log(error);
     })
   }
+  private medicineListener=new Subject<boolean>();
+  getmedicineListener(){
+    return this.medicineListener.asObservable();
+  }
+  AddMedicine(name:string,price:number,quantity:number,description:string,pharmacyID:number,medID:number){
+
+    const data={
+      currentUserEmail:this.Pharmacistuser1.Email,
+      medicineId:medID,
+      medicineName:name,
+      description:description,
+      price:price,
+      pharmacyId:pharmacyID,
+      quantity:quantity
+    }
+    console.log(data);
+    this.http.post('http://localhost:5000/medicines/',data).subscribe((response)=>{
+      this.medicineListener.next(true);
+    console.log(response);
+    },(error)=>{
+      this.medicineListener.next(false);
+      console.log(error);
+    })
+
+  }
+  
+  getAllMedicinesOfPharmacy(){
+   
+  }
+
+  //pharmacy opinion
+  acceptInvoice(invoice:InvoiceAuthData){
+    const data={
+      invoiceId:invoice.InvoiceId,
+      state:2,
+      
+    }
+    this.http.patch('http://localhost:5000/invoices/check',data).subscribe((response)=>{
+      console.log(response);
+    })
+  }
+  refuseInvoice(invoice:InvoiceAuthData){
+    const data={
+      invoiceId:invoice.InvoiceId,
+      state:3,
+      
+    }
+    this.http.patch('http://localhost:5000/invoices/check',data).subscribe((response)=>{
+      console.log(response);
+    })
+  }
+
 }

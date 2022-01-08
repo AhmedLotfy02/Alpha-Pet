@@ -57,3 +57,13 @@ InvoiceId:number;
   VetEmail:string;
   State:number;
 }
+
+export interface MedAuthData{
+  MedicineId:number;
+  MedName:string;
+  PharmacyID:number;
+  MedDescription:string;
+  Quantity:number;
+  price:number;
+
+}

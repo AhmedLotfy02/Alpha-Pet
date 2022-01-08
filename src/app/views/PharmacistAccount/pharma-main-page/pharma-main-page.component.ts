@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscriber, Subscription } from 'rxjs';
-import { InvoiceAuthData, OwnerAuthData, PharmacistAuthData } from 'src/app/Auth/auth-data-model';
+import { InvoiceAuthData, MedAuthData, OwnerAuthData, PharmacistAuthData } from 'src/app/Auth/auth-data-model';
 import { AuthService } from 'src/app/Auth/auth.service';
 
 @Component({
@@ -14,7 +14,8 @@ export class PharmaMainPageComponent implements OnInit {
   UserListener!:Subscription;
   invoices!:InvoiceAuthData[];
   invoicesListener!:Subscription;
-
+  medicines!:MedAuthData[];
+  medListener!:Subscription;
   constructor(
     private authSerivce:AuthService,private router:Router
   ) { 
@@ -30,10 +31,19 @@ export class PharmaMainPageComponent implements OnInit {
       console.log(response);
       console.log(this.invoices);
     })
-    
+    this.medListener=this.authSerivce.getMedicinesListener().subscribe((response)=>{
+      this.medicines=response;
+      console.log(this.medicines);
+    })
   
   }
   gotoaddMed(){
     this.router.navigate(['MyAccount/AddMedicine']);
+  }
+  refuseInvoice(invoice:InvoiceAuthData){
+    this.authSerivce.refuseInvoice(invoice);
+  }
+  AcceptInvoice(invoice:InvoiceAuthData){
+    this.authSerivce.acceptInvoice(invoice);
   }
 }
