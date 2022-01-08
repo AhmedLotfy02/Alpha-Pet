@@ -237,11 +237,11 @@ const updateStateOfAppointment = (req, res) => {
 					}
 				});*/
 
-				const sqlStr = `UPDATE APPOINTMENT SET STATE = ${state} WHERE VETEMAIL = $'{currentUserEmail}' AND ID = ${Id};`;
+				const sqlStr = `UPDATE APPOINTMENT SET STATE = ${state} WHERE VETEMAIL = '${currentUserEmail}' AND ID = ${Id};`;
 				connection.query(sqlStr, (error, results, fields) => {
 					if(error) return res.status(400).json({ message: error.message });
 
-					res.status(200).json({ data: results, fields });            
+				return	res.status(200).json({ data: results, fields });            
 				});
 			// });
         // });
@@ -278,5 +278,6 @@ module.exports = {
     getAppointmentsWithVetEmail,
     createAppointment,
     updateAppointment,
-    deleteAppointment
+    deleteAppointment,
+    updateStateOfAppointment
 }

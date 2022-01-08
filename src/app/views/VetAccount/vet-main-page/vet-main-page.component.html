@@ -178,14 +178,71 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Done Appointments</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Ongoing Appointments</h6>
                                     
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                  <!--   <div *ngFor="let invoice of invoices">
-                                         
-                                    </div>-->
+                                  <!--   <div *ngFor="let invoice of invoices">-->
+
+
+                                    
+                                
+                                    <div class="card-body">
+                                        <div *ngFor="let app of appoints">
+                                            <div *ngIf="app.State==2"> 
+                                            <div class="animate__animated animate__fadeInDown col-xl-10 col-lg-10">
+                                                <div class="card shadow mb-4">
+                                                    <!-- Card Header - Dropdown -->
+                                                    <div
+                                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Appointment ID: {{app.id}} </h6>
+                                                        <div class="card-body">
+                                                    
+                                                        </div>
+                                                     
+                            
+                                                    </div>
+                                                    
+                                    <div class="card-body">
+                                    <div class="medcontent">
+                                        <div>Owner Email: {{app.OwnerEmail}} </div>
+                                        <div>Date: {{app.StartDate}} </div>
+                                
+                                        <hr class="sidebar-divider d-none d-md-block">
+    
+                                        <div class="btns">
+                                            <button (click)="CompleteAppoint(app)" mat-raised-button>Completed</button>
+                                            <button (click)="rejectAppoint(app)"   mat-raised-button>Date Gone</button>
+                                        </div>
+                                    </div>
+    
+                                    </div></div>
+                                                </div>
+                                              
+                                            </div>
+                                           
+                                            
+    
+                                        </div>
+    
+                                    
+                                    </div>    
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    
+                                   
                                 
                                 </div>
                             </div>
@@ -234,8 +291,8 @@
                                     <hr class="sidebar-divider d-none d-md-block">
 
                                     <div class="btns">
-                                        <button mat-raised-button>Accept</button>
-                                        <button   mat-raised-button>Reject</button>
+                                        <button (click)="acceptAppoint(app)" mat-raised-button>Accept</button>
+                                        <button (click)="rejectAppoint(app)"   mat-raised-button>Reject</button>
                                     </div>
                                 </div>
 
@@ -265,42 +322,104 @@
                             <!-- Illustrations -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Dr.Hamdy</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Done Appointments</h6>
                                 </div>
                                 <div class="card-body">
                                    
-                                    <p>You dog need an urgent surgery to save him from death and wants to take these medicines 
-                                            , //Loop for Medicines Med1,Med2 
-                                        </p>
-                                        <div class="card shadow mb-4">
-                                            <div class="card-header py-3">
-                                                <h6 class="m-0 font-weight-bold text-primary">Pharmacist Lotfy</h6>
-                                            </div>
-                                            <div class="card-body">
-                                               
-                                                <p>Your Medicines are available at $Pharmacy Name 
-                                                    Pay the invoices and go to near far3
-                                                    </p>
-                                               
-                                            </div>
+                                    
+                                        
+                                    <div class="card-body">
+                                        <div *ngFor="let app of appoints">
+                                            <div *ngIf="app.State==4"> 
+                                            <div class="animate__animated animate__fadeInDown col-xl-10 col-lg-10">
+                                                <div class="card shadow mb-4">
+                                                    <!-- Card Header - Dropdown -->
+                                                    <div
+                                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Appointment ID: {{app.id}} </h6>
+                                                        <div class="card-body">
+                                                    
+                                                        </div>
+                                                     
+                            
+                                                    </div>
+                                                    
+                                    <div class="card-body">
+                                    <div class="medcontent">
+                                        <div>Owner Email: {{app.OwnerEmail}} </div>
+                                        <div>Date: {{app.StartDate}} </div>
+                                
+                                        <hr class="sidebar-divider d-none d-md-block">
+    
+                                        <div class="btns">
+                                            <button (click)="NeedSurgery(app)" mat-raised-button>Need Sugery</button>
+                                            <button (click)="ShowInvoice(app)"   mat-raised-button>Add Invoice</button>
+                                        
                                         </div>
-            
+                                        <div *ngIf="app.invoiceorNot">
+                                            <hr class="sidebar-divider">
+
+                                            <form (submit)="AddInvoice(app,postForm)"  #postForm="ngForm">
+                                                <mat-form-field class="formfield">
+        
+                                                    <input matInput floatLabel='never'  type="text" name="notes" ngModel #invoiceInput="ngModel" required placeholder="Write Notes" />
+                                                    <mat-error *ngIf="invoiceInput.invalid">Please enter a note</mat-error>
+                                                </mat-form-field>
+                                                <mat-form-field class="formfield">
+        
+                                                    <input matInput floatLabel='never'  type="text" name="reqmed" ngModel #medInput="ngModel" required placeholder="Write required medicines" />
+                                                    <mat-error *ngIf="medInput.invalid">Please enter required medicines</mat-error>
+                                                </mat-form-field>
+                                                <mat-form-field class="formfield">
+        
+                                                    <input matInput floatLabel='never'  type="number" name="price" ngModel #priceInput="ngModel" required placeholder="Enter Price" />
+                                                    <mat-error *ngIf="priceInput.invalid">Please enter price</mat-error>
+                                                </mat-form-field>
+
+                                                
+    <mat-form-field>
+        <mat-label>Select Pharmacy Branch</mat-label>
+        <mat-select [(value)]="selected">
+            <div>
+                <mat-option  *ngFor="let ph of pharmacies" [value]="ph.Id">{{ph.Address}} </mat-option>
+
+            </div>
+        </mat-select>
+    </mat-form-field>
+    <p class="warn" *ngIf="selectionAlert">
+        Please enter a Vet
+    </p>
+    <br>
+    
+
+                                                <button type="submit"  mat-raised-button>Add</button>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+    
+                                    </div></div>
+                                                </div>
+                                              
+                                            </div>
+                                           
+                                            
+    
+                                        </div>
+    
+                                    
+                                    </div>    
+
+
+
+
+
+
+
+
                                 </div>
                             </div>
 
-                            <!-- Approach -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
-                                        CSS bloat and poor page performance. Custom CSS classes are used to create
-                                        custom components and custom utility classes.</p>
-                                    <p class="mb-0">Before working with this theme, you should become familiar with the
-                                        Bootstrap framework, especially the utility classes.</p>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
@@ -314,9 +433,7 @@
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
-                    </div>
+                    
                 </div>
             </footer>
             <!-- End of Footer -->

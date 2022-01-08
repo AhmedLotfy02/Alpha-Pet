@@ -1,3 +1,5 @@
+import { StringLiteralLike } from "typescript";
+
 export interface PharmacistAuthData {
     Email: string;
     password: string;
@@ -74,4 +76,14 @@ export interface AppointmentAuthData{
   State:number;
   VetEmail:string;
   id:number;
+  invoiceorNot:boolean;
+}
+export interface pharmacyAuthData{
+  Address:string;
+  EndDay:string;
+  EndHour:string;
+  Id:string;
+  Phone:number;
+  StartDay:string;
+  StartHour:string;
 }

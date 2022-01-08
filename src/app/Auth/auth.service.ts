@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { check } from 'express-validator';
 import { Subject } from 'rxjs';
 import { signData } from '../models/signUpData-model';
-import {  AppointmentAuthData, InvoiceAuthData, MedAuthData, OwnerAuthData, PetAuthData, PharmacistAuthData, VetAuthData } from './auth-data-model';
+import {  AppointmentAuthData, InvoiceAuthData, MedAuthData, OwnerAuthData, PetAuthData, PharmacistAuthData, pharmacyAuthData, VetAuthData } from './auth-data-model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -436,8 +436,14 @@ getPharmacPage(){
       this.AppointmentsofVetListener.next(response.data);
       this.appointmentsofVet=response.data;
     console.log(response);
+    },(error)=>{
+      console.log(error);
     })
-    
+    this.http.get<{data:pharmacyAuthData[]}>('http://localhost:5000/pharmacy').subscribe((response)=>{
+      console.log(response);
+      this.pharamices=response.data;
+      this.PharmaciesListener.next(response.data);
+    })
     
   }
 
@@ -859,5 +865,111 @@ getPharmacPage(){
          console.log(response);
        })
   }
+  acceptAppoint(appoint:AppointmentAuthData){
+    const data={
+      Id:appoint.id,
+      ownerEmail:appoint.OwnerEmail,
+      state:2,
+      startDate:appoint.StartDate,
+      currentUserEmail:appoint.VetEmail
+    }
+    this.http.post('http://localhost:5000/appointments/updateStateOfAppointment',data).subscribe((response)=>{
+      console.log(response);
+      this.ChoiceAppointListener.next(true);
 
+    })
+    this.router.navigate(['/MyPanel']);
+  }
+  rejectAppoint(appoint:AppointmentAuthData){
+    const data={
+      Id:appoint.id,
+      ownerEmail:appoint.OwnerEmail,
+      state:3,
+      startDate:appoint.StartDate,
+      currentUserEmail:appoint.VetEmail
+    }
+    this.http.post('http://localhost:5000/appointments/updateStateOfAppointment',data).subscribe((response)=>{
+      console.log(response);
+      this.ChoiceAppointListener.next(true);
+    })
+    this.router.navigate(['/MyPanel']);
+
+  }
+  CompleteAppoint(appoint:AppointmentAuthData){
+    const data={
+      Id:appoint.id,
+      ownerEmail:appoint.OwnerEmail,
+      state:4,
+      startDate:appoint.StartDate,
+      currentUserEmail:appoint.VetEmail
+    }
+    this.http.post('http://localhost:5000/appointments/updateStateOfAppointment',data).subscribe((response)=>{
+      console.log(response);
+      this.ChoiceAppointListener.next(true);
+    })
+    this.router.navigate(['/MyPanel']);
+
+  }
+  NeedSugery(appoint:AppointmentAuthData){
+    const data={
+      Id:appoint.id,
+      ownerEmail:appoint.OwnerEmail,
+      state:5,
+      startDate:appoint.StartDate,
+      currentUserEmail:appoint.VetEmail
+    }
+    this.http.post('http://localhost:5000/appointments/updateStateOfAppointment',data).subscribe((response)=>{
+      console.log(response);
+      this.ChoiceAppointListener.next(true);
+    })
+    this.router.navigate(['/MyPanel']);
+  }
+  AddInvoice(notes:string,appoint:AppointmentAuthData,price:number,reqMed:string,pharID:number){
+      const data={
+        pharmacyId:pharID,
+        notes:notes,
+        requiredMedicines:reqMed,
+        ownerEmail:appoint.OwnerEmail,
+        price:price,
+        currentUserEmail:appoint.VetEmail,
+        state:1
+      }
+
+      this.http.post('http://localhost:5000/invoices/',data).subscribe((res)=>{
+        console.log(res);
+      },(error)=>{
+        console.log(error);
+      })
+
+      // const data1={
+      //   Id:appoint.id,
+      //   ownerEmail:appoint.OwnerEmail,
+      //   state:6,
+      //   startDate:appoint.StartDate,
+      //   currentUserEmail:appoint.VetEmail
+      // }
+      // this.http.post('http://localhost:5000/appointments/updateStateOfAppointment',data1).subscribe((response)=>{
+      //   console.log(response);
+      //   this.ChoiceAppointListener.next(true);
+      // })
+
+
+  }
+  private pharamices!:pharmacyAuthData[];
+  private PharmaciesListener=new Subject<pharmacyAuthData[]>();
+  getPharmaciesListener(){
+    return this.PharmaciesListener.asObservable();
+  }
+  getAllPharmacies(){
+      this.http.get<{data:pharmacyAuthData[]}>('http://localhost:5000/pharmacy').subscribe((response)=>{
+        console.log(response);
+        this.pharamices=response.data;
+        this.PharmaciesListener.next(response.data);
+      })
+  }
+
+  private ChoiceAppointListener=new Subject<boolean>();
+  getChoiceAppoint(){
+    return this.ChoiceAppointListener.asObservable();
+  }
 }

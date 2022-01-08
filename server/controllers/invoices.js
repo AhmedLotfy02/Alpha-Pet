@@ -75,10 +75,10 @@ const getInvoicesOfOwner = (req, res) => {
 const createInvoice = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
-    const { invoiceId, pharmacyId, notes, requiredMedicines, ownerEmail, price, currentUserEmail } = req.body;
+    console.log(req.body);
+    const { invoiceId, pharmacyId, notes, requiredMedicines, ownerEmail, price, currentUserEmail,state} = req.body;
     
-    const sqlStr = `INSERT INTO INVOICE VALUES (${invoiceId}, '${notes}', '${requiredMedicines}', ${pharmacyId}, '${currentUserEmail}', '${ownerEmail}', ${price});`;
+    const sqlStr = `INSERT INTO INVOICE VALUES ( '${notes}', '${requiredMedicines}', ${pharmacyId}, '${currentUserEmail}', '${ownerEmail}', ${price},${state});`;
     try {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });

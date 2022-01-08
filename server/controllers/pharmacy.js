@@ -7,7 +7,7 @@ const getAllPharmacies = (req, res) => {
         connection.query(sqlStr, (error, results, fields) => {
             if(error) res.status(400).json({ message: error.message });
             
-            res.status(200).json({ data: results, fields });
+            res.status(200).json({ data: results });
         });
     } catch (error) {
         res.status(404).json({ message: error.message });
