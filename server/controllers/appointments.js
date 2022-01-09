@@ -253,7 +253,7 @@ const updateStateOfAppointment = (req, res) => {
 const deleteAppointment = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
+console.log(req.body);
     const { ownerEmail, vetEmail, startDate, currentUserEmail } = req.body;
 
     if(currentUserEmail != ownerEmail && currentUserEmail != vetEmail) return res.status(400).json({ message: "Unauthorized User" });
