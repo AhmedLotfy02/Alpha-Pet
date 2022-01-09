@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change</title>
+    <link rel="stylesheet" href="ChangeApp.css">
+</head>
+<body>
+    <mat-card class="card">
+       <p style="font-size: 25px;">Change your appointment to a new date:</p>
+       <mat-form-field>
+           <div style="font-size: 20px;">
+                <mat-label>Which vet did you book with?</mat-label>
+                <mat-select [(value)]="selected">
+                    <div>
+                        <mat-option  *ngFor="let vet of VetArray" [value]="vet">{{vet}}</mat-option>
+                    </div> 
+                </mat-select>
+            </div>
+
+            <div style="font-size: 20px; margin-top: 20px;">
+                <mat-label>Choose Date</mat-label>
+                <mat-select [(value)]="selected">
+                    <div>
+                        <mat-option  *ngFor="let vet of VetArray" [value]="vet">{{vet}}</mat-option>
+                    </div> 
+                </mat-select>
+            </div>
+       </mat-form-field>
+       <p class="alert" *ngIf="selectionAlert">
+           Please enter a Vet
+       </p>
+       <button style="font-family: 'Acme', sans-serif; font-size: 20px;" mat-raised-button class="appoint" (click)="appoint()" >Done</button>
+   
+    </mat-card>   
+</body>
+</html>

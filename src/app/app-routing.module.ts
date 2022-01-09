@@ -40,7 +40,8 @@ const routes: Routes = [
 {path:'MyAccount/AddMedicine',component:AddMedicineComponent},
 {path:'MyPanel',component:VetMainPageComponent},
 {path:'MyPanel/MyInfo',component:MyInfoComponent},
-{path:'MyAccount/MyInfo',component:PharmacistInfoComponent}
+{path:'MyAccount/MyInfo',component:PharmacistInfoComponent},
+
 ];
 
 @NgModule({

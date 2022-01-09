@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&display=swap" rel="stylesheet">       
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&family=Raleway&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<!---------------------------------------------------------------------------------------------------------------------------------->
+    <nav>
+        <div class="nav-left">
+            <ul>
+                <!--<img src="images\Logo.png" class="logo">-->
+                <!--<li><img src ="images\notification.png"></li>
+                <li><img src ="images\inbox.png"></li>
+                <li><img src ="images\video.png"></li>-->
+                <li><p style="font-family: 'Raleway', sans-serif; color:white; font-size:30px; font-weight: 1000;">Alpha Pet</p></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+                <img src="" alt="profile-image" id="main-profile-image">
+            </div>
+        </div>   
+        
+        <div class="settings-menu">
+            <div id="dark-btn">
+                <span></span>
+            </div>
+            <div class="settings-menu-inner">
+                <div class="user-profile" onclick="SeeProfile()">
+                    <img src="images/Me.jpg" alt="">
+                    <div>
+                        <p>Abdelrahman Hamdy</p>
+                        <a href="file:///C:/work/Alpha-Pet/dist/Alpha-Pet/index.html#/Account">Profile</a>
+                    </div>
+                </div>
+                <hr>
+                <!--<div class="user-profile">
+                    <img src="images/feedback.png" alt="">
+                    <div>
+                        <p>Give Feedback</p>
+                        <a href="#">Help us improve!</a>
+                    </div>
+                </div>
+                <hr>-->
+                <div class="settings-links">
+                    <img src="images/setting.png" class="settings-icon">
+                    <a href="#">Settings & Privacy <img src="images/arrow.png" width="10px"></a>
+                </div>
+
+                <div class="settings-links">
+                    <img src="images/help.png" class="settings-icon">
+                    <a href="#">Help & Support <img src="images/arrow.png" width="10px"></a>
+                </div>
+
+                <div class="settings-links" onclick="GotoHome()">
+                    <img src="images/home.png" class="settings-icon">
+                    <a href="#">Home <img src="images/arrow.png" width="10px"></a>
+                </div>
+
+                <div class="settings-links" onclick="ReturntoSignup()">
+                    <img src="images/logout.png" class="settings-icon">
+                    <a href="#">LogOut <img src="images/arrow.png" width="10px"></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+<!---------------------------------------------------------------------------------------------------------------------------------->
+    <div class="container">
+        <div class="left-sidebar">
+            <!--<div class="imp-links">
+                <a href="#"><img src ="images\news.png">Latest News</a>
+                <a href="#"><img src ="images\friends.png">Friends</a>
+                <a href="#"><img src ="images\group.png">Group</a>
+                <a href="#"><img src ="images\marketplace.png">MarketPlace</a>
+                <a href="#"><img src ="images\watch.png">Watch</a>
+                <a href="#">See More</a>
+            </div>  -->  
+            <div class="Welcome">
+                <h3 style="margin-bottom: 10px; margin-top: 10px;">Welcome to your feed page!</h3>
+                <img style="margin-top: 15px;"class="sidebar-ads" src="images\welc.jpg">
+                <p>If you need any advice or any medical assistance for your pet, then 
+                    please write a detailed post in the concerns section explaining your condition
+                    and fellow patients or available vets and pharmacists will be able to answer you 
+                    directly in the comment section! Thank you.
+                </p>
+                <hr style="margin-top: 25px;">
+            </div>  
+            <div class="shortcut-links">
+                <p>Your Favourite Vet</p>
+                <a href="#"><img src="images\Vet-1.jpg">Sam Holland</a>
+                <!--<a href="#"><img src="images\Vet-2.jpg">Chris Mark</a>
+                <a href="#"><img src="images\Vet-3.jpg">Lina George</a>
+                <a href="#"><img src="images\Vet-4.jpg">Michael Johns</a>-->
+            </div>
+        </div>
+<!---------------------------------------------------------------------------------------------------------------------------------->
+        <div class="main-content">
+            <!--<div class="story-gallery">
+                <div class="story s1">
+                    <img src="images/upload.png" alt="">
+                    <p>Add Story</p>
+                </div>
+                <div class="story s2">
+                    <img src="images/team-1.jpg" alt="">
+                    <p>Ahmed</p>
+                </div>
+                <div class="story s3">
+                    <img src="images/team-3.jpg" alt="">
+                    <p>Asaad</p>
+                </div>
+                <div class="story s4">
+                    <img src="images/team-2.jpg" alt="">
+                    <p>Waleed</p>
+                </div>
+                <div class="story s5">
+                    <img src="images/team-4.jpg" alt="">
+                    <p>Mamdouh</p>
+                </div>
+            </div> -->
+            
+            <div class="write-post-container">
+                <div class="user-profile">
+                    <img src="" alt="profile-image" id="post-profile-image">
+                    <div>
+                        <p id="username-in-post"></p>
+                        <small>Public</small>
+                    </div>
+                </div>
+
+                <div class="post-input-container">
+                    <textarea rows="3" placeholder="Any concerns?" id="concerns"></textarea>
+                    <div class="add-post-links">
+                        <!--<a href="#"><img src="images/live-video.png"> Live video</a>
+                        <a href="#"><img src="images/photo.png"> Photo/Video</a>
+                        <a href="#"><img src="images/feeling.png"> Feeling/Activity</a> -->
+                        <button type="button" class="load-more-btn" onclick="AddPost()">Post</button>
+                    </div>
+                </div>
+            </div>
+			<div class="comment hidden">
+                            <img src="images/team-1.jpg" alt="">
+                            <div class="name-and-text">
+                                <p>Ahmed Lotfy</p>
+                                <textarea disabled>Thanks Abdelrahman for this wonderful advice!</textarea> 
+                            </div>
+                        </div>
+                        <div class="post-container hidden">
+                            <div class="post-row">
+                                <div class="user-profile">
+                                    <img src="images/Me.jpg" alt="">
+                                    <div>
+                                        <p>Abdelrahman Hamdy</p>
+                                        <!-- <span>January 6 2022, 1:17 AM</span> -->
+                                    </div>
+                                </div> 
+                                <!-- <a href="#"><i class="fa fa-ellipsis-v"></i></a>           -->
+                            </div>
+                            <p class="post-text"><span>Advice</span> Understanding more about the various health conditions 
+                                and disorders that can affect your dog or
+                                puppy is an essential way of keeping it fit 
+                                and healthy and to maintaining its good health and wellbeing.
+                                <a href="#">#BeCareful</a> <a href="#">#Pet-a-holic</a></p>
+                            <!-- <img src="images/feed1.jpg" class="post-img">    -->
+                                <div class="post-row">
+                                    <div class="activity-icons">
+                                        <!-- <div><img src="images/like-blue.png" alt="">120</div> -->
+                                        <div onclick="loadCommentsOfPost(this)" class="pointer"><img src="images/comments.png" alt="">Comments</div>
+                                        <!-- <div><img src="images/share.png" alt="">20</div> -->
+                                    </div>
+                                    <div class="post-profile-icon">
+                                        <img src="images/Me.jpg" alt=""> <i class="fa fa-caret-down"></i>
+                                    </div>
+                                </div>
+                                <div class="comment-section">
+                                    <div class="add-comment">
+                                        <div class="comment-profile-icon">
+                                            <img src="images/Me.jpg" alt=""></i>
+                                        </div>
+                                        <textarea placeholder="Write a Comment.."></textarea>
+                                        <button type="button" class="load-more-btn" onclick="AddComment(this)">Comment</button>
+                                    </div>
+                                </div>
+                        </div>
+                        <button type="button" class="load-more-btn">Load More</button>
+                    </div>
+<!---------------------------------------------------------------------------------------------------------------------------------->
+        <div class="right-sidebar">
+            <div class="sidebar-title">
+                <h4>Events</h4>
+                <!--<a href="#">See All</a>-->
+            </div>    
+            <div class="event">
+                <div class="left-event">
+                    <h3>18</h3>
+                    <span>March</span>
+                </div>
+                <div class="right-event">
+                    <h4>Care</h4>
+                    <p>Looking after your pet</p>
+                    <!--<a href="#">More Info</a>-->
+                </div>
+            </div>
+            <div class="event">
+                <div class="left-event">
+                    <h3>22</h3>
+                    <span>June</span>
+                </div>
+                <div class="right-event">
+                    <h4>Medical</h4>
+                    <p>Cure for viruses</p>
+                    <!--<a href="#">More Info</a>-->
+                </div>
+            </div>
+            <div class="sidebar-title">
+                <h4>Advertisement</h4>
+                <!--<a href="#">Close</a>--> 
+            </div>
+            <img src="images\Vet-Tech.png" class="sidebar-ads">
+            <!--<div class="sidebar-title">
+                <h4>Conversations</h4>
+                <a href="#">Hide Chat</a> 
+            </div>
+
+            <div class="online-list">
+                <div class="online">
+                    <img src="images/member-1.png" alt="">
+                </div>
+                <p>Alison Martin</p>
+            </div>
+
+            <div class="online-list">
+                <div class="online">
+                    <img src="images/member-2.png" alt="">
+                </div>
+                <p>Trevor Daniels</p>
+            </div>
+
+            <div class="online-list">
+                <div class="online">
+                    <img src="images/member-3.png" alt="">
+                </div>
+                <p>Samantha Rose</p>
+            </div> -->
+        </div>
+    </div>
+<!---------------------------------------------------------------------------------------------------------------------------------->
+    <div class="footer">
+        <p>Copyright 2022 - AlphaPet</p>
+    </div>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

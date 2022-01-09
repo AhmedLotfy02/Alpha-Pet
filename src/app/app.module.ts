@@ -44,6 +44,7 @@ import { PharmaMainPageComponent } from './views/PharmacistAccount/pharma-main-p
 import { AddMedicineComponent } from './views/PharmacistAccount/add-medicine/add-medicine.component';
 import { MyInfoComponent } from './views/VetAccount/my-info/my-info.component';
 import { PharmacistInfoComponent } from './views/PharmacistAccount/pharmacist-info/pharmacist-info.component';
+import { LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,9 @@ import { PharmacistInfoComponent } from './views/PharmacistAccount/pharmacist-in
   ],
 
   providers: [
+    
+      { provide: LocationStrategy, useClass: HashLocationStrategy }
+    
   //  {
   //   //  provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true
   // }

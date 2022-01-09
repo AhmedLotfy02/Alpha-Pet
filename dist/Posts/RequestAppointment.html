@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request</title>
+    <link rel="stylesheet" href="ReqApp.css">
+</head>
+<body>
+    <mat-card class="card">
+       <p style="font-size: 25px;">Choose the vet you want to appoint with:</p>
+       <mat-form-field  style="font-size: 20px;">
+           <mat-label>Select your Vet</mat-label>
+           <mat-select [(value)]="selected">
+               <div>
+                   <mat-option  *ngFor="let vet of VetArray" [value]="vet">{{vet}}</mat-option>
+               </div> 
+           </mat-select>
+       </mat-form-field>
+       <p class="alert" *ngIf="selectionAlert">
+           Please enter a Vet
+       </p>
+       <button style="font-family: 'Acme', sans-serif; font-size: 20px;" mat-raised-button class="appoint" (click)="appoint()" >Done</button>
+   
+    </mat-card>   
+</body>
+</html>

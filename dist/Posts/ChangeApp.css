@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Acme&family=Concert+One&family=Fredoka+One&family=Josefin+Sans:wght@100;400&family=Luckiest+Guy&family=Roboto+Condensed:wght@300&family=Satisfy&display=swap');
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 120px;
+    border: 2px solid rgb(78, 16, 16);
+    border-radius: 20px;
+}
+ body{
+    align-items: center;
+    text-align: center;
+    font-family: 'Acme', sans-serif;
+ }
+
+ .appoint{
+    background: linear-gradient(90deg, rgba(191,64,191,1) 35%, rgba(149,0,255,1) 100%);
+    color: white;
+    margin-top: 60px;
+    margin-bottom: 10px;
+    width: 100%;
+    min-width: 60px; 
+    max-width: 100px; 
+}
+.appoint:hover{
+    background: white;
+    transition: 0.7s;
+    transform: scale(1.05);
+    box-shadow:  linear-gradient(90deg, rgba(191,64,191,1) 35%, rgba(149,0,255,1) 100%);
+    color: rgb(191,64,191);
+}
+
+@keyframes flash {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+.done{
+    color:red;
+    
+    animation:flash 2s infinite;
+}
