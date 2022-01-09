@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscriber, Subscription } from 'rxjs';
-import { OwnerAuthData } from 'src/app/Auth/auth-data-model';
+import { AppointmentAuthData, OwnerAuthData } from 'src/app/Auth/auth-data-model';
 import { AuthService } from 'src/app/Auth/auth.service';
 
 @Component({
@@ -13,19 +14,33 @@ export class MainPageComponent implements OnInit {
 
   user!:OwnerAuthData;
   UserListener!:Subscription;
+  appointsListener!:Subscription;
+  appoints!:AppointmentAuthData[];
+  startingSnack=false;
+  choiceAppointListener!:Subscription;
+  
   constructor(
-    private authSerivce:AuthService,private router:Router
+    private authSerivce:AuthService,private router:Router,private _snackBar: MatSnackBar
   ) { 
-    this.UserListener=this.authSerivce.getCurrentOwner().subscribe((response)=>{
-      this.user=response;
-    })
+    this.authSerivce.RequestInformationsofUser();
   }
 
   ngOnInit(): void {
     this.UserListener=this.authSerivce.getCurrentOwner().subscribe((response)=>{
       this.user=response;
     })
-  
+    this.appointsListener=this.authSerivce.getappoinstofownerListener().subscribe((response)=>{
+      this.appoints=response;
+    })
+    this.choiceAppointListener=this.authSerivce.getdeleteAppointbyOwnerListener().subscribe((response)=>{
+      this.startingSnack=response;
+      if (this.startingSnack) {
+        this.openSnackBar('Done Deleting Please Reload', 'Close');
+        }
+    })
+  }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
   gotoInform(){
     this.router.navigate(['/Account/MyInformation']);
@@ -48,6 +63,9 @@ export class MainPageComponent implements OnInit {
     this.router.navigate(['/Request-Appointment']);
 
     
+  }
+  deleteAppoint(appoint:AppointmentAuthData){
+    this.authSerivce.deleteAppointmentbyOwner(appoint);
   }
   
 }

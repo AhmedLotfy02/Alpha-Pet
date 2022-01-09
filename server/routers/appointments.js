@@ -30,13 +30,8 @@ router.patch(
     updateAppointment
 );
 router.post('/updateStateOfAppointment',updateStateOfAppointment);
-router.delete(
-    '/',
-    auth,
-    body('startDate').isDate(),
-    body('ownerEmail').isEmail().normalizeEmail(),
-    body('vetEmail').isEmail().normalizeEmail(),
-    body('currentUserEmail').isEmail().normalizeEmail(),
+router.patch(
+    '/delete',
     deleteAppointment
 );
 

@@ -2,6 +2,7 @@
 
    
 import { HttpClient } from '@angular/common/http';
+import { ThrowStmt } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { check } from 'express-validator';
@@ -372,6 +373,14 @@ getPharmacPage(){
       this.InvoicesListener.next(response.data); 
     this.Invoices=response.data;
 
+    },(error)=>{
+      console.log(error);
+    })
+
+    this.http.get<{data:AppointmentAuthData[]}>(`http://localhost:5000/appointments/owner/${authInformation.email}`).subscribe((response)=>{
+      this.appointsofownerListener.next(response.data);
+      this.appointsofowner=response.data;
+    console.log(response);
     },(error)=>{
       console.log(error);
     })
@@ -972,4 +981,26 @@ getPharmacPage(){
   getChoiceAppoint(){
     return this.ChoiceAppointListener.asObservable();
   }
+  private appointsofowner!:AppointmentAuthData[];
+  private appointsofownerListener=new Subject<AppointmentAuthData[]>();
+  getappoinstofownerListener(){
+    return this.appointsofownerListener.asObservable();
+  }
+  private deleteAppointbyOwnerListener=new Subject<boolean>();
+  getdeleteAppointbyOwnerListener(){
+    return this.deleteAppointbyOwnerListener.asObservable();
+  }
+  deleteAppointmentbyOwner(appoint:AppointmentAuthData){
+    const data={
+      ownerEmail:appoint.OwnerEmail,
+      vetEmail:appoint.VetEmail,
+      startDate:appoint.StartDate,
+      currentUserEmail:appoint.OwnerEmail
+    }
+    this.http.patch('http://localhost:5000/appointments/delete',data).subscribe((response)=>{
+    console.log(response);
+    this.deleteAppointbyOwnerListener.next(true);
+    })
+  }
+
 }

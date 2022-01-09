@@ -22567,3 +22567,35 @@
   li{
       cursor: pointer;
   }
+  
+.warn {
+  color: red;
+  text-align: center;
+  
+  animation: flash 3s infinite;
+}
+
+@keyframes flash {
+  0% {
+      opacity: 0;
+  }
+  50% {
+      opacity: 1;
+  }
+  75% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+  }
+}
+
+.deleteAppoint{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap:10px;
+}
+.cur{
+  cursor: pointer;
+}
