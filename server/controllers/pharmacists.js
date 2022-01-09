@@ -109,22 +109,22 @@ const signup = async(req, res) => {
 const updatePharmacist = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-    
+    console.log(req.body);
     const { currentUserEmail, password, fName, lName, pharmacy_id } = req.body;
 
     try {
-		const sqlStr2 = `SELECT * FROM PHARMACIST WHERE EMAIL = '${email}';`;
+		const sqlStr2 = `SELECT * FROM PHARMACIST WHERE EMAIL = '${req.body.email}';`;
 		connection.query(sqlStr2, async(error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
             if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
 
             let existingUser = results[0];
-			let x=await bcrypt.compare(req.body.currentPassword, existingUser.password);
+			let x=await bcrypt.compare(req.body.currentpass, existingUser.password);
 			if(!x) return res.status(400).json({ message: 'Invalid Credintials' });
 
             const hashedPassword = await bcrypt.hash(req.body.newpassword, 12);
-			let sqlStr = `UPDATE PHARMACIST SET PASSWORD = '${hashedPassword}' WHERE EMAIL = '${currentUserEmail}';`;
+			let sqlStr = `UPDATE PHARMACIST SET PASSWORD = '${hashedPassword}' WHERE EMAIL = '${req.body.email}';`;
 			connection.query(sqlStr, (error, results, fields) => {
 				if(error) return res.status(400).json({ message: error.message });
 				

@@ -50,12 +50,16 @@ export class MyInfoComponent implements OnInit {
   }
   
 
-  gotoInform(){
-    this.router.navigate(['/Account/MyInformation']);
-
-  }
 
   GoHome(){
     this.router.navigate(['/Home']);
+  }
+  
+  gotoVetInfo(){
+    this.router.navigate(['/MyPanel/MyInfo']);
+  }
+  gotovetPanel(){
+    this.router.navigate(['/MyPanel']);
+
   }
 }

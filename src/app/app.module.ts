@@ -43,6 +43,7 @@ import { MyInvoicesComponent } from './views/OwnerAccount/my-invoices/my-invoice
 import { PharmaMainPageComponent } from './views/PharmacistAccount/pharma-main-page/pharma-main-page.component';
 import { AddMedicineComponent } from './views/PharmacistAccount/add-medicine/add-medicine.component';
 import { MyInfoComponent } from './views/VetAccount/my-info/my-info.component';
+import { PharmacistInfoComponent } from './views/PharmacistAccount/pharmacist-info/pharmacist-info.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { MyInfoComponent } from './views/VetAccount/my-info/my-info.component';
     MyInvoicesComponent,
     PharmaMainPageComponent,
     AddMedicineComponent,
-    MyInfoComponent
+    MyInfoComponent,
+    PharmacistInfoComponent
   
   ],
   imports: [

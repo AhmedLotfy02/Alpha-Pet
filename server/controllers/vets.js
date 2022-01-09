@@ -128,14 +128,14 @@ const updatePassofVet = async(req,res)=>{
     console.log(req.body);
 
     try {
-		const sqlStr2 = `SELECT EMAIL, FNAME, LNAME, CHARGE, STATE, password FROM VET WHERE EMAIL = '${email}';`;
+		const sqlStr2 = `SELECT EMAIL, FNAME, LNAME, CHARGE, STATE, password FROM VET WHERE EMAIL = '${req.body.email}';`;
 		connection.query(sqlStr2, async(error, results, fields) => {
             if(error) return res.status(400).json({ message: error.message });
             
             if(results.length == 0) return res.status(404).json({ message: 'User does not exist' });
 
             let existingUser = results[0];
-			let x=await bcrypt.compare(req.body.currentPassword, existingUser.password);
+			let x=await bcrypt.compare(req.body.currentpass, existingUser.password);
 			if(!x) return res.status(400).json({ message: 'Invalid Credintials' });
 			
 			const hashedPassword = await bcrypt.hash(req.body.newpassword, 12);

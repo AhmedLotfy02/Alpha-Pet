@@ -9,6 +9,9 @@ export class AppComponent implements OnInit {
   title = 'Alpha-Pet';
   constructor(private authService:AuthService) {}
   ngOnInit() {
-  this.authService.autoAuthUser();
+    setTimeout(() => {
+      this.authService.autoAuthUser();
+
+    }, 1000);
   }
 }

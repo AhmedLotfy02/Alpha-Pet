@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
+   
       this.isAuthenticated = this.authSerivce.getisAuth();
       this.authListenerSubs = this.authSerivce
         .getAuthStatusListener()
@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
       this.VetPage=this.authSerivce.vetPage;
       this.ownerPage=this.authSerivce.ownerPage;
       this.PharmacistPage=this.authSerivce.pharmacistpage;
-    }, 1000);
+   
   
 
     
@@ -48,15 +48,6 @@ export class HeaderComponent implements OnInit {
     this.authSerivce.login();
   }
   goAccount(){
-    if(this.ownerPage){
-      this.router.navigate(['/Account']);
-    }
-    else if(this.VetPage){
-      this.router.navigate(['/MyPanel']);
-
-    }
-    else if(this.PharmacistPage){
-      this.router.navigate(['/MyAccount']);
-    }
+   this.authSerivce.gotoAccount();
   }
 }

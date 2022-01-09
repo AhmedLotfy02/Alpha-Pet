@@ -123,7 +123,7 @@ const updatePassofOwner = async(req,res)=>{
             if(results.length == 0) return res.status(400).json({ message: 'User does not exist' });
 
             let existingUser = results[0];
-            let x=await bcrypt.compare(req.body.currentPassword, existingUser.password);
+            let x=await bcrypt.compare(req.body.currentpass, existingUser.password);
 
 			if(!x) return res.status(400).json({ message: 'Invalid Credintials' });
 

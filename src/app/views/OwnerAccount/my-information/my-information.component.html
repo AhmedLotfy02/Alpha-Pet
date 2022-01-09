@@ -50,13 +50,14 @@
             <hr class="sidebar-divider">
 
             <!-- Heading -->
+        
             <div class="sidebar-heading">
                 Informations
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            <li  (click)="gotoInform()" class="nav-item">
+                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <span>My Informations</span>
                 </a>
@@ -64,8 +65,8 @@
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+            <li (click)="gotoMyPet()" class="nav-item">
+                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <span>My Pet</span>
                 </a>
@@ -84,18 +85,17 @@
            
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+            <li (click)="gotoMyInvoices()" class="nav-item">
+                <a class="nav-link" >
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Pay Invoices</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+            <li (click)="gotoMyFavVet()" class="nav-item">
+                <a class="nav-link">
                     <span>My Favorite Vets</span></a>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -120,18 +120,8 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                 Go
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <button (click)="GoHome()" class="btn btn-primary">Home</button>
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -212,22 +202,22 @@
                                     <div class="col-md-6">
                                         <div class="row">
                                             <div class="row">
-                                                OWner's Name: {{user.FName}} {{user.LName}}
+                                                Owner's Name: {{user.FName}} {{user.LName}}
                                             </div>
                                             <div class="row">
-                                                OWner's Email: {{user.Email}}
+                                                Owner's Email: {{user.Email}}
                                             </div>
                                        
                                         </div>
                                         <div class="row">
                                             <div class="row">
-                                                OWner's Phone: {{user.phone}}
+                                                Owner's Phone: {{user.phone}}
                                             </div>
                                             <div class="row">
-                                                OWner's Balance: {{user.Balance}}
+                                                Owner's Balance: {{user.Balance}}
                                             </div>
                                             <div class="row">
-                                                OWner's City: {{user.City}}
+                                                Owner's City: {{user.City}}
                                             </div>
                                         </div>
                                         <div *ngIf="user.Favourite_Vet_Email!=''" class="row">

@@ -58,7 +58,7 @@ const getPetsWithAge = (req, res) => {
 const createPet = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-      
+      console.log(req.body);
     const { currentUserEmail, petName, color, age } = req.body;
     
     const sqlStr = `INSERT INTO PET VALUES ('${currentUserEmail}', '${petName}', '${color}', ${age});`;

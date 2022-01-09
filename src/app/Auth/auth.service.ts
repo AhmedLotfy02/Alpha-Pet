@@ -54,6 +54,9 @@ private AppointmentsofVetListener=new Subject<AppointmentAuthData[]>();
 getAppointmentsofVetListener(){
   return this.AppointmentsofVetListener.asObservable();
 }
+getAuthStatusListener() {
+  return this.authStatusListener.asObservable();
+}
 
 getownerPage(){
   return this.ownerPage;
@@ -266,6 +269,9 @@ getPharmacPage(){
     if (!authInformation) {
       return;
     }
+
+    this.authStatusListener.next(true);
+    
     if(authInformation.type==='vet'){
       this.http
       .post<{ message: string; user:VetAuthData }>(
@@ -526,9 +532,7 @@ getPharmacPage(){
   getloginListener() {
     return this.loginListener.asObservable();
   }
-  getAuthStatusListener() {
-    return this.authStatusListener.asObservable();
-  }
+  
   
   loginAsPharmacist(email:string,password:string){
     
@@ -552,7 +556,7 @@ getPharmacPage(){
             this.pharmacistpage=true;
             this.vetPage=false;
             this.ownerPage=false;
-
+              console.log('isauth'+this.isAuthenticated);
             this.homeUserListener.next({ownerPage:false,VetPage:false,PharmacistPage:true});
             this.isAuthenticated = true;
             const expiresInDuration = response.expiresIn;
@@ -735,6 +739,35 @@ getPharmacPage(){
       );
   }
 
+  changePasswordofPharmacist(password: string, currentpass: string) {
+    console.log(password);
+
+    
+    const data = {
+      newpassword: password,
+      currentpass: currentpass,
+      email: this.Pharmacistuser1.Email,
+    };
+    this.http
+      .patch<{ message: string; user: PharmacistAuthData }>(
+        'http://localhost:5000/pharmacists/update',
+        data
+      )
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.changepassListener.next({ changed: true, failed: false });
+          this.Pharmacistuser1 = response.user;
+        },
+        (error) => {
+          this.changepassListener.next({ changed: false, failed: true });
+
+          console.log(error);
+        }
+      );
+  }
+
+
   logout() {
     this.token = '';
     this.authStatusListener.next(false);
@@ -800,7 +833,7 @@ getPharmacPage(){
       ,age:petAge,
       currentUserEmail:this.Owneruser1.Email
     }
-    this.http.post('http://localhost:5000/pets/createPet',data).subscribe((response:any)=>{
+    this.http.post('http://localhost:5000/pets/',data).subscribe((response:any)=>{
       this.Pet=response;
       console.log(response);
     },(error)=>{
@@ -1002,5 +1035,34 @@ getPharmacPage(){
     this.deleteAppointbyOwnerListener.next(true);
     })
   }
+  gotoAccount(){
+    const authInformation = this.getAuthData();
+    if (!authInformation) {
+      return;
+    }
+    if(authInformation.type==="vet"){
+      this.router.navigate(['/MyPanel']);
+    }
+    else if(authInformation.type==="pharmacist"){
+      this.router.navigate(['/MyAccount']);
+    }
+    else if(authInformation.type==="owner"){
+      this.router.navigate(['/Account']);
+    }
+
+
+    // if(this.ownerPage){
+    //   this.router.navigate(['/Account']);
+    // }
+    // else if(this.VetPage){
+    //   this.router.navigate(['/MyPanel']);
+    //   console.log('vvett');
+    // }
+    // else if(this.PharmacistPage){
+    //   this.router.navigate(['/MyAccount']);
+    // }
+  }
+
+  
 
 }

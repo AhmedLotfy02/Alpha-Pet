@@ -55,8 +55,8 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            <li  (click)="gotoInform()" class="nav-item">
+                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <span>My Informations</span>
                 </a>
@@ -64,8 +64,8 @@
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+            <li (click)="gotoMyPet()" class="nav-item">
+                <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <span>My Pet</span>
                 </a>
@@ -84,19 +84,19 @@
            
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+            <li (click)="gotoMyInvoices()" class="nav-item">
+                <a class="nav-link" >
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Pay Invoices</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+            <li (click)="gotoMyFavVet()" class="nav-item">
+                <a class="nav-link">
                     <span>My Favorite Vets</span></a>
             </li>
 
-            <!-- Divider -->
+                  <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
             
@@ -120,18 +120,8 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                 Go
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <button (click)="GoHome()" class="btn btn-primary">Home</button>
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -236,7 +226,7 @@
                                 </div>
                             </div>
 
-
+<!-- 
                             <div *ngIf="user.Favourite_Vet_Email==null" class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Change Favourite Vet</h6>
@@ -265,14 +255,14 @@
                                      
                                     
                                 </div>
-                            </div>
+                            </div>-->
 
                             <!-- Approach -->
                            
                         </div>
                     </div>
 
-                </div>
+                   </div>
                 <!-- /.container-fluid -->
 
             </div>

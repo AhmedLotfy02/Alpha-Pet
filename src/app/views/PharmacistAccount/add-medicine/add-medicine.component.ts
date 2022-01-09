@@ -41,9 +41,22 @@ export class AddMedicineComponent implements OnInit {
       else{
         this.errorAdding=true;
         this.doneAdding=false;
-        
+
       }
     })
+    
+  }
+  gotoMedicine(){
+    this.router.navigate(['/MyAccount/AddMedicine']);
+
+  }
+  gotopharmacistPanel(){
+    this.router.navigate(['/MyAccount']);
+
+  }
+  gotoInformation(){
+    this.router.navigate(['/MyAccount/MyInfo']);
+
     
   }
   AddMed(form:NgForm){

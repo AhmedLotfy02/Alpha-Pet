@@ -67,5 +67,8 @@ export class MainPageComponent implements OnInit {
   deleteAppoint(appoint:AppointmentAuthData){
     this.authSerivce.deleteAppointmentbyOwner(appoint);
   }
-  
+ 
+  GoHome(){
+    this.router.navigate(['/Home']);
+  } 
 }

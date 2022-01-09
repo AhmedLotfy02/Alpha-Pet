@@ -37,8 +37,18 @@ export class PharmaMainPageComponent implements OnInit {
     })
   
   }
-  gotoaddMed(){
-    this.router.navigate(['MyAccount/AddMedicine']);
+  gotoMedicine(){
+    this.router.navigate(['/MyAccount/AddMedicine']);
+
+  }
+  gotopharmacistPanel(){
+    this.router.navigate(['/MyAccount']);
+
+  }
+  gotoInformation(){
+    this.router.navigate(['/MyAccount/MyInfo']);
+
+    
   }
   refuseInvoice(invoice:InvoiceAuthData){
     this.authSerivce.refuseInvoice(invoice);

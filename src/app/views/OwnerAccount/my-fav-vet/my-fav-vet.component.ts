@@ -1,4 +1,6 @@
+import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { OwnerAuthData, PetAuthData, VetAuthData } from 'src/app/Auth/auth-data-model';
 import { AuthService } from 'src/app/Auth/auth.service';
@@ -17,11 +19,35 @@ export class MyFavVetComponent implements OnInit {
   user!:OwnerAuthData;
   FavVetListener!:Subscription;
   doneEditing=false;
-  constructor(private authService:AuthService) {
+  constructor(private authService:AuthService,private router:Router) {
     this.authService.RequestInformationsofUser();
     this.authService.getAllVets();
    }
+  
+  gotoInform(){
+    this.router.navigate(['/Account/MyInformation']);
 
+  }
+  gotoMyPet(){
+    this.router.navigate(['/Account/MyPet']);
+
+  }
+  gotoMyFavVet(){
+    this.router.navigate(['/Account/MyFavVet']);
+
+  }
+  gotoMyInvoices(){
+    this.router.navigate(['/Account/MyInvoices']);
+
+    
+  }
+  goTorequestAppoint(){
+    this.router.navigate(['/Request-Appointment']);
+
+    
+  }
+
+   
   ngOnInit(): void {
     this.UserListener=this.authService.getCurrentOwner().subscribe((response)=>{
       this.user=response;
@@ -49,5 +75,9 @@ export class MyFavVetComponent implements OnInit {
    this.authService.FavVet(this.user.Email,this.selected);
     console.log(this.selected);
   }
+  
 
+  GoHome(){
+    this.router.navigate(['/Home']);
+  }
 }

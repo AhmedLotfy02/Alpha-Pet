@@ -50,6 +50,7 @@
             <hr class="sidebar-divider">
 
             <!-- Heading -->
+           
             <div class="sidebar-heading">
                 Informations
             </div>
@@ -90,12 +91,10 @@
                 <a class="nav-link">
                     <span>Add Medicine</span></a>
             </li>
-
-            <!-- Divider -->
+ <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-         
-            
+                     
    
 
         </ul>
@@ -116,18 +115,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                 Go
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <button (click)="GoHome()" class="btn btn-primary">Home</button>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -186,75 +174,99 @@
 
                     <!-- Content Row -->
                     
+
                     <!-- Content Row -->
 
+                    
+                    <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Add Medicine</h6>
-                                   
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <form (submit)="AddMed(postForm)" #postForm="ngForm">
-                                        
+                        <!-- Content Column -->
+                       
 
-                                        <div class="col-md-6">
-                                            <mat-form-field>
-                                                <input matInput type="number" name="MedID" ngModel #MedIDInput="ngModel" required placeholder="Medicine ID" />
-                                                <mat-error *ngIf="MedIDInput.invalid">Please enter a vaild Medicine ID</mat-error>
-                                            </mat-form-field>
-                                            
-                                            <mat-form-field>
-                                                <input matInput type="text" name="MedName" ngModel  #MedNameInput="ngModel" required placeholder="Medicine Name" />
-                                                <mat-error *ngIf="MedNameInput.invalid">Please enter Medicine name</mat-error>
-                                            </mat-form-field>
-                                            
-                                        </div>
-                                        <div class="col-md-6">
-                                            <mat-form-field>
-                                                <input matInput type="number" name="price" ngModel #priceInput="ngModel" required placeholder="Price" />
-                                                <mat-error *ngIf="priceInput.invalid">Please enter a vaild price</mat-error>
-                                            </mat-form-field>
-                                            <br />
-                                            <mat-form-field>
-                                                <input matInput type="number" name="quantity" ngModel  #quantityInput="ngModel" required placeholder="Quantity" />
-                                                <mat-error *ngIf="quantityInput.invalid">Please enter quantity of medicine</mat-error>
-                                            </mat-form-field>
-                                            
+                        <div class="col-lg-6 mb-4">
+
+                            <!-- Illustrations -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Pharmacist's Information</h6>
+                                </div>
+                                <div class="card-body">
+                                   
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="row">
+                                                Pharmacist's Name: {{user.FName}} {{user.LName}}
+                                            </div>
+                                            <div class="row">
+                                                Pharmacist's Email: {{user.Email}}
+                                            </div>
+                                       
                                         </div>
                                         <div class="row">
-                                            <mat-form-field>
-                                                <input matInput type="text" name="desc" ngModel #descInput="ngModel" required placeholder="Description" />
-                                                <mat-error *ngIf="descInput.invalid">Please enter a vaild description</mat-error>
-                                            </mat-form-field>
-                                          
-                                            
+                                            <div class="row">
+                                                Pharmacy ID: {{user.Pharmacy_Id}}
+                                            </div>
                                         </div>
-                                        
-                                        <br>
-                                     
-                                        <button class="b1" type="submit" mat-raised-button color="accent">
-                                  Add Medicine
-                                </button>
-                                    </form>
-                                    <div class="warning" *ngIf="doneAdding">Done Adding</div>
-                                    <div class="warning" *ngIf="errorAdding">Enter Another ID cause this already in the db</div>
+                                    </div>    
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Pie Chart -->
-                        
+                            <!-- Approach -->
+                           
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Change Password</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="expansion">
+                                        <mat-accordion>
+                                            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title> Change Password </mat-panel-title>
+                                                </mat-expansion-panel-header>
+                
+                                                <form (submit)="changePassword(passform)" #passform="ngForm">
+                                                    <mat-form-field>
+                                                        <input matInput type="text" required name="password3" ngModel placeholder="Current Password" #password3="ngModel" />
+                                                        <mat-error *ngIf="password3.invalid">Please enter your current password</mat-error>
+                                                    </mat-form-field>
+                                                    <br />
+                                                    <mat-form-field>
+                                                        <input matInput type="text" required name="password1" ngModel placeholder="New Password" #password="ngModel" />
+                                                        <mat-error *ngIf="password.invalid">Please enter your password</mat-error>
+                                                    </mat-form-field>
+                                                    <br />
+                                                    <mat-form-field>
+                                                        <input matInput type="text" required name="password2" ngModel placeholder="Confirm New Password" #confirm="ngModel" />
+                                                        <mat-error *ngIf="confirm.invalid">Please confirm your password</mat-error>
+                                                    </mat-form-field>
+                                                    <br />
+                                                    <button id="btn" mat-raised-button type="submit">
+                                      Apply
+                                    </button>
+                                                    <div *ngIf="!matching">
+                                                        <br />
+                                                        <br />
+                                                        <p class="alert1">The passwords don't match</p>
+                                                    </div>
+                                                </form>
+                                            </mat-expansion-panel>
+                                        </mat-accordion>
+                                    </div>
+                                    <p class="warning" *ngIf="passchanged && !passchangingfailed">
+                                        Password changed successfully
+                                    </p>
+                                    <p class="warning" *ngIf="passchangingfailed && !passchanged">
+                                        You entered a wrong password
+                                    </p>
+                                        
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
 
-                    <!-- Content Row -->
-                    
                 </div>
                 <!-- /.container-fluid -->
 
@@ -265,7 +277,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                       
                     </div>
                 </div>
             </footer>
@@ -302,22 +314,6 @@
         </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
 
 </body>
 

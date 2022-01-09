@@ -85,4 +85,16 @@ export class VetMainPageComponent implements OnInit {
     console.log(form.value);
     this.authSerivce.AddInvoice(form.value.notes,appoint,form.value.price,form.value.reqmed,parseInt(this.selected));
   }
+
+  gotoVetInfo(){
+    this.router.navigate(['/MyPanel/MyInfo']);
+  }
+  gotovetPanel(){
+    this.router.navigate(['/MyPanel']);
+
+  }
+  
+  GoHome(){
+    this.router.navigate(['/Home']);
+  }
 }

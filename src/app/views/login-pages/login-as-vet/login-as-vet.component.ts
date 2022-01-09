@@ -17,18 +17,19 @@ export class LoginAsVetComponent implements OnInit {
   constructor(private authService:AuthService) { }
   
   ngOnInit(): void {
+    this.isAuthenticated = this.authService.getisAuth();
+    this.authListenerSubs = this.authService
+      .getAuthStatusListener()
+      .subscribe((isauthenticated) => {
+        this.isAuthenticated = isauthenticated;
+      });
+  
     this.loginListener = this.authService
     .getloginListener()
     .subscribe((result) => {
       this.wronginput = result;
     });
-  this.isAuthenticated = this.authService.getisAuth();
-  this.authListenerSubs = this.authService
-    .getAuthStatusListener()
-    .subscribe((isauthenticated) => {
-      this.isAuthenticated = isauthenticated;
-    });
-
+  
   }
 
   login(form:NgForm){

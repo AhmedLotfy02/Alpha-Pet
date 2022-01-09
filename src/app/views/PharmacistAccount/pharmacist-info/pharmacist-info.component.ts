@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscriber, Subscription } from 'rxjs';
-import { OwnerAuthData } from 'src/app/Auth/auth-data-model';
+import { OwnerAuthData, PharmacistAuthData, pharmacyAuthData, VetAuthData } from 'src/app/Auth/auth-data-model';
 import { AuthService } from 'src/app/Auth/auth.service';
 
 @Component({
-  selector: 'app-my-information',
-  templateUrl: './my-information.component.html',
-  styleUrls: ['./my-information.component.css']
+  selector: 'app-pharmacist-info',
+  templateUrl: './pharmacist-info.component.html',
+  styleUrls: ['./pharmacist-info.component.css']
 })
-export class MyInformationComponent implements OnInit {
-  user!:OwnerAuthData;
+export class PharmacistInfoComponent implements OnInit {
+  user!:PharmacistAuthData;
   UserListener!:Subscription;
   changingListener!: Subscription;
   passchanged = false;
@@ -22,11 +22,11 @@ export class MyInformationComponent implements OnInit {
   constructor(
     private authSerivce:AuthService,private router:Router
   ) { 
-    this.authSerivce.RequestInformationsofUser();
+    this.authSerivce.RequestInformationsofPharmacistUser();
   }
 
   ngOnInit(): void {
-    this.UserListener=this.authSerivce.getCurrentOwner().subscribe((response)=>{
+    this.UserListener=this.authSerivce.getCurrentPharmacist().subscribe((response)=>{
       this.user=response;
     })
     this.changingListener = this.authSerivce
@@ -38,7 +38,6 @@ export class MyInformationComponent implements OnInit {
 
   
   }
-  
   changePassword(form: NgForm) {
     if (form.invalid) {
       return;
@@ -47,35 +46,25 @@ export class MyInformationComponent implements OnInit {
       return;
     }
     console.log(form.value);
-    this.authSerivce.changePasswordofOwner(form.value.password1, form.value.password3);
+    this.authSerivce.changePasswordofPharmacist(form.value.password1, form.value.password3);
   }
   
 
-  gotoInform(){
-    this.router.navigate(['/Account/MyInformation']);
 
-  }
-  gotoMyPet(){
-    this.router.navigate(['/Account/MyPet']);
-
-  }
-  gotoMyFavVet(){
-    this.router.navigate(['/Account/MyFavVet']);
-
-  }
-  gotoMyInvoices(){
-    this.router.navigate(['/Account/MyInvoices']);
-
-    
-  }
-  goTorequestAppoint(){
-    this.router.navigate(['/Request-Appointment']);
-
-    
-  }
-  
   GoHome(){
     this.router.navigate(['/Home']);
   }
+  gotoMedicine(){
+    this.router.navigate(['/MyAccount/AddMedicine']);
 
+  }
+  gotopharmacistPanel(){
+    this.router.navigate(['/MyAccount']);
+
+  }
+  gotoInformation(){
+    this.router.navigate(['/MyAccount/MyInfo']);
+
+    
+  }
 }

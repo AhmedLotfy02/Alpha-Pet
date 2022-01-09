@@ -65,12 +65,7 @@ router.post(
 );
 router.patch(
     '/update',
-    auth,
-    body('currentUserEmail').isEmail().normalizeEmail(),
-    body('password').notEmpty(),
-    body('fName').notEmpty(),
-    body('lName').notEmpty(),
-    updatePharmacist
+        updatePharmacist
 );
 router.post('/getPharmacistByEmail',getPharmacistByEmail);
 module.exports = router;

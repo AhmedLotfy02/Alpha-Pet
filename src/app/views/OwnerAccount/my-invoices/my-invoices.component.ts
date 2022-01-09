@@ -48,4 +48,27 @@ export class MyInvoicesComponent implements OnInit {
     this.router.navigate(['/Account/MyInformation']);
 
   }
+  gotoMyPet(){
+    this.router.navigate(['/Account/MyPet']);
+
+  }
+  gotoMyFavVet(){
+    this.router.navigate(['/Account/MyFavVet']);
+
+  }
+  gotoMyInvoices(){
+    this.router.navigate(['/Account/MyInvoices']);
+
+    
+  }
+  goTorequestAppoint(){
+    this.router.navigate(['/Request-Appointment']);
+
+    
+  }
+  
+  GoHome(){
+    this.router.navigate(['/Home']);
+  }
+
 }
