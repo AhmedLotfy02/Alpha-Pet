@@ -6,6 +6,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { check } from 'express-validator';
+import { report } from 'process';
 import { Subject } from 'rxjs';
 import { signData } from '../models/signUpData-model';
 import {  AppointmentAuthData, InvoiceAuthData, MedAuthData, OwnerAuthData, PetAuthData, PharmacistAuthData, pharmacyAuthData, VetAuthData } from './auth-data-model';
@@ -503,10 +504,12 @@ getPharmacPage(){
      this.logout();
     }, duraion * 1000);
   }
-  private saveAuthData(token: string, expirtationDate: Date, email: string,type:string,pharmacy_id:number) {
+  private saveAuthData(token: string, expirtationDate: Date, email: string,type:string,pharmacy_id:number,Fname:string,LName:string) {
     localStorage.setItem('token', token);
     localStorage.setItem('expirationDate', expirtationDate.toISOString());
     localStorage.setItem('email', email);
+    localStorage.setItem('FName', Fname);
+    localStorage.setItem('LName', LName);
 
     localStorage.setItem('type', type);
     if(type==='pharmacist'){
@@ -601,7 +604,7 @@ getPharmacPage(){
               now.getTime() + expiresInDuration * 1000
             );
             console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, response.user.Email,'pharmacist',response.user.Pharmacy_Id);
+            this.saveAuthData(token, expirationDate, response.user.Email,'pharmacist',response.user.Pharmacy_Id,response.user.FName,response.user.LName);
             this.router.navigate(['/Home']);
           }
         },
@@ -651,7 +654,7 @@ getPharmacPage(){
               now.getTime() + expiresInDuration * 1000
             );
             console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, response.user.EMAIL,'vet',0);
+            this.saveAuthData(token, expirationDate, response.user.EMAIL,'vet',0,response.user.FNAME,response.user.LNAME);
             this.router.navigate(['/Home']);
           }
         },
@@ -700,7 +703,7 @@ getPharmacPage(){
               now.getTime() + expiresInDuration * 1000
             );
             console.log(expirationDate);
-            this.saveAuthData(token, expirationDate, response.user.Email,'owner',0);
+            this.saveAuthData(token, expirationDate, response.user.Email,'owner',0,response.user.FName,response.user.LName);
             this.router.navigate(['/Home']);
           }
         },
