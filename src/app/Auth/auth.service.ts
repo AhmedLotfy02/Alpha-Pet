@@ -508,8 +508,8 @@ getPharmacPage(){
     localStorage.setItem('token', token);
     localStorage.setItem('expirationDate', expirtationDate.toISOString());
     localStorage.setItem('email', email);
-    localStorage.setItem('FName', Fname);
-    localStorage.setItem('LName', LName);
+    localStorage.setItem('fName', Fname);
+    localStorage.setItem('lName', LName);
 
     localStorage.setItem('type', type);
     if(type==='pharmacist'){
