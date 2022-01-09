@@ -14,16 +14,31 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  onlogging(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
-    console.log(form.value);
-    if (form.value.username === 'admin' && form.value.password === 'admin') {
-      this.router.navigate(['/admin/options']);
-    } else {
-    //  this.authService.login(form.value.username, form.value.password);
-    }
+ 
+  
+  gotoLoginPharma(){
+    this.router.navigate(['/Login-As-Pharmacist']);
+
+  }
+  gotoLoginVet(){
+    this.router.navigate(['/Login-As-Vet']);
+    
+  }
+  gotoLoginOwner(){
+    this.router.navigate(['/Login-As-Owner']);
+
+  }
+  gotoSignupOwner(){
+    this.router.navigate(['/Sign-UpAsOwner']);
+
+  }
+  gotoSignupPharma(){
+    this.router.navigate(['/Sign-UpAsPharmacist']);
+
+  }
+  gotoSignupVet(){
+    this.router.navigate(['/Sign-UpAsVet']);
+
   }
 
 }

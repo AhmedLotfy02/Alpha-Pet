@@ -302,7 +302,7 @@ getPharmacPage(){
         this.OwnerEmailListener.next(responsedata.user);
         console.log(this.Owneruser1);
       });
-      this.http.get<{pet:PetAuthData}>(`http://localhost:5000/pets/owner/${this.Owneruser1.Email}`).
+      this.http.get<{pet:PetAuthData}>(`http://localhost:5000/pets/owner/${authInformation.email}`).
       subscribe((response)=>{
         this.PetListener.next(response.pet);
         this.Pet=response.pet;
@@ -312,7 +312,13 @@ getPharmacPage(){
         this.PetFoundListener.next(false);
         console.log(error);
       })
-      this.getInvoicesOfOwner();
+      this.http.get<{data:InvoiceAuthData[]}>(`http://localhost:5000/invoices/owner/${authInformation.email}`).subscribe((response)=>{
+    this.InvoicesListener.next(response.data);  
+    this.Invoices=response.data;
+      console.log(response);
+    },(error)=>{
+      console.log(error);
+    })
     }
     const now = new Date();
     const expiresIn = authInformation!.expirationDate.getTime() - now.getTime();
@@ -808,13 +814,7 @@ getPharmacPage(){
   }
   
   getInvoicesOfOwner(){
-    this.http.get<{data:InvoiceAuthData[]}>(`http://localhost:5000/invoices/owner/${this.Owneruser1.Email}`).subscribe((response)=>{
-    this.InvoicesListener.next(response.data);  
-    this.Invoices=response.data;
-      console.log(response);
-    },(error)=>{
-      console.log(error);
-    })
+   
   }
   private medicineListener=new Subject<boolean>();
   getmedicineListener(){

@@ -14,6 +14,7 @@
 </head>
 <!--Coded with love by Mutiullah Samim-->
 <body>
+	
 	<div class="container h-100">
 		<div class="d-flex justify-content-center h-100">
 			<div class="user_card">
@@ -22,44 +23,38 @@
 						<img src="https://i.ibb.co/2gzvgtC/Alpha-Pet-1.png" class="brand_logo" alt="Logo">
 					</div>
 				</div>
-				<div class="d-flex justify-content-center form_container">
-					<form #postForm="ngForm">
-						<div class=" input mb-3">
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-user"></i></span>
-							
-							</div>
-							<mat-form-field>
-								<input matInput floatLabel='never'  type="text" name="username" ngModel #usernameInput="ngModel" required placeholder="Username" />
-								<mat-error *ngIf="usernameInput.invalid">Please enter a vaild username</mat-error>
-							</mat-form-field>
-							<!-- <input type="text" name="" class="form-control input_user" value="" placeholder="username"> -->
-						</div>
-						<div class="input mb-2">
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-key"></i></span>
-							</div>
-							<mat-form-field>
-								<input matInput type="password" name="password" ngModel #password #passwordInput="ngModel" required placeholder="Password" />
-								<mat-error *ngIf="passwordInput.invalid">Please enter password</mat-error>
-							</mat-form-field>					</div>
-						<div class="form-group">
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input" id="customControlInline">
-								<label class="custom-control-label" for="customControlInline">Remember me</label>
-							</div>
-						</div>
-							<div class="d-flex justify-content-center mt-3 login_container">
-								<button class="login_btn"  type="submit" mat-raised-button color="primary">Login</button>				   </div>
-					</form>
+
+				<div class="d-flex justify-content-center ">
+					<span class="titleFont">Welcome to Alpha-Pet</span>
+				
 				</div>
-		
-				<div class="mt-4">
-					<div class="d-flex justify-content-center links">
-						Don't have an account? <a href="#" class="ml-2">Sign Up</a>
-					</div>
+				<br>
+				<div class="d-flex justify-content-center ">
+					<span class="titleFont1">Login As:</span>
+				
+				</div>
+				<br>
+				<div class="d-flex justify-content-center ">
+					
+					<button class="lgnbtn" (click)="gotoLoginPharma()" mat-raised-button>Pharmacist</button>
+					<button class="lgnbtn" (click)="gotoLoginVet()" mat-raised-button>Vet</button>
+					<button class="lgnbtn" (click)="gotoLoginOwner()" mat-raised-button>Owner</button>
+				</div>
+				<br>
+				<div class="d-flex justify-content-center ">
+					<span class="titleFont1">Sign Up As:</span>
+					<br>
 					
 				</div>
+				<br>
+
+				<div class="d-flex justify-content-center ">
+					
+					<button class="lgnbtn" (click)="gotoSignupPharma()" mat-raised-button>Pharmacist</button>
+					<button class="lgnbtn" (click)="gotoSignupVet()" mat-raised-button>Vet</button>
+					<button class="lgnbtn" (click)="gotoSignupOwner()" mat-raised-button>Owner</button>
+				</div>
+				
 			</div>
 		</div>
 	</div>

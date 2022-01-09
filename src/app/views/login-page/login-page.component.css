@@ -1,13 +1,15 @@
 	/* Coded with love by Mutiullah Samim */
+    @import url('https://fonts.googleapis.com/css2?family=Acme&family=Concert+One&family=Dancing+Script&family=Fredoka+One&family=Josefin+Sans:wght@100;400&family=Luckiest+Guy&family=Roboto+Condensed:wght@300&family=Satisfy&display=swap');
     body,
     html {
         margin: 0;
         padding: 0;
         height: 100%;
        /* background: #60a3bc !important; */
-        background-image: url('https://i.ibb.co/NWwyjrY/1200-stethoscope-on-purple.jpg');
+        background-image: url('http://localhost:5000/images/AqZISL.jpg');
         background-repeat:no-repeat;
         background-size: cover;
+        
     }
     .user_card {
         height: 430px;
@@ -80,4 +82,20 @@
         display: flex;
         flex-direction: row;
         gap: 7px;
+    }
+
+    .lgnbtn:hover{
+    transform: scale(1.1);
+    background-color: purple;
+    color: white;
+    }
+    .titleFont{
+        font-size: 30px;
+        font-family: 'Josefin Sans', sans-serif;
+
+    }
+    .titleFont1{
+        font-size: 20px;
+        font-family: 'Dancing Script', cursive;
+
     }
