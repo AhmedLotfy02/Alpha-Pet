@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscriber, Subscription } from 'rxjs';
 import { InvoiceAuthData, MedAuthData, OwnerAuthData, PharmacistAuthData } from 'src/app/Auth/auth-data-model';
@@ -16,12 +17,17 @@ export class PharmaMainPageComponent implements OnInit {
   invoicesListener!:Subscription;
   medicines!:MedAuthData[];
   medListener!:Subscription;
+  startingSnack = false;
+  invoiceEditedListener!:Subscription;
   constructor(
-    private authSerivce:AuthService,private router:Router
+    private authSerivce:AuthService,private router:Router,    private _snackBar: MatSnackBar
+
   ) { 
     this.authSerivce.RequestInformationsofPharmacistUser();
   }
-
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
   ngOnInit(): void {
     this.UserListener=this.authSerivce.getCurrentPharmacist().subscribe((response)=>{
       this.user=response;
@@ -35,6 +41,12 @@ export class PharmaMainPageComponent implements OnInit {
       this.medicines=response;
       console.log(this.medicines);
     })
+    this.invoiceEditedListener = this.authSerivce.getinvoiceEditedListener().subscribe((data) => {
+      this.startingSnack = data;
+      if (this.startingSnack) {
+        this.openSnackBar('Operation is completed successfully please reload', 'Close');
+      }
+    });
   
   }
   gotoMedicine(){
@@ -49,6 +61,11 @@ export class PharmaMainPageComponent implements OnInit {
     this.router.navigate(['/MyAccount/MyInfo']);
 
     
+  }
+  
+  
+  GoHome(){
+    this.router.navigate(['/Home']);
   }
   refuseInvoice(invoice:InvoiceAuthData){
     this.authSerivce.refuseInvoice(invoice);

@@ -59,6 +59,11 @@ export class AddMedicineComponent implements OnInit {
 
     
   }
+  
+  
+  GoHome(){
+    this.router.navigate(['/Home']);
+  }
   AddMed(form:NgForm){
     if(form.invalid){
       return;

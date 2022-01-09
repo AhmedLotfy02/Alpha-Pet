@@ -916,6 +916,10 @@ getPharmacPage(){
    
   }
 
+  private invoiceEditedListener=new Subject<boolean>();
+  getinvoiceEditedListener(){
+    return this.invoiceEditedListener.asObservable();
+  }
   //pharmacy opinion
   acceptInvoice(invoice:InvoiceAuthData){
     const data={
@@ -925,6 +929,7 @@ getPharmacPage(){
     }
     this.http.patch('http://localhost:5000/invoices/check',data).subscribe((response)=>{
       console.log(response);
+      this.invoiceEditedListener.next(true);
     })
   }
   refuseInvoice(invoice:InvoiceAuthData){
@@ -934,6 +939,8 @@ getPharmacPage(){
       
     }
     this.http.patch('http://localhost:5000/invoices/check',data).subscribe((response)=>{
+      this.invoiceEditedListener.next(true);
+
       console.log(response);
     })
   }
