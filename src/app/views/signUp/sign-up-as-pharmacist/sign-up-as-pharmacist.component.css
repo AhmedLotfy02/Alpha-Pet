@@ -120,3 +120,6 @@ input[type="file"] {
     top: -40px;
     right: 0px;
 }
+.alreadyLogin{
+    background-color: white;
+}

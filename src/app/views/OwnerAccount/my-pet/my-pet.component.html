@@ -189,7 +189,7 @@
 
                         <!-- Content Column -->
                        
-                        <div  class="col-lg-6 mb-4">
+                        <div *ngIf="!petFound" class="col-lg-6 mb-4">
 
                             <!-- Illustrations -->
                             <div >
@@ -197,7 +197,7 @@
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Pet's Information</h6>
                                 </div>
-                                <div class="card-body">
+                                <div  class="card-body">
                                    
                                     <div class="col-md-6">
                                         <div class="row">
@@ -224,7 +224,7 @@
                 </div>
                 <div class="col-lg-6 mb-4">
    
-                <div *ngIf="!petFound">
+                <div *ngIf="petFound">
                     <div  class="card shadow mb-4" >
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Pet's Information</h6>
@@ -237,7 +237,7 @@
                 </div>
             </div>            
                  <!-- /.container-fluid -->
-                <div class="col-lg-6 mb-4">
+                <div *ngIf="!petFound" class="col-lg-6 mb-4">
    
                     <div  class="card shadow mb-4">
                             <div class="card-header py-3">
@@ -246,7 +246,7 @@
                             <div class="card-body">
                                 <div >
                                     <p> Please Choose your Pet</p>
-                                    <form (submit)="enterPet(postFormt)" #postFormt="ngForm">
+                                    <form (submit)="changePet(postForm)" #postForm="ngForm">
                                         
                                         <div class=" input mb-3">
                                             <mat-form-field>
@@ -265,7 +265,7 @@
                                         
                                         <div class="input mb-2">
                                             <mat-form-field>
-                                                <input matInput type="text" name="petColor" ngModel  #petColorInput="ngModel" required placeholder="Pet Color" />
+                                                <input matInput type="text" name="petColor" ngModel #petColorInput="ngModel" required placeholder="Pet Color" />
                                                 <mat-error *ngIf="petColorInput.invalid">Please enter color</mat-error>
                                             </mat-form-field>					</div>
                                             <div class="d-flex justify-content-center mt-3 login_container">
@@ -291,7 +291,7 @@
         
         <div class="col-lg-6 mb-4">
    
-        <div *ngIf="pet===null||pet.petName===''" class="card shadow mb-4">
+        <div *ngIf="petFound" class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Enter Your Pet's Information</h6>
                 </div>
@@ -317,7 +317,7 @@
                             
                             <div class="input mb-2">
                                 <mat-form-field>
-                                    <input matInput type="text" name="petColor" ngModel #password #petColorInput="ngModel" required placeholder="Pet Color" />
+                                    <input matInput type="text" name="petColor" ngModel #petColorInput="ngModel" required placeholder="Pet Color" />
                                     <mat-error *ngIf="petColorInput.invalid">Please enter color</mat-error>
                                 </mat-form-field>					</div>
                                 <div class="d-flex justify-content-center mt-3 login_container">

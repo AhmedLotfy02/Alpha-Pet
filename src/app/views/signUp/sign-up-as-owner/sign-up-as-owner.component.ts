@@ -55,14 +55,7 @@ export class SignUpAsOwnerComponent implements OnInit {
     console.log(this.form.value);
 
     console.log(this.selected);
-    // this.authService.createUser(
-    //   this.form.value.email,
-    //   this.form.value.password,
-    //   this.form.value.username,
-    //   this.form.value.image,
-    //   this.form.value.mobile,
-    //   this.selected
-    // );
+   
     this.AuthSerivce.create_Owner_User(this.form.value.email,this.form.value.password,this.form.value.FirstName,this.form.value.image,this.form.value.phone,this.selected,this.form.value.LastName);
   }
   ngOnInit(): void {
@@ -96,20 +89,29 @@ export class SignUpAsOwnerComponent implements OnInit {
         ]),
       }),
     });
-    // this.authListenerSubs = this.authService.getTestData().subscribe((data) => {
-    //   this.startingSnack = data.failed;
-    //   if (this.startingSnack) {
-    //     this.openSnackBar('SignUp Failed', 'Close');
-    //   }
-    // });
-    // this.isAuthenticated = this.authService.getisAuth();
+    this.authListenerSubs = this.AuthSerivce.getTestData().subscribe((data) => {
+      this.startingSnack = data.failed;
+      if (this.startingSnack) {
+        this.openSnackBar('SignUp Failed try another email or enter correct pharmacy ID', 'Close');
+      }
+    });
+    this.isAuthenticated = this.AuthSerivce.getisAuth();
 
-    // this.authListenerSubs = this.authService
-    //   .getAuthStatusListener()
-    //   .subscribe((isauthenticated) => {
-    //     this.isAuthenticated = isauthenticated;
-    //   });
+    this.authListenerSubs = this.AuthSerivce
+      .getAuthStatusListener()
+      .subscribe((isauthenticated) => {
+        this.isAuthenticated = isauthenticated;
+      });
   }
-  
+  gotoLoginOwner(){
+    this.router.navigate(['/Login-As-Owner']);
 
+  }
+  gotoHome(){
+    this.router.navigate(['/Home']);
+
+  }
+  logout(){
+    this.AuthSerivce.logout();
+  }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/Auth/auth.service';
 
@@ -14,7 +15,7 @@ export class LoginAsOwnerComponent implements OnInit {
   wronginput = false;
   private authListenerSubs!: Subscription;
   private loginListener!: Subscription;
-  constructor(private authService:AuthService) { }
+  constructor(private authService:AuthService,private router:Router) { }
 
   ngOnInit(): void {
     this.isAuthenticated = this.authService.getisAuth();
@@ -41,10 +42,11 @@ export class LoginAsOwnerComponent implements OnInit {
     this.authService.loginAsOwner(form.value.email,form.value.password);
   }
   gotoHome(){
+    this.router.navigate(['/Home']);
 
   }
   logout(){
-
+    this.authService.logout();
   }
 
 

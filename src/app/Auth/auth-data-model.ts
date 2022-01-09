@@ -36,6 +36,7 @@ export interface PetAuthData{
   petName:String,
   color:string,
   age:number;
+  found:boolean;
 }
 
 export interface InvoiceAuthData{

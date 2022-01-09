@@ -77,7 +77,7 @@ const updatePet = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     const { petName, color, age, currentUserEmail } = req.body;
-    
+    console.log(req.body);
     const sqlStr = `UPDATE PET SET PETNAME = '${petName}', COLOR = '${color}',  AGE = ${age} WHERE OWNEREMAIL = '${currentUserEmail}';`;
     try {
         connection.query(sqlStr, (error, results, fields) => {

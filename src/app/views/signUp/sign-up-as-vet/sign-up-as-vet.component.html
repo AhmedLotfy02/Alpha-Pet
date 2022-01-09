@@ -1,3 +1,4 @@
+<body class="alreadyLogin" *ngIf="!isAuthenticated">
 
 <div class="container register">
     <div class="row">
@@ -96,3 +97,20 @@
     </div>
 
 </div>
+</body>
+<body class="alreadyLogin" *ngIf="isAuthenticated">
+    <mat-card class="mat-card1">
+        <div class="confused">You Are Already Logged In!!</div>
+        <img src="http://localhost:5000/images/geek-boy-confused-cartoon-illustration-geeky-little-44146685.jpg" width="300" height="400" />
+        <br />
+        <br>
+        <button class="b1" mat-raised-button  (click)="gotoHome()">
+      Go to Home
+    </button>
+        <br />
+        <br />
+        <button class="b1" mat-raised-button  (click)="logout()">
+      LogOut
+    </button>
+    </mat-card>
+</body>

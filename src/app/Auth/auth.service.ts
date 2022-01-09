@@ -120,6 +120,8 @@ getPharmacPage(){
           success: true,
         };
         this.testData.next(data);
+        this.router.navigate(['/Login-As-Owner']);
+
         //this.router.navigate(['/signup/signupSuccessfully']);
       },
       (error) => {
@@ -132,6 +134,7 @@ getPharmacPage(){
         this.testData.next(data);
       }
     );
+
   }
   create_Pharmacist_User(
     email: string,
@@ -160,6 +163,8 @@ getPharmacPage(){
           success: true,
         };
         this.testData.next(data);
+        this.router.navigate(['/Login-As-Pharmacist']);
+
         //this.router.navigate(['/signup/signupSuccessfully']);
       },
       (error) => {
@@ -172,6 +177,7 @@ getPharmacPage(){
         this.testData.next(data);
       }
     );
+
   }
 
   create_Vet_User(
@@ -210,6 +216,8 @@ getPharmacPage(){
         this.testData.next(data);
        // console.log(data);
         console.log(response);
+        this.router.navigate(['/Login-As-Vet']);
+
         //this.router.navigate(['/signup/signupSuccessfully']);
       },
       (error) => {
@@ -223,6 +231,14 @@ getPharmacPage(){
       }
     );
   }
+  getTestData() {
+    return this.testData.asObservable();
+  }
+  private ErrorSignUpListener=new Subject<boolean>();
+  getErrorSignUpListener(){
+    return this.ErrorSignUpListener.asObservable();
+  }
+
   getVetsListener(){
     return this.VetsListener.asObservable();
   }
@@ -313,7 +329,14 @@ getPharmacPage(){
         this.PetListener.next(response.pet);
         this.Pet=response.pet;
         console.log(this.Pet);
-        this.PetFoundListener.next(true);
+        if(this.Pet===undefined){
+          this.PetFoundListener.next(true);
+
+        }
+        else{
+          this.PetFoundListener.next(false);
+
+        }
       },(error)=>{
         this.PetFoundListener.next(false);
         console.log(error);
@@ -373,10 +396,15 @@ getPharmacPage(){
       console.log(this.Pet);
       console.log(response);
       if(this.Pet===undefined){
-        this.PetFoundListener.next(false);
+       
+        this.PetFoundListener.next(true);
         return;
+      }else{
+        this.Pet.found=true;
+        this.PetFoundListener.next(false);
+
       }
-      this.PetFoundListener.next(true);
+      console.log(this.Pet);
     },(error)=>{
       this.PetFoundListener.next(false);
       console.log(error);
@@ -809,6 +837,11 @@ getPharmacPage(){
     })
   }
   
+  private PetEditedListener=new Subject<boolean>();
+  getPetEditedListener(){
+    return this.PetEditedListener.asObservable();
+  }
+
   changePet(petname:string,petAge:number,petColor:string){
     const data={
       petName:petname,
@@ -819,6 +852,7 @@ getPharmacPage(){
     this.http.patch('http://localhost:5000/pets/',data).subscribe((response:any)=>{
       this.Pet=response;
       console.log(response);
+      this.PetEditedListener.next(true);
     },(error)=>{
       console.log(error)
     })
@@ -835,6 +869,9 @@ getPharmacPage(){
     }
     this.http.post('http://localhost:5000/pets/',data).subscribe((response:any)=>{
       this.Pet=response;
+      this.PetFoundListener.next(false);
+      this.PetEditedListener.next(true);
+
       console.log(response);
     },(error)=>{
       console.log(error)

@@ -87,22 +87,33 @@ export class SignUpAsVetComponent implements OnInit {
         ]),
       }),
     });
-    // this.authListenerSubs = this.authService.getTestData().subscribe((data) => {
-    //   this.startingSnack = data.failed;
-    //   if (this.startingSnack) {
-    //     this.openSnackBar('SignUp Failed', 'Close');
-    //   }
-    // });
-    // this.isAuthenticated = this.authService.getisAuth();
+    this.authListenerSubs = this.AuthSerivce.getTestData().subscribe((data) => {
+      this.startingSnack = data.failed;
+      if (this.startingSnack) {
+        this.openSnackBar('SignUp Failed try another email or enter correct pharmacy ID', 'Close');
+      }
+    });
+    this.isAuthenticated = this.AuthSerivce.getisAuth();
 
-    // this.authListenerSubs = this.authService
-    //   .getAuthStatusListener()
-    //   .subscribe((isauthenticated) => {
-    //     this.isAuthenticated = isauthenticated;
-    //   });
+    this.authListenerSubs = this.AuthSerivce
+      .getAuthStatusListener()
+      .subscribe((isauthenticated) => {
+        this.isAuthenticated = isauthenticated;
+      });
   }
 //      const { email, password, fName, lName, charge, state } = req.body;
 
 //Login-As-Vet
+gotoLoginVet(){
+  this.router.navigate(['/Login-As-Vet']);
+  
+}
 
+gotoHome(){
+  this.router.navigate(['/Home']);
+
+}
+logout(){
+  this.AuthSerivce.logout();
+}
 }

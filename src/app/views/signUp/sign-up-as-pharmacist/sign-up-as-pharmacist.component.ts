@@ -91,19 +91,30 @@ export class SignUpAsPharmacistComponent implements OnInit {
         ]),
       }),
     });
-    // this.authListenerSubs = this.authService.getTestData().subscribe((data) => {
-    //   this.startingSnack = data.failed;
-    //   if (this.startingSnack) {
-    //     this.openSnackBar('SignUp Failed', 'Close');
-    //   }
-    // });
-    // this.isAuthenticated = this.authService.getisAuth();
+    this.authListenerSubs = this.AuthService.getTestData().subscribe((data) => {
+      this.startingSnack = data.failed;
+      if (this.startingSnack) {
+        this.openSnackBar('SignUp Failed try another email or enter correct pharmacy ID', 'Close');
+      }
+    });
+    this.isAuthenticated = this.AuthService.getisAuth();
 
-    // this.authListenerSubs = this.authService
-    //   .getAuthStatusListener()
-    //   .subscribe((isauthenticated) => {
-    //     this.isAuthenticated = isauthenticated;
-    //   });
+    this.authListenerSubs = this.AuthService
+      .getAuthStatusListener()
+      .subscribe((isauthenticated) => {
+        this.isAuthenticated = isauthenticated;
+      });
+  }
+  gotoLoginPharma(){
+    this.router.navigate(['/Login-As-Pharmacist']);
+
+  }
+  gotoHome(){
+    this.router.navigate(['/Home']);
+
+  }
+  logout(){
+    this.AuthService.logout();
   }
   //    const { email, password, fName, lName, pharmacy_id } = req.body;
 

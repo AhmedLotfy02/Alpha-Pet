@@ -1,3 +1,4 @@
+<body class="alreadyLogin" *ngIf="!isAuthenticated">
 
 <div class="container register">
     <div class="row">
@@ -5,7 +6,7 @@
             <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
             <h3>Welcome</h3>
             <p>We will help you to cure your pet</p>
-            <input type="submit" name="" value="Login"/><br/>
+            <input (click)="gotoLoginOwner()" type="submit" name="" value="Login"/><br/>
         </div>
         <div class="col-md-9 register-right">
             <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
@@ -122,3 +123,20 @@
     </div>
 
 </div>
+</body>
+<body class="alreadyLogin" *ngIf="isAuthenticated">
+    <mat-card class="mat-card1">
+        <div class="confused">You Are Already Logged In!!</div>
+        <img src="http://localhost:5000/images/geek-boy-confused-cartoon-illustration-geeky-little-44146685.jpg" width="300" height="400" />
+        <br />
+        <br>
+        <button class="b1" mat-raised-button  (click)="gotoHome()">
+      Go to Home
+    </button>
+        <br />
+        <br />
+        <button class="b1" mat-raised-button  (click)="logout()">
+      LogOut
+    </button>
+    </mat-card>
+</body>
