@@ -27,7 +27,7 @@
 
 <h2 href="#about">About</h2>
 <blockquote>
-  <p>Alpha-Pet is full-stack web-application using <a href="https://angular.io/">Angularjs</a>,<a href="https://nodejs.org/en/">Node.js</a>,<a href="https://expressjs.com/">Express.js</a> which is a mimic of Vezeeta</p>
+  <p>Alpha-Pet is full-stack web-application using <a href="https://angular.io/">Angularjs</a>,<a href="https://nodejs.org/en/">Node.js</a>,<a href="https://expressjs.com/">Express.js</a> and MySQL which is a mimic of Vezeeta</p>
 </blockquote>
 <h3 href="#build">Build with</h3>
 <ul>
@@ -93,15 +93,14 @@
 <br>
 
 <ol>
-<img src="/Screenshot/7.jpg">
-<img src="/Screenshot/1.jpg">
-<img src="/Screenshot/2.jpg">
-<img src="/Screenshot/3.jpg">
-<img src="/Screenshot/4.jpg">
-<img src="/Screenshot/5.jpg">
-<img src="/Screenshot/6.jpg">
-<h3>Community but it was good but when running after 3 months its icons are cracked</h3>
-<img src="/Screenshot/8.jpg">
+<img src="/Screenshots/7.JPG">
+<img src="/Screenshots/1.JPG">
+<img src="/Screenshots/2.JPG">
+<img src="/Screenshots/3.JPG">
+<img src="/Screenshots/4.JPG">
+<img src="/Screenshots/5.JPG">
+<img src="/Screenshots/6.JPG">
+
 </ol>
 
 
