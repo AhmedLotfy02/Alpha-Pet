@@ -29,7 +29,7 @@
 <blockquote>
   <p>Alpha-Pet is full-stack web-application using <a href="https://angular.io/">Angularjs</a>,<a href="https://nodejs.org/en/">Node.js</a>,<a href="https://expressjs.com/">Express.js</a> and MySQL which is a mimic of Vezeeta</p>
 </blockquote>
-<h3 href="#build">Build with</h3>
+<h3 href="#build">Built with</h3>
 <ul>
   <li><a href="https://angular.io/">Angular JS</a></li>
   <li><a href="https://ng-bootstrap.github.io/">ngBootstrap</a></li>
@@ -112,12 +112,12 @@
     <td align="center">
   <img src="https://user-images.githubusercontent.com/76037906/132257122-e9ea49d8-a912-4d19-8425-08d3847c96a6.jpg" alt="Ahmed Lotfy" width="150px">
       <br>
-      <a href="https://github.com/AhmedLotfy02"><strong>Ahmed Lotfy</strong></a>
+      <a href="https://github.com/AhmedLotfy02">Ahmed Lotfy</a>
   </td>
   <td align="center">
   <img src="https://avatars.githubusercontent.com/u/67989900?v=4" alt="Abdelrahman Hamdy" width="150px">
       <br>
-      <a href="https://github.com/abdelrahman0123"><strong>Abdelrahman Hamdy</strong></a>
+      <a href="https://github.com/abdelrahman0123">Abdelrahman Hamdy</a>
   </td>
     </tr>
   </tbody>
@@ -130,12 +130,12 @@
     <td align="center">
   <img src="https://avatars.githubusercontent.com/u/72695729?v=4" alt="Waleed Hesham" width="150px">
       <br>
-      <a href="https://github.com/waleedhesham446"><strong>Waleed Hesham</strong></a>
+      <a href="https://github.com/waleedhesham446">Waleed Hesham</a>
   </td>
   <td align="center">
   <img src="https://avatars.githubusercontent.com/u/68563546?v=4" alt="Ahmed Asaad" width="150px">
       <br>
-      <a href="https://github.com/ahmedasad236"><strong>Ahmed Asaad</strong></a>
+      <a href="https://github.com/ahmedasad236">Ahmed Asaad</a>
   </td>
     </tr>
   </tbody>
